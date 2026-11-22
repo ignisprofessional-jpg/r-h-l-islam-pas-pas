@@ -3,9 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
     <meta name="description" content="Rûh — apprendre l'islam pas à pas, en français : Coran, prière, ablutions, arabe, invocations et bases de la foi." />
-    <meta name="theme-color" content="#0F4C3A" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- Couleur de la barre d'état = couleur de l'en-tête (mise à jour par l'app selon le thème) -->
+    <meta name="theme-color" content="#0f4c3a" />
+    <!-- Application installable (« Ajouter à l'écran d'accueil ») -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Rûh" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
     <title>Rûh — apprendre l'islam pas à pas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,6 +27,11 @@
         if (dark) document.documentElement.classList.add('dark');
       } catch (e) {}
     </script>
+    <style>
+      /* Fond immédiat (avant le chargement de l'app) pour éviter le flash blanc au lancement */
+      html { background: #f6f1e7; }
+      html.dark { background: #0b1512; }
+    </style>
   </head>
   <body>
     <div id="root"></div>

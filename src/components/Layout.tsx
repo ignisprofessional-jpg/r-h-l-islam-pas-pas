@@ -10,10 +10,10 @@ import { Toaster, cx } from './ui'
 import { useSync } from '../lib/sync'
 import { STATUS_DOT } from '../lib/syncLabels'
 
-function Logo({ compact = false }: { compact?: boolean }) {
+function Logo({ compact = false, onDark = false }: { compact?: boolean; onDark?: boolean }) {
   return (
     <Link to="/" className="flex items-center gap-3" aria-label="Rûh — accueil">
-      <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-[#e8cf98] shadow-inner dark:bg-[#0f2d24]">
+      <span className={cx('relative flex shrink-0 items-center justify-center rounded-xl text-[#e8cf98] shadow-inner', onDark ? 'h-9 w-9 bg-white/10' : 'h-10 w-10 bg-primary dark:bg-[#0f2d24]')}>
         <svg viewBox="0 0 40 40" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.6">
           <path d="M20 4l4.2 10.2L34.4 18.4 24.2 22.6 20 32.8l-4.2-10.2L5.6 18.4l10.2-4.2z" />
           <circle cx="20" cy="18.4" r="4.2" />
@@ -21,15 +21,15 @@ function Logo({ compact = false }: { compact?: boolean }) {
       </span>
       {!compact && (
         <span className="leading-tight">
-          <span className="flex items-baseline gap-2 font-display text-[22px] font-semibold text-ink">Rûh<span className="arabic text-base font-normal text-gold">روح</span></span>
-          <span className="block text-[12.5px] text-muted">l'islam pas à pas</span>
+          <span className={cx('flex items-baseline gap-2 font-display font-semibold', onDark ? 'text-[21px] text-white' : 'text-[22px] text-ink')}>Rûh<span className={cx('arabic text-base font-normal', onDark ? 'text-[#e8cf98]' : 'text-gold')}>روح</span></span>
+          <span className={cx('block text-[12.5px]', onDark ? 'text-white/70' : 'text-muted')}>l'islam pas à pas</span>
         </span>
       )}
     </Link>
   )
 }
 
-function ThemeToggle() {
+function ThemeToggle({ onDark = false }: { onDark?: boolean }) {
   const theme = useApp((s) => s.theme)
   const setTheme = useApp((s) => s.setTheme)
   const systemDark = useMediaQuery('(prefers-color-scheme: dark)')
@@ -37,7 +37,7 @@ function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(dark ? 'light' : 'dark')}
-      className="tap-pop flex h-10 w-10 items-center justify-center rounded-xl text-muted transition-colors hover:bg-surface-2 hover:text-ink"
+      className={cx('tap-pop flex h-10 w-10 items-center justify-center rounded-xl transition-colors', onDark ? 'text-white/85 active:bg-white/15' : 'text-muted hover:bg-surface-2 hover:text-ink')}
       aria-label={dark ? 'Passer en mode clair' : 'Passer en mode sombre'}
       title={dark ? 'Mode clair' : 'Mode sombre'}
     >
@@ -52,7 +52,7 @@ function useApplyTheme() {
   useEffect(() => {
     const dark = theme === 'dark' || (theme === 'system' && systemDark)
     document.documentElement.classList.toggle('dark', dark)
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0b1512' : '#0F4C3A')
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0f2d24' : '#0f4c3a')
   }, [theme, systemDark])
 }
 
@@ -273,31 +273,33 @@ export function Layout() {
       </aside>
 
       {/* En-tête mobile */}
-      <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b border-line bg-bg/85 px-4 py-2.5 backdrop-blur lg:hidden" style={{ paddingTop: 'max(0.625rem, env(safe-area-inset-top))' }}>
-        <Logo />
-        <div className="flex items-center">
-          <button onClick={() => setSearchOpen(true)} className="flex h-10 w-10 items-center justify-center rounded-xl text-muted hover:bg-surface-2" aria-label="Rechercher">
-            <Icon name="search" />
-          </button>
-          <ThemeToggle />
+      <header className="fixed inset-x-0 top-0 z-40 bg-[#0f4c3a] text-white shadow-[0_1px_0_rgba(0,0,0,0.15)] lg:hidden dark:bg-[#0f2d24]" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+        <div className="flex h-14 items-center justify-between gap-2 px-4">
+          <Logo onDark />
+          <div className="flex items-center">
+            <button onClick={() => setSearchOpen(true)} className="tap-pop flex h-10 w-10 items-center justify-center rounded-xl text-white/85 active:bg-white/15" aria-label="Rechercher">
+              <Icon name="search" />
+            </button>
+            <ThemeToggle onDark />
+          </div>
         </div>
       </header>
 
-      <main id="contenu" className="relative px-4 pb-36 pt-4 sm:px-6 lg:ml-72 lg:px-10 lg:pb-24 lg:pt-8">
-        <div className="mx-auto max-w-5xl">
+      <main id="contenu" className="relative px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom,0px))] pt-[calc(4.5rem+env(safe-area-inset-top,0px))] sm:px-6 lg:ml-72 lg:px-10 lg:pb-24 lg:pt-8">
+        <div key={location.pathname} className="page-in mx-auto max-w-5xl">
           <Outlet />
         </div>
       </main>
 
       {/* Navigation basse mobile */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }} aria-label="Navigation mobile">
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/90 backdrop-blur-xl lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }} aria-label="Navigation mobile">
         <ul className="grid grid-cols-5">
           {bottom.map((b) => (
             <li key={b.to}>
-              <NavLink to={b.to} end={b.to === '/'} className={({ isActive }) => cx('flex h-[64px] flex-col items-center justify-center gap-0.5 text-[11px] font-semibold', isActive ? 'text-primary' : 'text-muted')}>
+              <NavLink to={b.to} end={b.to === '/'} className={({ isActive }) => cx('flex h-[58px] flex-col items-center justify-center gap-0.5 text-[10.5px] font-semibold tracking-wide', isActive ? 'text-primary' : 'text-muted')}>
                 {({ isActive }) => (
                   <>
-                    <span className={cx('flex h-8 w-12 items-center justify-center rounded-full transition-colors', isActive && 'bg-primary-soft')}>
+                    <span className={cx('flex h-7 w-14 items-center justify-center rounded-full transition-colors duration-200', isActive && 'bg-primary-soft')}>
                       <Icon name={b.icon} size={20} />
                     </span>
                     {b.label}
@@ -307,8 +309,8 @@ export function Layout() {
             </li>
           ))}
           <li>
-            <button onClick={() => setMenuOpen(true)} className="flex h-[64px] w-full flex-col items-center justify-center gap-0.5 text-[11px] font-semibold text-muted" aria-label="Ouvrir le menu complet" aria-expanded={menuOpen}>
-              <span className="flex h-8 w-12 items-center justify-center rounded-full">
+            <button onClick={() => setMenuOpen(true)} className="flex h-[58px] w-full flex-col items-center justify-center gap-0.5 text-[10.5px] font-semibold tracking-wide text-muted" aria-label="Ouvrir le menu complet" aria-expanded={menuOpen}>
+              <span className="flex h-7 w-14 items-center justify-center rounded-full">
                 <Icon name="menu" size={20} />
               </span>
               Menu
@@ -320,8 +322,8 @@ export function Layout() {
       {/* Tiroir mobile */}
       {menuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setMenuOpen(false)} />
-          <div className="animate-in absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-3xl border-t border-line bg-surface px-4 pb-8 pt-3" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}>
+          <div className="fade-in absolute inset-0 bg-black/40" onClick={() => setMenuOpen(false)} />
+          <div className="sheet-in scroll-contain absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto rounded-t-3xl border-t border-line bg-surface px-4 pb-8 pt-3" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}>
             <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-line" />
             <div className="mb-3 flex items-center justify-between">
               <Logo />

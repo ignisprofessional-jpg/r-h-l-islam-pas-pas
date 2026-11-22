@@ -11,7 +11,7 @@ export function AudioBar() {
   const t = queue[index]
   const [s, v] = t.key.split(':')
   return (
-    <div className="fixed inset-x-0 bottom-[68px] z-[65] px-3 lg:bottom-4 lg:left-72 lg:px-6" role="region" aria-label="Lecteur audio">
+    <div className="fixed inset-x-0 bottom-[calc(66px+env(safe-area-inset-bottom,0px))] z-[65] px-3 lg:bottom-4 lg:left-72 lg:px-6" role="region" aria-label="Lecteur audio">
       <div className="animate-in mx-auto flex max-w-3xl flex-wrap items-center gap-2 rounded-2xl border border-line bg-surface/95 p-2 pl-3 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.5)] backdrop-blur sm:flex-nowrap">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">{title || surahName(Number(s))}</p>

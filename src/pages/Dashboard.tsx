@@ -11,6 +11,7 @@ import { Badge, Button, Card, LinkButton, ProgressBar, ProgressRing, SectionTitl
 import { Icon } from '../components/Icon'
 import { surahName } from '../components/Content'
 import { ActivityCalendar, GoalsCard, PrayerTimesCard, TodayDates } from '../components/Widgets'
+import { InstallHint } from '../components/InstallHint'
 
 function Onboarding() {
   const setProfile = useApp((s) => s.setProfile)
@@ -81,6 +82,7 @@ export default function Dashboard() {
 
   return (
     <div className="animate-in">
+      <InstallHint />
       {!s.profile.onboarded && <Onboarding />}
 
       {/* En-tête de bienvenue */}

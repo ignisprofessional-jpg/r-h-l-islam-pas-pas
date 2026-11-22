@@ -28,7 +28,7 @@ export function Card({ children, className = '', as: As = 'div', ...rest }: { ch
 
 export function PageHeader({ title, subtitle, arabic, icon, children, back }: { title: string; subtitle?: string; arabic?: string; icon?: string; children?: ReactNode; back?: { to: string; label: string } }) {
   return (
-    <header className="relative mb-6 overflow-hidden rounded-3xl bg-primary px-5 py-7 text-white sm:px-8 sm:py-9 dark:bg-[#0f2d24]">
+    <header className="relative mb-5 overflow-hidden rounded-2xl bg-primary px-4 py-5 text-white sm:mb-6 sm:rounded-3xl sm:px-8 sm:py-9 dark:bg-[#0f2d24]">
       <div className="pattern-bg pattern-layer !opacity-[0.12] invert" />
       <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#d6ad5c]/20 blur-3xl" />
       <div className="relative">
@@ -43,7 +43,7 @@ export function PageHeader({ title, subtitle, arabic, icon, children, back }: { 
               {icon && <Icon name={icon} size={18} />}
               {arabic && <span className="arabic text-xl leading-none">{arabic}</span>}
             </div>
-            <h1 className="mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">{title}</h1>
+            <h1 className="mt-1 font-display text-[27px] font-semibold leading-tight sm:text-4xl">{title}</h1>
             {subtitle && <p className="mt-2 max-w-2xl text-[15px] text-white/80 sm:text-base">{subtitle}</p>}
           </div>
         </div>
@@ -295,8 +295,9 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
   if (!open) return null
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="animate-in relative max-h-[88vh] w-full overflow-y-auto rounded-t-3xl border border-line bg-surface p-5 shadow-2xl sm:max-w-2xl sm:rounded-3xl sm:p-6">
+      <div className="fade-in absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={onClose} />
+      <div className="sheet-in scroll-contain relative max-h-[88dvh] w-full overflow-y-auto rounded-t-3xl border border-line bg-surface p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] shadow-2xl sm:max-w-2xl sm:rounded-3xl sm:p-6">
+        <div className="mx-auto -mt-2 mb-3 h-1.5 w-10 rounded-full bg-line sm:hidden" />
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="font-display text-2xl font-semibold">{title}</h2>
           <IconButton icon="x" label="Fermer" onClick={onClose} />
@@ -322,7 +323,7 @@ export const toast = (text: string) => useToast.getState().push(text)
 export function Toaster() {
   const items = useToast((s) => s.items)
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-24 z-[60] flex flex-col items-center gap-2 px-4 lg:bottom-6" aria-live="polite">
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] z-[60] flex flex-col items-center gap-2 px-4 lg:bottom-6" aria-live="polite">
       {items.map((t) => (
         <div key={t.id} className="animate-in pointer-events-auto flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-medium text-bg shadow-lg">
           <Icon name="checkCircle" size={16} className="text-gold" /> {t.text}

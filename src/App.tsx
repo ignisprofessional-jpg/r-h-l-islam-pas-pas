@@ -1,7 +1,23 @@
-import { Component, lazy, Suspense, type ReactNode } from 'react'
+import { Component, lazy as reactLazy, Suspense, useEffect, type ComponentType, type ReactNode } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { Loader, ErrorState } from './components/ui'
+
+// Chaque page est chargée à la demande, puis toutes sont préchargées dès que le téléphone est libre :
+// la navigation devient instantanée (comme une vraie app).
+const loaders: (() => Promise<unknown>)[] = []
+const lazy = <T extends ComponentType>(load: () => Promise<{ default: T }>) => {
+  loaders.push(load)
+  return reactLazy(load)
+}
+function usePrefetchPages() {
+  useEffect(() => {
+    const run = () => loaders.forEach((l, i) => setTimeout(() => l().catch(() => undefined), i * 40))
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }
+    if (w.requestIdleCallback) w.requestIdleCallback(run, { timeout: 2500 })
+    else setTimeout(run, 1200)
+  }, [])
+}
 
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Parcours = lazy(() => import('./pages/Parcours'))
@@ -54,6 +70,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
 }
 
 export default function App() {
+  usePrefetchPages()
   return (
     <BrowserRouter>
       <ErrorBoundary>
