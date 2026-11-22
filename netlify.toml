@@ -1,0 +1,16 @@
+"$schema" = "https://open-api.netlify.com/netlify.schema.json"
+
+# Netlify construit le site à chaque envoi sur GitHub.
+# Les variables VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY sont définies dans
+# Netlify (Project configuration > Environment variables), pas dans ce fichier.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  environment = { NODE_VERSION = "22" }
+
+# Application monopage : toutes les adresses (/coran/1, /priere/guide…) servent index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

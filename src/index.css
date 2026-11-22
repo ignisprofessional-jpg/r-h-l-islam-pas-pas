@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f6f1e7;
+  --surface: #fffdf8;
+  --surface-2: #f0e8d7;
+  --ink: #1d2a23;
+  --muted: #5b6a61;
+  --line: #e2d7c0;
+  --primary: #0f4c3a;
+  --primary-ink: #ffffff;
+  --primary-soft: #dfece5;
+  --accent: #1a6b52;
+  --gold: #a87b2f;
+  --gold-soft: #f1e3c2;
+  --danger: #a3402f;
+  --danger-soft: #f6e0da;
+  --pattern: rgba(15, 76, 58, 0.06);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0b1512;
+  --surface: #11201b;
+  --surface-2: #172a23;
+  --ink: #ece5d5;
+  --muted: #a2b0a7;
+  --line: #23392f;
+  --primary: #4fae88;
+  --primary-ink: #08130f;
+  --primary-soft: #173a2e;
+  --accent: #6cc4a0;
+  --gold: #d6ad5c;
+  --gold-soft: #3a2f18;
+  --danger: #e38a78;
+  --danger-soft: #3b1f19;
+  --pattern: rgba(214, 173, 92, 0.05);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-arabic: "Amiri", "Scheherazade New", "Traditional Arabic", serif;
+  --font-quran: "Amiri Quran", "Amiri", "Scheherazade New", serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pattern-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M40 4l10.6 25.4L76 40 50.6 50.6 40 76 29.4 50.6 4 40l25.4-10.6z'/%3E%3Cpath d='M40 18l6.2 15.8L62 40l-15.8 6.2L40 62l-6.2-15.8L18 40l15.8-6.2z'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
+
+.pattern-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+}
+.dark .pattern-layer { opacity: 0.06; filter: invert(1); }
+
+.arabic {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  unicode-bidi: isolate;
+  line-height: 2;
+}
+.quran {
+  font-family: var(--font-quran);
+  direction: rtl;
+  unicode-bidi: isolate;
+  line-height: 2.3;
+}
+
+.prose-lesson p { margin: 0.7em 0; }
+.prose-lesson strong { color: var(--ink); font-weight: 650; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-in { animation: fade-up 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+.tap-pop:active { animation: pop 0.18s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+sup { font-size: 0.65em; }
