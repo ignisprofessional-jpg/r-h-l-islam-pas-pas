@@ -17,9 +17,9 @@ import { Icon } from '../components/Icon'
 
 function Stat({ icon, value, label, sub }: { icon: string; value: string | number; label: string; sub?: string }) {
   return (
-    <Card className="p-4">
-      <Icon name={icon} className="text-gold" />
-      <p className="mt-2 font-display text-3xl font-semibold tabular-nums">{value}</p>
+    <Card className="p-3 sm:p-4">
+      <Icon name={icon} size={18} className="text-gold" />
+      <p className="mt-1 font-display text-2xl font-semibold tabular-nums sm:mt-2 sm:text-3xl">{value}</p>
       <p className="text-sm font-semibold">{label}</p>
       {sub && <p className="text-xs text-muted">{sub}</p>}
     </Card>
@@ -53,7 +53,7 @@ export default function ProgressPage() {
         Ces statistiques sont là pour vous encourager, pas pour vous juger. Un jour sans apprentissage n’efface rien : tout ce que vous avez appris reste acquis, et vous reprenez simplement où vous en étiez.
       </Note>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
         <Stat icon="book" value={done.length} label="Leçons terminées" sub={`sur ${LESSONS.length}`} />
         <Stat icon="sparkle" value={learnedSurahs.length} label="Sourates apprises" sub={`${readSurahs.length} lues`} />
         <Stat icon="hands" value={memorizedDuas.length} label="Invocations mémorisées" sub={`sur ${DUAS.length}`} />

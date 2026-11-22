@@ -40,7 +40,7 @@ export default function Settings() {
     <div className="animate-in">
       <PageHeader title="Réglages" icon="settings" subtitle="Votre profil, l’apparence, la lecture du Coran, les horaires de prière et la sauvegarde de vos données." />
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-2">
         <Card className="p-5">
           <SectionTitle>Profil</SectionTitle>
           <form

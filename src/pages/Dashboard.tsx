@@ -7,7 +7,7 @@ import { LEVELS, lessonById } from '../data/lessons'
 import { CATEGORIES } from '../data/types'
 import { LEARN_SURAHS } from '../data/learnSurahs'
 import { relativeFr } from '../lib/dates'
-import { Badge, Button, Card, LinkButton, ProgressBar, ProgressRing, SectionTitle, Tile, cx } from '../components/ui'
+import { Badge, Button, Card, LinkButton, ProgressBar, ProgressRing, SectionTitle, cx } from '../components/ui'
 import { Icon } from '../components/Icon'
 import { surahName } from '../components/Content'
 import { ActivityCalendar, GoalsCard, PrayerTimesCard, TodayDates } from '../components/Widgets'
@@ -80,194 +80,171 @@ export default function Dashboard() {
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Belle matinée' : hour < 18 ? 'Bel après-midi' : 'Belle soirée'
 
+  const [suivi, setSuivi] = useState<'objectifs' | 'calendrier'>('objectifs')
+  const quick = [
+    { to: '/priere/guide', icon: 'prayer', label: 'Prière' },
+    { to: '/ablutions', icon: 'drop', label: 'Ablutions' },
+    { to: '/douas', icon: 'hands', label: 'Douas' },
+    { to: '/arabe', icon: 'letters', label: 'Arabe' },
+  ]
+
   return (
     <div className="animate-in">
       <InstallHint />
       {!s.profile.onboarded && <Onboarding />}
 
       {/* En-tête de bienvenue */}
-      <section className="relative mb-6 overflow-hidden rounded-3xl bg-primary p-5 text-white sm:p-8 dark:bg-[#0f2d24]">
+      <section className="relative mb-3 overflow-hidden rounded-2xl bg-primary p-4 text-white sm:mb-6 sm:rounded-3xl sm:p-8 dark:bg-[#0f2d24]">
         <div className="pattern-bg pattern-layer !opacity-[0.12] invert" />
         <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[#d6ad5c]/20 blur-3xl" />
-        <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative flex items-center justify-between gap-4">
           <div className="min-w-0">
-            <p className="arabic text-xl leading-none text-[#e8cf98]">السَّلَامُ عَلَيْكُمْ</p>
-            <h1 className="mt-2 font-display text-3xl font-semibold leading-tight sm:text-4xl">
+            <p className="arabic text-lg leading-none text-[#e8cf98] sm:text-xl">السَّلَامُ عَلَيْكُمْ</p>
+            <h1 className="mt-1.5 font-display text-[23px] font-semibold leading-tight sm:mt-2 sm:text-4xl">
               Assalâmu ‘alaykum{s.profile.name ? `, ${s.profile.name}` : ''}
             </h1>
-            <p className="mt-1 text-white/85">{greeting} ! Chaque pas compte, même le plus petit.</p>
-            <div className="mt-2">
+            <p className="mt-1 hidden text-white/85 sm:block">{greeting} ! Chaque pas compte, même le plus petit.</p>
+            <div className="mt-1 text-[13px] sm:mt-2 sm:text-sm">
               <TodayDates />
             </div>
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-white/15 px-3 py-1 text-sm font-semibold">Niveau : {levelInfo.label}</span>
-              {level !== s.profile.level && (
-                <button onClick={() => s.setProfile({ level })} className="rounded-full bg-[#d6ad5c] px-3 py-1 text-sm font-semibold text-[#1b1406]">
-                  Passer au niveau {LEVELS.find((l) => l.id === level)!.label} →
-                </button>
-              )}
-              {stats.streak > 1 && <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{stats.streak} jours d’apprentissage d’affilée</span>}
-            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <ProgressRing value={overall.pct} size={112} stroke={9}>
-              <span className="font-display text-3xl font-semibold">{overall.pct}%</span>
-              <span className="text-[11px] text-white/70">progression</span>
-            </ProgressRing>
-            <div className="text-sm text-white/80">
-              <p>
-                <strong className="text-white">{overall.done}</strong> / {overall.total} modules
-              </p>
-              <p>
-                <strong className="text-white">{Object.values(s.lessons).filter((l) => l.status === 'done').length}</strong> leçons terminées
-              </p>
-              <p>
-                <strong className="text-white">{LEARN_SURAHS.filter((x) => s.surahs[x.id]?.learned).length}</strong> sourates apprises
-              </p>
-            </div>
-          </div>
+          <ProgressRing value={overall.pct} size={72} stroke={7}>
+            <span className="font-display text-xl font-semibold">{overall.pct}%</span>
+          </ProgressRing>
+        </div>
+        <div className="relative mt-3 flex flex-wrap items-center gap-1.5 text-[12.5px] sm:mt-4 sm:gap-2 sm:text-sm">
+          <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold">{levelInfo.label}</span>
+          <span className="rounded-full bg-white/10 px-2.5 py-0.5">{Object.values(s.lessons).filter((l) => l.status === 'done').length} leçons</span>
+          <span className="rounded-full bg-white/10 px-2.5 py-0.5">{LEARN_SURAHS.filter((x) => s.surahs[x.id]?.learned).length} sourates</span>
+          {stats.streak > 1 && <span className="rounded-full bg-white/10 px-2.5 py-0.5">{stats.streak} jours d’affilée</span>}
+          {level !== s.profile.level && (
+            <button onClick={() => s.setProfile({ level })} className="rounded-full bg-[#d6ad5c] px-2.5 py-0.5 font-semibold text-[#1b1406]">
+              Passer au niveau {LEVELS.find((l) => l.id === level)!.label} →
+            </button>
+          )}
         </div>
       </section>
 
-      <div className="grid gap-5 lg:grid-cols-3">
+      {/* Accès rapide */}
+      <nav className="mb-3 grid grid-cols-4 gap-2 sm:mb-5 sm:gap-3" aria-label="Accès rapide">
+        {quick.map((q) => (
+          <Link key={q.to} to={q.to} className="flex flex-col items-center gap-1 rounded-2xl border border-line bg-surface py-2.5 text-[12px] font-semibold active:bg-surface-2 sm:py-4 sm:text-sm">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-soft text-primary sm:h-11 sm:w-11">
+              <Icon name={q.icon} size={19} />
+            </span>
+            {q.label}
+          </Link>
+        ))}
+      </nav>
+
+      <div className="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-3">
         {/* Leçon du jour */}
-        <Card className="relative overflow-hidden p-5 lg:col-span-2">
+        <Card className="relative overflow-hidden p-4 sm:p-5 lg:col-span-2">
           <div className="pattern-bg pattern-layer" />
           <div className="relative">
             <div className="flex items-center justify-between gap-3">
               <Badge tone="gold">
                 <Icon name="sparkle" size={13} /> Leçon du jour
               </Badge>
-              <span className="text-xs text-muted">
-                {CATEGORIES[daily.category].label} · {daily.minutes} min
-              </span>
+              <span className="text-xs text-muted">{daily.minutes} min</span>
             </div>
-            <h2 className="mt-3 font-display text-2xl font-semibold sm:text-3xl">{daily.title}</h2>
-            {daily.arabic && <p className="arabic text-xl text-gold">{daily.arabic}</p>}
-            <p className="mt-1 text-muted">{daily.summary}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <LinkButton to={`/cours/${daily.id}`} icon="book">
-                {s.lessons[daily.id] ? 'Revoir la leçon' : 'Commencer la leçon'}
+            <h2 className="mt-2 font-display text-[21px] font-semibold leading-snug sm:mt-3 sm:text-3xl">{daily.title}</h2>
+            <p className="mt-0.5 line-clamp-2 text-[14px] text-muted sm:mt-1 sm:text-base">{daily.summary}</p>
+            <div className="mt-3 flex items-center gap-3">
+              <LinkButton to={`/cours/${daily.id}`} icon="book" size="sm" className="shrink-0">
+                {s.lessons[daily.id] ? 'Revoir' : 'Commencer'}
               </LinkButton>
-              <LinkButton to="/parcours" variant="secondary" icon="graduation">
-                Mon parcours
-              </LinkButton>
-            </div>
-            <div className="mt-5">
-              <div className="mb-1 flex justify-between text-sm">
-                <span className="font-semibold">Parcours {levelInfo.label.toLowerCase()}</span>
-                <span className="text-muted">
-                  {lvl.done}/{lvl.total} modules · {lvl.pct}%
+              <Link to="/parcours" className="min-w-0 flex-1">
+                <span className="mb-1 flex justify-between text-[12px] text-muted">
+                  <span className="truncate">{CATEGORIES[daily.category].label}</span>
+                  <span>{lvl.pct}%</span>
                 </span>
-              </div>
-              <ProgressBar value={lvl.pct} label={`Progression du niveau ${levelInfo.label}`} />
+                <ProgressBar value={lvl.pct} label={`Progression du niveau ${levelInfo.label}`} />
+              </Link>
             </div>
           </div>
         </Card>
 
         {/* Accès rapide Coran */}
-        <Card className="flex flex-col p-5">
-          <p className="flex items-center gap-2 font-display text-xl font-semibold">
-            <Icon name="book" size={18} className="text-gold" /> Le Coran
-          </p>
-          {lastPos ? (
-            <>
-              <p className="mt-2 text-sm text-muted">{s.bookmark ? 'Votre marque-page' : 'Dernière lecture'}</p>
-              <p className="font-semibold">
-                {surahName(lastPos.surah)}, verset {lastPos.verse}
-              </p>
-              <p className="text-xs text-muted">{relativeFr(lastPos.at)}</p>
-              <LinkButton to={`/coran/${lastPos.surah}?v=${lastPos.verse}`} className="mt-4" icon="play">
-                Reprendre la lecture
-              </LinkButton>
-            </>
-          ) : (
-            <>
-              <p className="mt-2 text-sm text-muted">Les 114 sourates avec le texte arabe, la phonétique, la traduction française et la récitation audio.</p>
-              <LinkButton to="/coran/1" className="mt-4" icon="play">
-                Commencer par Al-Fâtiha
-              </LinkButton>
-            </>
-          )}
-          <Link to="/coran" className="mt-3 text-center text-sm font-semibold text-primary hover:underline">
-            Voir toutes les sourates
-          </Link>
-        </Card>
+        <Link to={lastPos ? `/coran/${lastPos.surah}?v=${lastPos.verse}` : '/coran/1'} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3.5 active:bg-surface-2 sm:p-5 lg:flex-col lg:items-start">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold-soft text-gold">
+            <Icon name="book" size={20} />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[12px] font-semibold uppercase tracking-wide text-muted">{lastPos ? (s.bookmark ? 'Marque-page' : 'Reprendre le Coran') : 'Le Coran'}</span>
+            <span className="block truncate font-semibold">{lastPos ? `${surahName(lastPos.surah)}, verset ${lastPos.verse}` : 'Commencer par Al-Fâtiha'}</span>
+            {lastPos && <span className="block text-xs text-muted">{relativeFr(lastPos.at)}</span>}
+          </span>
+          <Icon name="play" size={16} className="shrink-0 text-primary lg:hidden" />
+        </Link>
       </div>
 
-      {/* Horaires et accès rapide prière */}
-      <div className="mt-5">
+      {/* Horaires de prière */}
+      <div className="mt-3 sm:mt-5">
         <PrayerTimesCard compact />
       </div>
 
-      <SectionTitle>Accès rapide</SectionTitle>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <Tile to="/priere/guide" icon="prayer" title="Je découvre la prière" text="Pas à pas, très lentement" />
-        <Tile to="/ablutions" icon="drop" title="Les ablutions" text="Guide illustré" />
-        <Tile to="/douas" icon="hands" title="Invocations" text="Matin, soir, repas…" />
-        <Tile to="/arabe" icon="letters" title="Alphabet arabe" text="Lettres et sons" />
-      </div>
+      <div className="mt-1 grid grid-cols-1 gap-x-5 lg:grid-cols-2">
+        {/* Sourates */}
+        <div className="min-w-0">
+          <SectionTitle action={<Link to="/sourates" className="text-sm font-semibold text-primary hover:underline">Tout voir</Link>}>Mes sourates</SectionTitle>
+          <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0">
+            {LEARN_SURAHS.map((ls) => {
+              const st = s.surahs[ls.id]
+              return (
+                <Link
+                  key={ls.id}
+                  to={`/sourates/${ls.id}`}
+                  className={cx('shrink-0 rounded-xl border px-3 py-2 text-center transition-colors', st?.learned ? 'border-primary bg-primary-soft' : st?.learning ? 'border-gold/60 bg-gold-soft/40' : 'border-line bg-surface')}
+                >
+                  <span className="block whitespace-nowrap text-[13px] font-semibold">{ls.name}</span>
+                  <span className="text-[11px] text-muted">{st?.learned ? 'Maîtrisée' : st?.learning ? 'En cours' : 'À apprendre'}</span>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
 
-      <div className="mt-2 grid gap-5 lg:grid-cols-2">
         {/* Dernières leçons */}
-        <div>
-          <SectionTitle action={<Link to="/progression" className="text-sm font-semibold text-primary hover:underline">Tout voir</Link>}>Mes dernières leçons</SectionTitle>
-          <Card className="divide-y divide-line">
-            {recent.length === 0 && <p className="p-5 text-sm text-muted">Vous n’avez pas encore ouvert de leçon. La leçon du jour est un bon point de départ.</p>}
-            {recent.map((r) => (
-              <Link key={r.id} to={`/cours/${r.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-surface-2/60">
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-soft text-primary">
-                  <Icon name={r.lesson!.icon ?? 'book'} size={17} />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate font-medium">{r.lesson!.title}</span>
-                  <span className="text-xs text-muted">{relativeFr(r.at)}</span>
-                </span>
-                {s.lessons[r.id]?.status === 'done' && <Badge tone="green">Terminée</Badge>}
-                {s.lessons[r.id]?.status === 'review' && <Badge tone="gold">À revoir</Badge>}
-              </Link>
-            ))}
-          </Card>
-        </div>
-
-        {/* Sourates apprises */}
-        <div>
-          <SectionTitle action={<Link to="/sourates" className="text-sm font-semibold text-primary hover:underline">Parcours</Link>}>Mes sourates</SectionTitle>
-          <Card className="p-4">
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-              {LEARN_SURAHS.map((ls) => {
-                const st = s.surahs[ls.id]
-                return (
-                  <Link
-                    key={ls.id}
-                    to={`/sourates/${ls.id}`}
-                    className={cx('rounded-xl border p-2 text-center transition-colors', st?.learned ? 'border-primary bg-primary-soft' : st?.learning ? 'border-gold/60 bg-gold-soft/40' : 'border-line hover:border-gold/50')}
-                  >
-                    <span className="block text-xs font-semibold">{ls.name}</span>
-                    <span className="text-[11px] text-muted">{st?.learned ? 'Maîtrisée' : st?.learning ? 'En cours' : 'À apprendre'}</span>
-                  </Link>
-                )
-              })}
-            </div>
-          </Card>
-        </div>
-
-        {/* Objectifs */}
-        <div>
-          <SectionTitle>Mes objectifs de la semaine</SectionTitle>
-          <Card className="p-4 sm:p-5">
-            <GoalsCard />
-          </Card>
-        </div>
-
-        {/* Calendrier */}
-        <div>
-          <SectionTitle action={<Link to="/progression" className="text-sm font-semibold text-primary hover:underline">Statistiques</Link>}>Mon calendrier de suivi</SectionTitle>
-          <Card className="p-4 sm:p-5">
-            <ActivityCalendar />
-          </Card>
-        </div>
+        {recent.length > 0 && (
+          <div className="min-w-0">
+            <SectionTitle action={<Link to="/progression" className="text-sm font-semibold text-primary hover:underline">Tout voir</Link>}>Dernières leçons</SectionTitle>
+            <Card className="divide-y divide-line">
+              {recent.slice(0, 3).map((r) => (
+                <Link key={r.id} to={`/cours/${r.id}`} className="flex items-center gap-3 px-3.5 py-2.5 active:bg-surface-2/60">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-soft text-primary">
+                    <Icon name={r.lesson!.icon ?? 'book'} size={16} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[15px] font-medium">{r.lesson!.title}</span>
+                    <span className="text-xs text-muted">{relativeFr(r.at)}</span>
+                  </span>
+                  {s.lessons[r.id]?.status === 'done' && <Icon name="checkCircle" size={16} className="text-primary" />}
+                  {s.lessons[r.id]?.status === 'review' && <Badge tone="gold">À revoir</Badge>}
+                </Link>
+              ))}
+            </Card>
+          </div>
+        )}
       </div>
+
+      {/* Objectifs et calendrier, regroupés */}
+      <SectionTitle action={<Link to="/progression" className="text-sm font-semibold text-primary hover:underline">Statistiques</Link>}>Mon suivi</SectionTitle>
+      <Card className="p-3.5 sm:p-5">
+        <div className="mb-3 grid grid-cols-2 gap-1 rounded-xl bg-surface-2 p-1" role="tablist">
+          {(
+            [
+              ['objectifs', 'Objectifs de la semaine'],
+              ['calendrier', 'Calendrier'],
+            ] as const
+          ).map(([k, label]) => (
+            <button key={k} role="tab" aria-selected={suivi === k} onClick={() => setSuivi(k)} className={cx('h-9 rounded-lg text-[13px] font-semibold transition-colors', suivi === k ? 'bg-surface text-ink shadow-sm' : 'text-muted')}>
+              {label}
+            </button>
+          ))}
+        </div>
+        {suivi === 'objectifs' ? <GoalsCard /> : <ActivityCalendar />}
+      </Card>
     </div>
   )
 }

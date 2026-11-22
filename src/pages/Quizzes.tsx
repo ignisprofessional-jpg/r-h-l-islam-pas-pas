@@ -19,12 +19,12 @@ export default function Quizzes() {
       {groups.map((g) => (
         <section key={g}>
           <SectionTitle>{g === 'Thèmes' ? 'Par thème' : g === 'Coran' ? 'Coran et noms d’Allah' : 'Arabe coranique'}</SectionTitle>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
             {QUIZZES.filter((q) => q.group === g).map((q) => {
               const r = results[q.id]
               return (
-                <Link key={q.id} to={`/quiz/${q.id}`} className="group flex items-center gap-3 rounded-2xl border border-line bg-surface p-4 transition-all hover:-translate-y-0.5 hover:border-gold/60">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary group-hover:bg-primary group-hover:text-primary-ink">
+                <Link key={q.id} to={`/quiz/${q.id}`} className="group flex items-center gap-3 rounded-2xl border border-line bg-surface px-3 py-2.5 transition-all hover:-translate-y-0.5 hover:border-gold/60 sm:p-4">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary group-hover:bg-primary group-hover:text-primary-ink sm:h-11 sm:w-11">
                     <Icon name={q.icon} />
                   </span>
                   <span className="min-w-0 flex-1">
@@ -42,19 +42,26 @@ export default function Quizzes() {
           </div>
         </section>
       ))}
-      <SectionTitle>Quiz de fin de leçon</SectionTitle>
-      <p className="-mt-1 mb-3 text-sm text-muted">Chaque cours se termine par un quiz. Voici ceux que vous avez déjà faits et ceux qui vous attendent.</p>
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <details className="group mt-6 sm:mt-8 [&_summary::-webkit-details-marker]:hidden">
+      <summary className="mb-2 flex cursor-pointer list-none items-center justify-between gap-3 rounded-2xl border border-line bg-surface px-3.5 py-3 sm:mb-3">
+        <span>
+          <span className="block font-display text-[19px] font-semibold sm:text-2xl">Quiz de fin de leçon</span>
+          <span className="text-[13px] text-muted">Un quiz à la fin de chaque cours — touchez pour voir la liste</span>
+        </span>
+        <Icon name="chevronDown" size={18} className="shrink-0 text-muted transition-transform group-open:rotate-180" />
+      </summary>
+      <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 sm:gap-2">
         {LESSONS.filter((l) => l.quiz?.length).map((l) => {
           const r = results[`lecon-${l.id}`]
           return (
-            <Link key={l.id} to={`/cours/${l.id}#quiz`} className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-sm hover:border-gold/60">
+            <Link key={l.id} to={`/cours/${l.id}#quiz`} className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm hover:border-gold/60">
               <span className="font-medium">{l.title}</span>
               {r ? <Badge tone="green">{r.best}/{r.total}</Badge> : <Badge>{l.quiz!.length} questions</Badge>}
             </Link>
           )
         })}
       </div>
+      </details>
     </div>
   )
 }

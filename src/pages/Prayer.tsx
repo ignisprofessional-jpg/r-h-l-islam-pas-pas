@@ -14,7 +14,7 @@ export default function Prayer() {
   const steps = useApp((s) => s.steps['guide-priere'] ?? NO_STEPS)
   const read = useApp((s) => s.steps['cours-priere'] ?? NO_STEPS)
   const toggleStep = useApp((s) => s.toggleStep)
-  const [open, setOpen] = useState<string>('pourquoi')
+  const [open, setOpen] = useState<string>('')
   const pct = Math.round((steps.length / GUIDE.length) * 100)
 
   return (
@@ -22,20 +22,20 @@ export default function Prayer() {
       <PageHeader title="Apprendre à faire la prière" arabic="الصلاة" icon="prayer" subtitle="Un cours complet pour apprendre la salât depuis zéro : pourquoi prier, quand, comment, avec les gestes, les paroles et leur sens." />
 
       {/* Mode découverte */}
-      <Card className="relative mb-6 overflow-hidden p-5 sm:p-6">
+      <Card className="relative mb-3 overflow-hidden p-4 sm:mb-6 sm:p-6">
         <div className="pattern-bg pattern-layer" />
         <div className="relative grid items-center gap-5 sm:grid-cols-[1fr_200px]">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-gold">Mode « Je découvre la prière »</p>
-            <h2 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Le guide illustré, étape par étape</h2>
-            <p className="mt-1 text-muted">Chaque position est illustrée, avec les paroles en arabe, la phonétique et le sens. Le mode lent explique tout tranquillement, sans rien supposer.</p>
-            <div className="mt-4 flex items-center gap-3">
+            <h2 className="mt-1 font-display text-[21px] font-semibold leading-snug sm:text-3xl">Le guide illustré, étape par étape</h2>
+            <p className="mt-1 hidden text-muted sm:block">Chaque position est illustrée, avec les paroles en arabe, la phonétique et le sens. Le mode lent explique tout tranquillement, sans rien supposer.</p>
+            <div className="mt-3 flex items-center gap-3 sm:mt-4">
               <ProgressBar value={pct} className="max-w-xs" label="Progression du guide" />
               <span className="text-sm text-muted">
                 {steps.length}/{GUIDE.length} étapes
               </span>
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
               <LinkButton to="/priere/guide?lent=1" icon="play">
                 Je découvre la prière (lent)
               </LinkButton>
@@ -44,7 +44,7 @@ export default function Prayer() {
               </LinkButton>
             </div>
           </div>
-          <div className="mx-auto grid w-full max-w-[220px] grid-cols-3 gap-1">
+          <div className="mx-auto hidden w-full max-w-[220px] grid-cols-3 gap-1 sm:grid">
             {(['takbir', 'ruku', 'sujud', 'qiyam', 'jalsa', 'salam'] as const).map((p) => (
               <PrayerFigure key={p} pose={p} className="aspect-square rounded-xl bg-surface-2/60" />
             ))}
@@ -52,18 +52,18 @@ export default function Prayer() {
         </div>
       </Card>
 
-      <PrayerTimesCard />
+      <PrayerTimesCard compact />
 
       <SectionTitle>Les cinq prières</SectionTitle>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+      <div className="grid grid-cols-5 gap-1.5 sm:gap-3">
         {PRAYERS.map((p) => (
-          <Link key={p.id} to={`/priere/${p.id}`} className="group rounded-2xl border border-line bg-surface p-4 text-center transition-all hover:-translate-y-0.5 hover:border-gold/60">
-            <p className="arabic text-2xl text-gold">{p.arabic}</p>
-            <p className="font-semibold">{p.name.split(' (')[0]}</p>
-            <p className="text-sm text-muted">{p.rakaat} rak‘ats</p>
+          <Link key={p.id} to={`/priere/${p.id}`} className="group rounded-xl border border-line bg-surface px-1 py-2.5 text-center transition-all hover:-translate-y-0.5 hover:border-gold/60 sm:rounded-2xl sm:p-4">
+            <p className="arabic text-lg leading-tight text-gold sm:text-2xl">{p.arabic}</p>
+            <p className="truncate text-[12px] font-semibold sm:text-base">{p.name.split(' (')[0]}</p>
+            <p className="text-[11px] text-muted sm:text-sm">{p.rakaat} rak‘ats</p>
             <div className="mt-2 flex justify-center gap-1">
               {Array.from({ length: p.rakaat }).map((_, i) => (
-                <span key={i} className="h-1.5 w-4 rounded-full bg-primary/70" />
+                <span key={i} className="h-1 w-2 rounded-full bg-primary/70 sm:h-1.5 sm:w-4" />
               ))}
             </div>
           </Link>
@@ -74,23 +74,23 @@ export default function Prayer() {
       <p className="-mt-1 mb-3 text-sm text-muted">
         {read.length}/{PRAYER_COURSE.length} parties lues · ouvrez chaque partie, puis cochez « J’ai lu cette partie ».
       </p>
-      <div className="space-y-2">
+      <div className="space-y-1.5 sm:space-y-2">
         {PRAYER_COURSE.map((sec, i) => {
           const isOpen = open === sec.id
           const done = read.includes(sec.id)
           return (
             <Card key={sec.id} className="overflow-hidden">
-              <button onClick={() => setOpen(isOpen ? '' : sec.id)} className="flex w-full items-center gap-3 p-4 text-left" aria-expanded={isOpen}>
-                <span className={cx('flex h-9 w-9 shrink-0 items-center justify-center rounded-xl', done ? 'bg-primary text-primary-ink' : 'bg-primary-soft text-primary')}>
+              <button onClick={() => setOpen(isOpen ? '' : sec.id)} className="flex w-full items-center gap-3 px-3.5 py-3 text-left sm:p-4" aria-expanded={isOpen}>
+                <span className={cx('flex h-8 w-8 shrink-0 items-center justify-center rounded-xl sm:h-9 sm:w-9', done ? 'bg-primary text-primary-ink' : 'bg-primary-soft text-primary')}>
                   <Icon name={done ? 'check' : sec.icon} size={18} strokeWidth={done ? 3 : 1.8} />
                 </span>
-                <span className="flex-1 font-semibold">
+                <span className="flex-1 text-[15px] font-semibold sm:text-base">
                   {i + 1}. {sec.title}
                 </span>
                 <Icon name="chevronDown" className={cx('text-muted transition-transform', isOpen && 'rotate-180')} />
               </button>
               {isOpen && (
-                <div className="animate-in border-t border-line px-4 pb-5 pt-2 sm:px-6">
+                <div className="animate-in border-t border-line px-3.5 pb-4 pt-1 sm:px-6 sm:pb-5 sm:pt-2">
                   <Blocks blocks={sec.blocks} />
                   <button
                     onClick={() => {

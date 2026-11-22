@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { LESSONS, lessonById, LEVELS } from '../data/lessons'
 import { CATEGORIES } from '../data/types'
 import { useApp } from '../lib/store'
-import { useDocumentTitle } from '../lib/hooks'
+import { useDocumentTitle, useMediaQuery } from '../lib/hooks'
 import { Badge, Button, Card, PageHeader, IconButton, toast, cx } from '../components/ui'
 import { Blocks } from '../components/Content'
 import { Quiz } from '../components/Quiz'
@@ -21,6 +21,13 @@ export default function LessonPage() {
   const toggleFavorite = useApp((s) => s.toggleFavorite)
 
   const { hash } = useLocation()
+  const desktop = useMediaQuery('(min-width: 1024px)')
+  const [openSec, setOpenSec] = useState<number | null>(0)
+  useEffect(() => setOpenSec(0), [id])
+  const openNext = (i: number) => {
+    setOpenSec(i)
+    setTimeout(() => document.getElementById(`s${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60)
+  }
   useEffect(() => {
     if (lesson) visit(lesson.id)
   }, [lesson, visit])
@@ -50,22 +57,57 @@ export default function LessonPage() {
           </span>
           {status === 'done' && <span className="rounded-full bg-[#d6ad5c] px-3 py-1 text-sm font-semibold text-[#1b1406]">Terminée</span>}
           {status === 'review' && <span className="rounded-full bg-white/25 px-3 py-1 text-sm font-semibold">À revoir</span>}
+          <button
+            onClick={() => {
+              toggleFavorite('lessons', lesson.id)
+              toast(fav ? 'Retiré des favoris' : 'Ajouté aux favoris')
+            }}
+            className={cx('ml-auto flex h-8 w-8 items-center justify-center rounded-full lg:hidden', fav ? 'bg-[#d6ad5c] text-[#1b1406]' : 'bg-white/15')}
+            aria-label={fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+          >
+            <Icon name="heart" size={15} />
+          </button>
         </div>
       </PageHeader>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
+      <div className="grid gap-4 lg:grid-cols-[1fr_240px] lg:gap-6">
         <article className="min-w-0">
-          {lesson.sections.map((sec, i) => (
-            <section key={i} id={`s${i}`} className="mb-8 scroll-mt-24">
-              <h2 className="mb-2 flex items-center gap-3 font-display text-2xl font-semibold">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold/50 font-sans text-sm text-gold">{i + 1}</span>
-                {sec.title}
-              </h2>
-              <Blocks blocks={sec.blocks} />
-            </section>
-          ))}
+          {lesson.sections.map((sec, i) =>
+            desktop ? (
+              <section key={i} id={`s${i}`} className="mb-8 scroll-mt-24">
+                <h2 className="mb-2 flex items-center gap-3 font-display text-2xl font-semibold">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold/50 font-sans text-sm text-gold">{i + 1}</span>
+                  {sec.title}
+                </h2>
+                <Blocks blocks={sec.blocks} />
+              </section>
+            ) : (
+              <section key={i} id={`s${i}`} className="mb-2 scroll-mt-[calc(4.5rem+env(safe-area-inset-top,0px))] overflow-hidden rounded-2xl border border-line bg-surface">
+                <button onClick={() => setOpenSec(openSec === i ? null : i)} className="flex w-full items-center gap-3 px-3.5 py-3 text-left" aria-expanded={openSec === i}>
+                  <span className={cx('flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] font-bold', openSec === i ? 'bg-primary text-primary-ink' : 'border border-gold/50 text-gold')}>{i + 1}</span>
+                  <span className="flex-1 font-display text-[18px] font-semibold leading-snug">{sec.title}</span>
+                  <Icon name="chevronDown" size={18} className={cx('shrink-0 text-muted transition-transform', openSec === i && 'rotate-180')} />
+                </button>
+                {openSec === i && (
+                  <div className="border-t border-line px-3.5 pb-3.5">
+                    <Blocks blocks={sec.blocks} />
+                    {i + 1 < lesson.sections.length ? (
+                      <button onClick={() => openNext(i + 1)} className="mt-2 flex w-full items-center justify-between gap-2 rounded-xl bg-primary-soft px-3.5 py-2.5 text-left text-[14px] font-semibold text-primary">
+                        <span className="truncate">Suite : {lesson.sections[i + 1].title}</span>
+                        <Icon name="arrowRight" size={16} />
+                      </button>
+                    ) : lesson.quiz?.length ? (
+                      <a href="#quiz" onClick={() => setOpenSec(null)} className="mt-2 flex w-full items-center justify-between rounded-xl bg-gold-soft px-3.5 py-2.5 text-[14px] font-semibold text-gold">
+                        Faire le quiz <Icon name="arrowRight" size={16} />
+                      </a>
+                    ) : null}
+                  </div>
+                )}
+              </section>
+            ),
+          )}
 
-          <Card className="mb-8 p-5">
+          <Card className="mb-6 mt-4 p-4 sm:mb-8 sm:p-5 lg:mt-0">
             <p className="font-semibold">Où en êtes-vous avec cette leçon ?</p>
             <p className="text-sm text-muted">Votre choix est enregistré automatiquement.</p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -143,7 +185,7 @@ export default function LessonPage() {
           </div>
         </article>
 
-        <aside className="order-first lg:order-none">
+        <aside className="hidden lg:block">
           <div className="space-y-3 lg:sticky lg:top-8">
             <Card className="p-4">
               <div className="mb-2 flex items-center justify-between">

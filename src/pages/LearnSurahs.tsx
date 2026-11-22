@@ -45,7 +45,7 @@ export default function LearnSurahs() {
                     </span>
                     <span className="arabic shrink-0 text-2xl leading-none text-primary">{ch.nameArabic}</span>
                   </span>
-                  <span className="mt-1 block text-sm text-ink/80">{s.why}</span>
+                  <span className="mt-1 hidden text-sm text-ink/80 sm:block">{s.why}</span>
                   <span className="mt-2 flex gap-1.5">
                     {st?.learned ? <Badge tone="green">Maîtrisée</Badge> : st?.learning ? <Badge tone="gold">En cours</Badge> : <Badge>À apprendre</Badge>}
                   </span>

@@ -47,7 +47,7 @@ export default function Names() {
         </LinkButton>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-3 sm:gap-2 lg:grid-cols-4">
         {list.map((a) => {
           const k = known.includes(String(a.n))
           return (
@@ -55,14 +55,14 @@ export default function Names() {
               key={a.n}
               id={`n${a.n}`}
               onClick={() => toggleStep('noms', String(a.n))}
-              className={cx('tap-pop relative flex scroll-mt-24 flex-col items-center rounded-2xl border p-3 text-center transition-colors', k ? 'border-primary bg-primary-soft' : 'border-line bg-surface hover:border-gold/60')}
+              className={cx('tap-pop relative flex scroll-mt-24 flex-col items-center rounded-xl border px-1.5 py-2 text-center transition-colors sm:rounded-2xl sm:p-3', k ? 'border-primary bg-primary-soft' : 'border-line bg-surface hover:border-gold/60')}
               aria-pressed={k}
             >
-              <span className="absolute left-2 top-2 text-[11px] font-bold text-muted">{a.n}</span>
+              <span className="absolute left-1.5 top-1 text-[10px] font-bold text-muted sm:left-2 sm:top-2 sm:text-[11px]">{a.n}</span>
               {k && <Icon name="checkCircle" size={14} className="absolute right-2 top-2 text-primary" />}
-              <span className="arabic mt-2 text-3xl leading-tight text-primary">{a.ar}</span>
-              <span className="mt-1 text-sm font-semibold">{a.tr}</span>
-              <span className="text-xs leading-snug text-muted">{a.fr}</span>
+              <span className="arabic mt-1.5 text-[22px] leading-tight text-primary sm:mt-2 sm:text-3xl">{a.ar}</span>
+              <span className="mt-0.5 text-[12px] font-semibold leading-tight sm:mt-1 sm:text-sm">{a.tr}</span>
+              <span className="line-clamp-2 text-[10.5px] leading-tight text-muted sm:line-clamp-none sm:text-xs sm:leading-snug">{a.fr}</span>
             </button>
           )
         })}

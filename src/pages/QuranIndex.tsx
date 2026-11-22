@@ -9,7 +9,7 @@ import { Badge, Card, ErrorState, Loader, Note, PageHeader, Tabs, LinkButton, cx
 import { Icon } from '../components/Icon'
 import { surahName } from '../components/Content'
 
-type Filter = 'toutes' | 'lues' | 'apprises' | 'favoris'
+type Filter = 'toutes' | 'courtes' | 'lues' | 'apprises' | 'favoris'
 
 function TextSearch({ q }: { q: string }) {
   const lang = /[؀-ۿ]/.test(q) ? 'ar' : 'fr'
@@ -59,6 +59,7 @@ export default function QuranIndex() {
     return chapters.filter((c) => {
       if (filter === 'lues' && !surahs[c.id]?.read) return false
       if (filter === 'apprises' && !surahs[c.id]?.learned) return false
+      if (filter === 'courtes' && c.id < 78) return false
       if (filter === 'favoris' && !favVerses.some((k) => k.startsWith(`${c.id}:`))) return false
       if (!n || q) return true
       return norm(`${c.id} ${c.nameSimple} ${c.nameFr}`).includes(n) || c.nameArabic.includes(input.trim())
@@ -143,6 +144,7 @@ export default function QuranIndex() {
               onChange={setFilter}
               tabs={[
                 { id: 'toutes', label: 'Toutes' },
+                { id: 'courtes', label: 'Courtes (juz’ 30)' },
                 { id: 'lues', label: `Lues (${readCount})` },
                 { id: 'apprises', label: 'Apprises' },
                 { id: 'favoris', label: 'Avec favoris' },
@@ -151,27 +153,27 @@ export default function QuranIndex() {
             <p className="text-sm text-muted">{list.length} sourate{list.length > 1 ? 's' : ''}</p>
           </div>
           {list.length === 0 && <p className="py-8 text-center text-muted">Aucune sourate ne correspond.</p>}
-          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 sm:gap-2 xl:grid-cols-3">
             {list.map((c) => (
               <li key={c.id}>
-                <Link to={`/coran/${c.id}`} className="group flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 transition-all hover:border-gold/60 hover:shadow-[0_10px_24px_-18px_rgba(15,76,58,0.5)]">
-                  <span className="relative flex h-11 w-11 shrink-0 items-center justify-center">
+                <Link to={`/coran/${c.id}`} className="group flex items-center gap-3 rounded-xl border border-line bg-surface px-3 py-2 transition-all sm:rounded-2xl sm:p-3 hover:border-gold/60 hover:shadow-[0_10px_24px_-18px_rgba(15,76,58,0.5)]">
+                  <span className="relative flex h-9 w-9 shrink-0 items-center justify-center sm:h-11 sm:w-11">
                     <svg viewBox="0 0 44 44" className="absolute inset-0 text-gold/60 transition-transform group-hover:rotate-45">
                       <path d="M22 2l5.6 8.4L37.6 8l-2.4 10L44 22l-8.8 4 2.4 10-10-2.4L22 42l-5.6-8.4L6.4 36l2.4-10L0 22l8.8-4-2.4-10 10 2.4z" fill="none" stroke="currentColor" strokeWidth="1.2" />
                     </svg>
-                    <span className="relative text-sm font-bold">{c.id}</span>
+                    <span className="relative text-[13px] font-bold">{c.id}</span>
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-semibold">{c.nameSimple}</span>
                     <span className="block truncate text-xs text-muted">
                       {c.nameFr} · {c.versesCount} versets · {c.revelationPlace === 'makkah' ? 'mecquoise' : 'médinoise'}
                     </span>
-                    <span className="mt-1 flex gap-1">
+                    <span className="flex gap-1 empty:hidden [&:not(:empty)]:mt-1">
                       {surahs[c.id]?.read && <Badge tone="green">Lue</Badge>}
                       {surahs[c.id]?.learned && <Badge tone="gold">Apprise</Badge>}
                     </span>
                   </span>
-                  <span className="arabic shrink-0 text-xl text-primary">{c.nameArabic}</span>
+                  <span className="arabic shrink-0 text-lg leading-none text-primary sm:text-xl">{c.nameArabic}</span>
                 </Link>
               </li>
             ))}

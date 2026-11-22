@@ -120,14 +120,14 @@ export function PrayerTimesCard({ compact = false }: { compact?: boolean }) {
   const remaining = data && next ? toMin(data[next.key] as string) - cur : 0
 
   return (
-    <Card className="p-4 sm:p-5">
-      <div className="mb-3 flex items-start justify-between gap-3">
-        <div>
-          <p className="flex items-center gap-2 font-display text-xl font-semibold">
+    <Card className={cx(compact ? 'p-3.5 sm:p-5' : 'p-4 sm:p-5')}>
+      <div className={cx('flex items-start justify-between gap-3', compact ? 'mb-2.5' : 'mb-3')}>
+        <div className="min-w-0">
+          <p className={cx('flex items-center gap-2 font-display font-semibold', compact ? 'text-[18px] sm:text-xl' : 'text-xl')}>
             <Icon name="clock" size={18} className="text-gold" /> Horaires de prière
           </p>
           {loc && (
-            <p className="text-sm text-muted">
+            <p className={cx('truncate text-muted', compact ? 'text-[12.5px] sm:text-sm' : 'text-sm')}>
               {loc.city}
               {loc.country ? `, ${loc.country}` : ''} · {frDate(now, { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
@@ -139,7 +139,12 @@ export function PrayerTimesCard({ compact = false }: { compact?: boolean }) {
           </button>
         )}
       </div>
-      {(!loc || editing) && (
+      {compact && !loc && !editing && (
+        <button onClick={() => setEditing(true)} className="flex w-full items-center justify-between rounded-xl bg-primary-soft px-3.5 py-2.5 text-left text-[14px] font-semibold text-primary">
+          Choisir ma ville pour voir les horaires <Icon name="chevronRight" size={16} />
+        </button>
+      )}
+      {((!loc && !compact) || editing) && (
         <div className="mb-2">
           {!loc && <p className="mb-3 text-sm text-muted">Indiquez votre ville pour afficher les horaires du jour (calculés par l’API Aladhan).</p>}
           <LocationForm onDone={() => setEditing(false)} />
@@ -159,21 +164,21 @@ export function PrayerTimesCard({ compact = false }: { compact?: boolean }) {
           {data && (
             <>
               {next && (
-                <p className="mb-3 rounded-xl bg-primary-soft px-3 py-2 text-sm">
+                <p className={cx('rounded-xl bg-primary-soft px-3 py-2', compact ? 'mb-2.5 text-[13.5px]' : 'mb-3 text-sm')}>
                   Prochaine prière : <strong>{next.label}</strong> à <strong>{data[next.key]}</strong>{' '}
                   <span className="text-muted">(dans {Math.floor(remaining / 60) ? `${Math.floor(remaining / 60)} h ` : ''}{remaining % 60} min)</span>
                 </p>
               )}
-              <ul className={cx('grid gap-2', compact ? 'grid-cols-3 sm:grid-cols-6' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6')}>
+              <ul className={cx('grid', compact ? 'grid-cols-6 gap-1 sm:gap-2' : 'grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6')}>
                 {NAMES.map((n, i) => (
-                  <li key={n.key} className={cx('rounded-xl border px-2 py-2 text-center', i === nextIdx ? 'border-gold bg-gold-soft/60' : 'border-line bg-surface-2/40', n.key === 'Sunrise' && 'opacity-70')}>
-                    <p className="arabic text-sm leading-none text-gold">{n.ar}</p>
-                    <p className="text-xs font-semibold text-muted">{n.label}</p>
-                    <p className="font-display text-lg font-semibold tabular-nums">{data[n.key]}</p>
+                  <li key={n.key} className={cx('rounded-xl border text-center', compact ? 'px-0.5 py-1.5 sm:px-2 sm:py-2' : 'px-2 py-2', i === nextIdx ? 'border-gold bg-gold-soft/60' : 'border-line bg-surface-2/40', n.key === 'Sunrise' && 'opacity-70')}>
+                    <p className={cx('arabic text-sm leading-none text-gold', compact && 'hidden sm:block')}>{n.ar}</p>
+                    <p className={cx('font-semibold text-muted', compact ? 'text-[10.5px] sm:text-xs' : 'text-xs')}>{n.label}</p>
+                    <p className={cx('font-semibold tabular-nums', compact ? 'text-[14px] sm:font-display sm:text-lg' : 'font-display text-lg')}>{data[n.key]}</p>
                   </li>
                 ))}
               </ul>
-              <p className="mt-2 text-[11px] text-muted">Source : API Aladhan · {CALC_METHODS.find((m) => m.id === method)?.name}. Le lever du soleil n’est pas une prière : il marque la fin du temps du Fajr. Suivez de préférence le calendrier de votre mosquée.</p>
+              <p className={cx('mt-2 text-[11px] text-muted', compact && 'hidden sm:block')}>Source : API Aladhan · {CALC_METHODS.find((m) => m.id === method)?.name}. Le lever du soleil n’est pas une prière : il marque la fin du temps du Fajr. Suivez de préférence le calendrier de votre mosquée.</p>
             </>
           )}
         </>

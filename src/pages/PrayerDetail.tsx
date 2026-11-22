@@ -40,18 +40,18 @@ export default function PrayerDetail() {
     <div className="animate-in">
       <PageHeader title={p.name} arabic={p.arabic} icon="prayer" subtitle={`${p.rakaat} rak‘ats obligatoires · ${p.loud}`} back={{ to: '/priere', label: 'La prière' }} />
 
-      <div className="mb-5 grid gap-3 sm:grid-cols-3">
-        <Card className="p-4">
+      <div className="mb-3 grid grid-cols-2 gap-2 sm:mb-5 sm:grid-cols-3 sm:gap-3">
+        <Card className="col-span-2 p-3.5 sm:col-span-1 sm:p-4">
           <p className="text-xs font-bold uppercase tracking-wider text-gold">Son horaire</p>
-          <p className="mt-1 text-[15px]">{p.window}</p>
+          <p className="mt-1 text-[14px] sm:text-[15px]">{p.window}</p>
         </Card>
-        <Card className="p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-primary">Obligatoire (fard)</p>
-          <p className="mt-1 font-display text-3xl font-semibold">{p.rakaat} rak‘ats</p>
+        <Card className="p-3.5 sm:p-4">
+          <p className="text-xs font-bold uppercase tracking-wider text-primary">Obligatoire</p>
+          <p className="mt-1 font-display text-2xl font-semibold sm:text-3xl">{p.rakaat} rak‘ats</p>
         </Card>
-        <Card className="p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-muted">Surérogatoire (sunna)</p>
-          <p className="mt-1 text-[15px]">
+        <Card className="p-3.5 sm:p-4">
+          <p className="text-xs font-bold uppercase tracking-wider text-muted">Sunna</p>
+          <p className="mt-1 text-[13px] leading-snug sm:text-[15px]">
             {p.sunnaBefore && (
               <>
                 <strong>Avant :</strong> {p.sunnaBefore}
@@ -70,19 +70,22 @@ export default function PrayerDetail() {
       <PrayerTimesCard compact />
 
       <SectionTitle>Le déroulé, rak‘a par rak‘a</SectionTitle>
-      <div className="grid gap-4 md:grid-cols-2">
-        {plan.map((rk) => (
-          <Card key={rk.title} className="p-4">
-            <p className="mb-2 font-display text-xl font-semibold">{rk.title}</p>
-            <ol className="space-y-1.5">
+      <div className="grid gap-2 md:grid-cols-2 md:gap-4">
+        {plan.map((rk, ri) => (
+          <details key={rk.title} open={ri === 0} className="group rounded-2xl border border-line bg-surface p-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-2">
+              <span className="font-display text-[19px] font-semibold sm:text-xl">{rk.title}</span>
+              <Icon name="chevronDown" size={18} className="text-muted transition-transform group-open:rotate-180" />
+            </summary>
+            <ol className="mt-2 space-y-1">
               {rk.rows.map((row, k) => (
-                <li key={k} className={cx('flex items-center gap-3 rounded-xl p-1.5', row.strong && 'bg-gold-soft/40')}>
-                  <PrayerFigure pose={row.pose} className="h-12 w-14 shrink-0" />
-                  <span className={cx('text-[14.5px]', row.strong && 'font-semibold')}>{row.text}</span>
+                <li key={k} className={cx('flex items-center gap-2.5 rounded-xl p-1', row.strong && 'bg-gold-soft/40')}>
+                  <PrayerFigure pose={row.pose} className="h-10 w-11 shrink-0 sm:h-12 sm:w-14" />
+                  <span className={cx('text-[13.5px] leading-snug sm:text-[14.5px]', row.strong && 'font-semibold')}>{row.text}</span>
                 </li>
               ))}
             </ol>
-          </Card>
+          </details>
         ))}
       </div>
 

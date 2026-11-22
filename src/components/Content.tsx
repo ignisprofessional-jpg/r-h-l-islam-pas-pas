@@ -36,9 +36,9 @@ export function VerseQuote({ verseKey, intro, compact = false }: { verseKey: str
   }
 
   return (
-    <figure className={cx('my-5 overflow-hidden rounded-2xl border border-gold/30 bg-gradient-to-b from-gold-soft/40 to-transparent', compact && 'my-3')}>
+    <figure className={cx('my-4 overflow-hidden rounded-2xl border border-gold/30 bg-gradient-to-b from-gold-soft/40 to-transparent sm:my-5', compact && 'my-3')}>
       {intro && <figcaption className="px-4 pt-3 text-[15px] text-muted sm:px-5">{intro}</figcaption>}
-      <div className="p-4 sm:p-5">
+      <div className="p-3.5 sm:p-5">
         {loading && <p className="animate-pulse text-sm text-muted">Chargement du verset depuis Quran.com…</p>}
         {error && (
           <div className="flex flex-wrap items-center gap-2 text-sm text-danger">
@@ -52,7 +52,7 @@ export function VerseQuote({ verseKey, intro, compact = false }: { verseKey: str
           <div className="space-y-4">
             {data.map((v) => (
               <div key={v.key}>
-                <p className="quran text-right text-[26px] text-ink sm:text-[28px]" lang="ar">
+                <p className="quran text-right text-[23px] leading-[2.1] text-ink sm:text-[28px]" lang="ar">
                   {v.arabic} <span className="mx-1 inline-flex h-7 min-w-7 items-center justify-center rounded-full border border-gold/50 px-1 align-middle font-sans text-xs text-gold">{v.number}</span>
                 </p>
                 {showTr && v.translit && <p className="mt-1 text-[14.5px] italic text-accent">{v.translit}</p>}
@@ -79,7 +79,7 @@ export function VerseQuote({ verseKey, intro, compact = false }: { verseKey: str
 /* ---------------- Rendu des blocs de contenu ---------------- */
 export function Blocks({ blocks }: { blocks: Block[] }) {
   return (
-    <div className="prose-lesson text-[16.5px] leading-[1.75] text-ink/90">
+    <div className="prose-lesson text-[15.5px] leading-[1.65] text-ink/90 sm:text-[16.5px] sm:leading-[1.75]">
       {blocks.map((b, i) => {
         switch (b.t) {
           case 'p':
@@ -123,9 +123,9 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
             return <VerseQuote key={i} verseKey={b.key} intro={b.intro} />
           case 'hadith':
             return (
-              <blockquote key={i} className="my-5 rounded-2xl border-l-4 border-primary bg-primary-soft/40 p-4 sm:p-5">
+              <blockquote key={i} className="my-4 rounded-2xl border-l-4 border-primary bg-primary-soft/40 p-3.5 sm:my-5 sm:p-5">
                 <p className="mb-1 text-xs font-bold uppercase tracking-wider text-primary">Hadith — sens rapporté</p>
-                <p className="text-[16px] italic text-ink">{b.text}</p>
+                <p className="text-[15px] italic text-ink sm:text-[16px]">{b.text}</p>
                 <p className="mt-2 flex items-start gap-1.5 text-xs text-muted">
                   <Icon name="book" size={14} className="mt-0.5" /> {b.ref}
                 </p>

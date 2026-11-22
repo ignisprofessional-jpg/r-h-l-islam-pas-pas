@@ -28,12 +28,12 @@ export function Card({ children, className = '', as: As = 'div', ...rest }: { ch
 
 export function PageHeader({ title, subtitle, arabic, icon, children, back }: { title: string; subtitle?: string; arabic?: string; icon?: string; children?: ReactNode; back?: { to: string; label: string } }) {
   return (
-    <header className="relative mb-5 overflow-hidden rounded-2xl bg-primary px-4 py-5 text-white sm:mb-6 sm:rounded-3xl sm:px-8 sm:py-9 dark:bg-[#0f2d24]">
+    <header className="relative mb-4 overflow-hidden rounded-2xl bg-primary px-4 py-4 text-white sm:mb-6 sm:rounded-3xl sm:px-8 sm:py-9 dark:bg-[#0f2d24]">
       <div className="pattern-bg pattern-layer !opacity-[0.12] invert" />
       <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#d6ad5c]/20 blur-3xl" />
       <div className="relative">
         {back && (
-          <Link to={back.to} className="mb-3 inline-flex items-center gap-1 text-sm text-white/80 hover:text-white">
+          <Link to={back.to} className="mb-2 inline-flex items-center gap-1 text-sm text-white/80 hover:text-white sm:mb-3">
             <Icon name="arrowLeft" size={16} /> {back.label}
           </Link>
         )}
@@ -43,11 +43,11 @@ export function PageHeader({ title, subtitle, arabic, icon, children, back }: { 
               {icon && <Icon name={icon} size={18} />}
               {arabic && <span className="arabic text-xl leading-none">{arabic}</span>}
             </div>
-            <h1 className="mt-1 font-display text-[27px] font-semibold leading-tight sm:text-4xl">{title}</h1>
-            {subtitle && <p className="mt-2 max-w-2xl text-[15px] text-white/80 sm:text-base">{subtitle}</p>}
+            <h1 className="mt-0.5 font-display text-[25px] font-semibold leading-tight sm:mt-1 sm:text-4xl">{title}</h1>
+            {subtitle && <p className="mt-1.5 line-clamp-2 max-w-2xl text-[14px] leading-snug text-white/80 sm:mt-2 sm:line-clamp-none sm:text-base sm:leading-normal">{subtitle}</p>}
           </div>
         </div>
-        {children && <div className="mt-5">{children}</div>}
+        {children && <div className="mt-3 sm:mt-5">{children}</div>}
       </div>
     </header>
   )
@@ -55,8 +55,8 @@ export function PageHeader({ title, subtitle, arabic, icon, children, back }: { 
 
 export function SectionTitle({ children, action, id }: { children: ReactNode; action?: ReactNode; id?: string }) {
   return (
-    <div className="mb-3 mt-8 flex items-end justify-between gap-3 first:mt-0" id={id}>
-      <h2 className="font-display text-2xl font-semibold text-ink">{children}</h2>
+    <div className="mb-2 mt-6 flex items-end justify-between gap-3 first:mt-0 sm:mb-3 sm:mt-8" id={id}>
+      <h2 className="font-display text-[21px] font-semibold text-ink sm:text-2xl">{children}</h2>
       {action}
     </div>
   )
@@ -190,7 +190,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 
 export function EmptyState({ icon = 'sparkle', title, text, action }: { icon?: string; title: string; text?: string; action?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-line px-6 py-10 text-center">
+    <div className="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-line px-5 py-6 text-center sm:px-6 sm:py-10">
       <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gold-soft text-gold">
         <Icon name={icon} />
       </span>
@@ -211,9 +211,9 @@ export function Note({ tone = 'info', title, children }: { tone?: 'info' | 'tip'
     gentle: { icon: 'heart', cls: 'border-gold/30 bg-gold-soft/40', ic: 'text-gold', t: 'Avec douceur' },
   }[tone]
   return (
-    <div className={cx('my-4 flex gap-3 rounded-2xl border p-4', map.cls)}>
+    <div className={cx('my-3 flex gap-2.5 rounded-2xl border p-3 sm:my-4 sm:gap-3 sm:p-4', map.cls)}>
       <Icon name={map.icon} className={cx('mt-0.5', map.ic)} />
-      <div className="min-w-0 text-[15.5px] leading-relaxed">
+      <div className="min-w-0 text-[14.5px] leading-relaxed sm:text-[15.5px]">
         <p className="mb-1 font-semibold">{title ?? map.t}</p>
         <div className="text-ink/90">{children}</div>
       </div>
@@ -224,7 +224,7 @@ export function Note({ tone = 'info', title, children }: { tone?: 'info' | 'tip'
 /* ---------------- Texte arabe + translittération + traduction ---------------- */
 export function ArabicBlock({ arabic, translit, translation, source, size = 'text-3xl', className = '' }: { arabic: string; translit?: string; translation?: string; source?: string; size?: string; className?: string }) {
   return (
-    <div className={cx('rounded-2xl border border-line bg-surface-2/60 p-4 sm:p-5', className)}>
+    <div className={cx('rounded-2xl border border-line bg-surface-2/60 p-3.5 sm:p-5', className)}>
       <p className={cx('arabic text-right text-ink', size)} lang="ar">
         {arabic}
       </p>
@@ -338,7 +338,7 @@ export function Tile({ to, icon, title, text, badge, arabic }: { to: string; ico
   return (
     <Link
       to={to}
-      className="group relative flex h-full flex-col gap-2 overflow-hidden rounded-2xl border border-line bg-surface p-4 transition-all hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-[0_12px_30px_-18px_rgba(15,76,58,0.45)]"
+      className="group relative flex h-full flex-col gap-1.5 overflow-hidden rounded-2xl border border-line bg-surface p-3 transition-all sm:gap-2 sm:p-4 hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-[0_12px_30px_-18px_rgba(15,76,58,0.45)]"
     >
       <div className="flex items-center justify-between gap-2">
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft text-primary transition-colors group-hover:bg-primary group-hover:text-primary-ink">
@@ -348,8 +348,8 @@ export function Tile({ to, icon, title, text, badge, arabic }: { to: string; ico
         {badge}
       </div>
       <p className="font-semibold leading-snug">{title}</p>
-      {text && <p className="text-sm leading-snug text-muted">{text}</p>}
-      <Icon name="arrowRight" size={16} className="mt-auto self-end text-muted transition-transform group-hover:translate-x-1 group-hover:text-gold" />
+      {text && <p className="text-[13px] leading-snug text-muted sm:text-sm">{text}</p>}
+      <Icon name="arrowRight" size={16} className="mt-auto hidden self-end text-muted transition-transform group-hover:translate-x-1 group-hover:text-gold sm:block" />
     </Link>
   )
 }

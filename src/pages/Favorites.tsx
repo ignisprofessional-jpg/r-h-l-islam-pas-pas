@@ -47,7 +47,7 @@ export default function Favorites() {
         (favs.duas.length === 0 ? (
           <EmptyState icon="hands" title="Aucune invocation favorite" action={<LinkButton to="/douas" size="sm">Voir les invocations</LinkButton>} />
         ) : (
-          <div className="grid gap-3 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-3">
             {favs.duas.map((id) => {
               const d = duaById(id)
               return d ? <DuaCard key={id} d={d} /> : null

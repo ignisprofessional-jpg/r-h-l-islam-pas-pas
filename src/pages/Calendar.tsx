@@ -71,7 +71,7 @@ export default function Calendar() {
         )}
       </PageHeader>
 
-      <div className="grid gap-5 lg:grid-cols-[1fr_340px]">
+      <div className="grid gap-3 sm:gap-5 lg:grid-cols-[1fr_340px]">
         <Card className="p-4 sm:p-5">
           <div className="mb-3 flex items-center justify-between">
             <button onClick={() => setOffset((o) => o - 1)} className="flex h-10 w-10 items-center justify-center rounded-xl hover:bg-surface-2" aria-label="Mois précédent">
@@ -108,7 +108,7 @@ export default function Calendar() {
                   key={i}
                   title={evs.map((e) => e.ev.title).join(', ') || undefined}
                   className={cx(
-                    'relative flex min-h-16 flex-col rounded-xl border p-1.5 text-left sm:min-h-20',
+                    'relative flex min-h-11 flex-col rounded-lg border p-1 text-left sm:min-h-20 sm:rounded-xl sm:p-1.5',
                     evs.some((e) => e.ev.kind === 'fete') ? 'border-gold bg-gold-soft/60' : evs.length ? 'border-primary/30 bg-primary-soft/50' : 'border-line',
                     isToday && 'ring-2 ring-gold',
                   )}
@@ -145,17 +145,17 @@ export default function Calendar() {
 
         <div>
           <p className="mb-2 font-display text-xl font-semibold">Prochaines dates</p>
-          <div className="space-y-2">
-            {upcoming.map((o) => {
+          <div className="space-y-1.5 sm:space-y-2">
+            {upcoming.slice(0, 6).map((o) => {
               const ongoing = o.start <= today
               const days = Math.ceil((o.start.getTime() - today.getTime()) / 86400000)
               return (
-                <Card key={o.ev.id + o.start.toISOString()} className="p-3">
+                <Card key={o.ev.id + o.start.toISOString()} className="px-3 py-2.5 sm:p-3">
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-semibold">{o.ev.title}</p>
                     <Badge tone={KIND[o.ev.kind].tone}>{KIND[o.ev.kind].label}</Badge>
                   </div>
-                  <p className="text-sm text-muted">
+                  <p className="text-[13px] text-muted sm:text-sm">
                     {frDate(o.start, { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' })}
                     {o.end > o.start && ` → ${frDate(o.end, { day: 'numeric', month: 'long' })}`}
                   </p>
@@ -172,34 +172,36 @@ export default function Calendar() {
       </Note>
 
       <SectionTitle>Les dates importantes de l’année</SectionTitle>
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className="grid gap-1.5 md:grid-cols-2 md:gap-3">
         {EVENTS.map((e) => (
-          <Card key={e.id} className="p-4">
-            <div className="flex items-start justify-between gap-2">
+          <details key={e.id} className="group rounded-2xl border border-line bg-surface px-3.5 py-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-2">
               <p className="font-semibold">{e.title}</p>
               <Badge tone={KIND[e.kind].tone}>
                 {e.day}
                 {e.length && e.length > 1 ? `-${e.day + e.length - 1}` : ''} {HIJRI_MONTHS[e.month - 1]}
               </Badge>
-            </div>
-            <p className="mt-1 text-[15px] text-ink/85">{e.text}</p>
+            </summary>
+            <p className="mt-2 text-[14.5px] text-ink/85 sm:text-[15px]">{e.text}</p>
             {e.ref && (
               <p className="mt-2 flex items-start gap-1.5 text-xs text-muted">
                 <Icon name="book" size={13} className="mt-0.5" /> {e.ref}
               </p>
             )}
-          </Card>
+          </details>
         ))}
       </div>
 
       <SectionTitle>Les jours de jeûne recommandés</SectionTitle>
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className="grid gap-1.5 md:grid-cols-2 md:gap-3">
         {RECURRING_FASTS.map((f) => (
-          <Card key={f.title} className="p-4">
-            <p className="font-semibold">{f.title}</p>
-            <p className="mt-1 text-[15px] text-ink/85">{f.text}</p>
+          <details key={f.title} className="group rounded-2xl border border-line bg-surface px-3.5 py-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-2 font-semibold">
+              {f.title} <Icon name="chevronDown" size={16} className="shrink-0 text-muted transition-transform group-open:rotate-180" />
+            </summary>
+            <p className="mt-2 text-[14.5px] text-ink/85 sm:text-[15px]">{f.text}</p>
             <p className="mt-2 text-xs text-muted">{f.ref}</p>
-          </Card>
+          </details>
         ))}
       </div>
       <Note tone="info" title="Jours où l’on ne jeûne pas">
