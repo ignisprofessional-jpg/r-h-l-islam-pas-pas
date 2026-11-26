@@ -3,18 +3,20 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --bg: #f6f1e7;
-  --surface: #fffdf8;
-  --surface-2: #f0e8d7;
-  --ink: #1d2a23;
-  --muted: #5b6a61;
-  --line: #e2d7c0;
+  --bg: #f5f0e6;
+  --surface: #fcfaf5;
+  --surface-2: #efe8da;
+  --ink: #17241d;
+  --muted: #5b6860;
+  --line: #e2d9c6;
   --primary: #0f4c3a;
   --primary-ink: #ffffff;
-  --primary-soft: #dfece5;
-  --accent: #1a6b52;
-  --gold: #a87b2f;
-  --gold-soft: #f1e3c2;
+  --primary-soft: #e1ebe4;
+  --deep: #0d3b2e;
+  --accent: #1d6b52;
+  --gold: #8a6522;
+  --gold-bright: #e2c487;
+  --gold-soft: #f1e5c8;
   --danger: #a3402f;
   --danger-soft: #f6e0da;
   --pattern: rgba(15, 76, 58, 0.06);
@@ -22,18 +24,20 @@
 }
 
 .dark {
-  --bg: #0b1512;
-  --surface: #11201b;
-  --surface-2: #172a23;
-  --ink: #ece5d5;
-  --muted: #a2b0a7;
-  --line: #23392f;
-  --primary: #4fae88;
-  --primary-ink: #08130f;
-  --primary-soft: #173a2e;
+  --bg: #0c1613;
+  --surface: #121f1a;
+  --surface-2: #18291f;
+  --ink: #ebe4d4;
+  --muted: #a3b0a8;
+  --line: #22362d;
+  --primary: #5bb592;
+  --primary-ink: #07120e;
+  --primary-soft: #16372b;
+  --deep: #0f2a21;
   --accent: #6cc4a0;
-  --gold: #d6ad5c;
-  --gold-soft: #3a2f18;
+  --gold: #d6b06a;
+  --gold-bright: #e2c487;
+  --gold-soft: #33291a;
   --danger: #e38a78;
   --danger-soft: #3b1f19;
   --pattern: rgba(214, 173, 92, 0.05);
@@ -50,13 +54,15 @@
   --color-primary: var(--primary);
   --color-primary-ink: var(--primary-ink);
   --color-primary-soft: var(--primary-soft);
+  --color-deep: var(--deep);
   --color-accent: var(--accent);
   --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
   --color-gold-soft: var(--gold-soft);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
-  --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-arabic: "Amiri", "Scheherazade New", "Traditional Arabic", serif;
   --font-quran: "Amiri Quran", "Amiri", "Scheherazade New", serif;
 }
@@ -73,12 +79,36 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga";
   overscroll-behavior: none;
   min-height: 100dvh;
+  caret-color: var(--primary);
 }
+
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+.font-display { font-optical-sizing: auto; letter-spacing: -0.01em; }
+
+::selection { background: color-mix(in srgb, var(--gold) 28%, transparent); color: var(--ink); }
+
+/* Barres de défilement discrètes, aux couleurs du papier */
+* { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--ink) 18%, transparent) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--ink) 16%, transparent); border-radius: 99px; border: 3px solid var(--bg); }
+::-webkit-scrollbar-track { background: transparent; }
+
+a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Filet orné : deux filets et un petit losange doré au centre */
+.rule-ornament { display: flex; align-items: center; gap: 10px; color: var(--gold); }
+.rule-ornament::before, .rule-ornament::after { content: ""; height: 1px; flex: 1; background: var(--line); }
 
 /* Réponse immédiate au toucher (pas d'attente du double-tap) */
 a, button, [role='button'], [role='tab'], label, summary, input, select, textarea {
@@ -100,7 +130,7 @@ button, [role='button'], [role='tab'], nav a, summary {
 /* Retour visuel au doigt, sur tous les éléments tactiles principaux */
 a, button { transition: transform 120ms cubic-bezier(0.2, 0.7, 0.2, 1), background-color 150ms, border-color 150ms, color 150ms; }
 @media (pointer: coarse) {
-  a:active, button:active { transform: scale(0.98); }
+  a:active, button:active { transform: scale(0.985); }
   nav a:active, nav button:active { transform: scale(0.92); }
 }
 
@@ -133,8 +163,9 @@ a, button { transition: transform 120ms cubic-bezier(0.2, 0.7, 0.2, 1), backgrou
   line-height: 2.3;
 }
 
+.prose-lesson { font-size: 17px; line-height: 1.7; }
+@media (max-width: 639px) { .prose-lesson { font-size: 16px; line-height: 1.65; } }
 .prose-lesson p { margin: 0.6em 0; }
-@media (max-width: 639px) { body { font-size: 16px; } }
 .prose-lesson strong { color: var(--ink); font-weight: 650; }
 
 @keyframes fade-up {
@@ -180,10 +211,36 @@ a, button { transition: transform 120ms cubic-bezier(0.2, 0.7, 0.2, 1), backgrou
 :focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
-  border-radius: 6px;
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
 sup { font-size: 0.65em; }
+
+/* ---------- Coque de l'application ---------- */
+.shell { --shell-left: 0px; --bottom-nav: calc(64px + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 768px) { .shell { --shell-left: 84px; --bottom-nav: 0px; } }
+@media (min-width: 1280px) { .shell:not(.is-rail) { --shell-left: 264px; } }
+
+/* Panneau latéral qui glisse depuis le rail */
+@keyframes flyout-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: none; }
+}
+.flyout-in { animation: flyout-in 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+/* Champs de saisie : même dessin partout */
+@layer components {
+  .field {
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--line);
+    padding-inline: 0.85rem;
+    outline: none;
+    transition: box-shadow 150ms;
+  }
+  .field:hover { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 22%, transparent); }
+  .field:focus, .field:focus-visible { box-shadow: inset 0 0 0 1.5px var(--primary); outline: none; }
+  .field::placeholder { color: var(--muted); opacity: 0.85; }
+}

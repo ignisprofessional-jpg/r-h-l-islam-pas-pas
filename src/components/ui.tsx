@@ -17,62 +17,89 @@ export function Rich({ text }: { text: string }) {
   )
 }
 
-/* ---------------- Cartes & mise en page ---------------- */
+/* ---------------- Surfaces & mise en page ---------------- */
 export function Card({ children, className = '', as: As = 'div', ...rest }: { children: ReactNode; className?: string; as?: 'div' | 'section' | 'article'; id?: string }) {
   return (
-    <As className={cx('rounded-2xl border border-line bg-surface shadow-[0_1px_0_rgba(0,0,0,0.02),0_8px_24px_-16px_rgba(15,76,58,0.25)]', className)} {...rest}>
+    <As className={cx('rounded-[20px] bg-surface ring-1 ring-ink/[0.06]', className)} {...rest}>
       {children}
     </As>
   )
 }
 
-export function PageHeader({ title, subtitle, arabic, icon, children, back }: { title: string; subtitle?: string; arabic?: string; icon?: string; children?: ReactNode; back?: { to: string; label: string } }) {
+/** Petit losange doré : le motif récurrent de Rûh (filets, séparateurs). */
+export function Diamond({ size = 9, className = '' }: { size?: number; className?: string }) {
   return (
-    <header className="relative mb-4 overflow-hidden rounded-2xl bg-primary px-4 py-4 text-white sm:mb-6 sm:rounded-3xl sm:px-8 sm:py-9 dark:bg-[#0f2d24]">
-      <div className="pattern-bg pattern-layer !opacity-[0.12] invert" />
-      <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#d6ad5c]/20 blur-3xl" />
-      <div className="relative">
-        {back && (
-          <Link to={back.to} className="mb-2 inline-flex items-center gap-1 text-sm text-white/80 hover:text-white sm:mb-3">
-            <Icon name="arrowLeft" size={16} /> {back.label}
-          </Link>
-        )}
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 text-[#e8cf98]">
-              {icon && <Icon name={icon} size={18} />}
-              {arabic && <span className="arabic text-xl leading-none">{arabic}</span>}
-            </div>
-            <h1 className="mt-0.5 font-display text-[25px] font-semibold leading-tight sm:mt-1 sm:text-4xl">{title}</h1>
-            {subtitle && <p className="mt-1.5 line-clamp-2 max-w-2xl text-[14px] leading-snug text-white/80 sm:mt-2 sm:line-clamp-none sm:text-base sm:leading-normal">{subtitle}</p>}
-          </div>
+    <svg width={size} height={size} viewBox="0 0 10 10" className={cx('shrink-0', className)} aria-hidden>
+      <path d="M5 0.6 9.4 5 5 9.4 0.6 5z" fill="none" stroke="currentColor" strokeWidth="1.1" />
+    </svg>
+  )
+}
+
+/** Filet fin avec un losange au centre. */
+export function Ornament({ className = '' }: { className?: string }) {
+  return (
+    <div className={cx('rule-ornament', className)} aria-hidden>
+      <Diamond />
+    </div>
+  )
+}
+
+export function PageHeader({ title, subtitle, arabic, children, back }: { title: string; subtitle?: string; arabic?: string; icon?: string; children?: ReactNode; back?: { to: string; label: string } }) {
+  return (
+    <header className="mb-6 sm:mb-10">
+      {back && (
+        <Link to={back.to} className="-ml-1 mb-2 inline-flex h-9 items-center gap-1.5 rounded-lg px-1 text-[14px] font-medium text-muted hover:text-ink sm:mb-3">
+          <Icon name="arrowLeft" size={16} /> {back.label}
+        </Link>
+      )}
+      <div className="flex items-end justify-between gap-4 sm:gap-8">
+        <div className="min-w-0 max-w-3xl">
+          <h1 className="font-display text-[30px] font-medium leading-[1.1] tracking-[-0.018em] sm:text-[44px] sm:leading-[1.06]">{title}</h1>
+          {subtitle && <p className="mt-2 line-clamp-2 max-w-[62ch] text-[15px] leading-relaxed text-muted sm:mt-3 sm:line-clamp-none sm:text-[17px]">{subtitle}</p>}
         </div>
-        {children && <div className="mt-3 sm:mt-5">{children}</div>}
+        {arabic && (
+          <p className="arabic max-w-[40%] shrink-0 text-right text-[24px] leading-[1.35] text-gold sm:text-[30px] lg:text-[38px]" lang="ar">
+            {arabic}
+          </p>
+        )}
       </div>
+      {children && <div className="mt-4 sm:mt-6">{children}</div>}
+      <Ornament className="mt-5 sm:mt-8" />
     </header>
   )
 }
 
 export function SectionTitle({ children, action, id }: { children: ReactNode; action?: ReactNode; id?: string }) {
   return (
-    <div className="mb-2 mt-6 flex items-end justify-between gap-3 first:mt-0 sm:mb-3 sm:mt-8" id={id}>
-      <h2 className="font-display text-[21px] font-semibold text-ink sm:text-2xl">{children}</h2>
-      {action}
+    <div className="mb-3 mt-9 flex items-center gap-4 first:mt-0 sm:mb-4 sm:mt-12" id={id}>
+      <h2 className="font-display text-[22px] font-medium leading-tight tracking-[-0.01em] text-ink sm:text-[26px]">{children}</h2>
+      <span className="h-px min-w-6 flex-1 bg-line" aria-hidden />
+      {action && <div className="shrink-0 text-[14px]">{action}</div>}
     </div>
+  )
+}
+
+/** Lien d’action discret, à droite d’un titre de section. */
+export function MoreLink({ to, children = 'Tout voir' }: { to: string; children?: ReactNode }) {
+  return (
+    <Link to={to} className="inline-flex items-center gap-0.5 font-semibold text-primary hover:underline">
+      {children}
+      <Icon name="chevronRight" size={15} />
+    </Link>
   )
 }
 
 /* ---------------- Boutons ---------------- */
 type BtnVariant = 'primary' | 'secondary' | 'ghost' | 'gold' | 'danger'
-const btnBase = 'tap-pop inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-colors disabled:opacity-50 disabled:pointer-events-none select-none'
+const btnBase = 'tap-pop inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors disabled:opacity-50 disabled:pointer-events-none select-none'
 const btnVariants: Record<BtnVariant, string> = {
-  primary: 'bg-primary text-primary-ink hover:brightness-110',
-  secondary: 'border border-line bg-surface text-ink hover:bg-surface-2',
-  ghost: 'text-ink hover:bg-surface-2',
+  primary: 'bg-primary text-primary-ink hover:bg-[color-mix(in_srgb,var(--primary)_86%,black)]',
+  secondary: 'bg-surface text-ink ring-1 ring-line hover:ring-ink/25',
+  ghost: 'text-ink hover:bg-ink/[0.05]',
   gold: 'bg-gold text-white hover:brightness-110 dark:text-[#1b1406]',
-  danger: 'border border-danger/30 bg-danger-soft text-danger hover:brightness-95',
+  danger: 'bg-danger-soft text-danger hover:brightness-95',
 }
-const btnSizes = { sm: 'h-9 px-3 text-sm', md: 'h-11 px-4 text-[15px]', lg: 'h-12 px-5 text-base' }
+const btnSizes = { sm: 'h-9 px-3.5 text-[14px]', md: 'h-11 px-5 text-[15px]', lg: 'h-12 px-6 text-[16px]' }
 
 export function Button({
   children,
@@ -93,7 +120,7 @@ export function Button({
 export function LinkButton({ to, children, variant = 'primary', size = 'md', icon, className = '' }: { to: string; children: ReactNode; variant?: BtnVariant; size?: keyof typeof btnSizes; icon?: string; className?: string }) {
   return (
     <Link to={to} className={cx(btnBase, btnVariants[variant], btnSizes[size], className)}>
-      {icon && <Icon name={icon} size={18} />}
+      {icon && <Icon name={icon} size={size === 'sm' ? 16 : 18} />}
       {children}
     </Link>
   )
@@ -107,7 +134,7 @@ export function IconButton({ icon, label, onClick, active, className = '', size 
       aria-label={label}
       title={label}
       aria-pressed={active}
-      className={cx('tap-pop inline-flex h-10 w-10 items-center justify-center rounded-xl transition-colors', active ? 'bg-gold-soft text-gold' : 'text-muted hover:bg-surface-2 hover:text-ink', className)}
+      className={cx('tap-pop inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors', active ? 'bg-gold-soft text-gold' : 'text-muted hover:bg-ink/[0.05] hover:text-ink', className)}
     >
       <Icon name={icon} size={size} />
     </button>
@@ -117,19 +144,19 @@ export function IconButton({ icon, label, onClick, active, className = '', size 
 /* ---------------- Badges & progression ---------------- */
 export function Badge({ children, tone = 'neutral', className = '' }: { children: ReactNode; tone?: 'neutral' | 'green' | 'gold' | 'danger'; className?: string }) {
   const tones = {
-    neutral: 'bg-surface-2 text-muted',
+    neutral: 'bg-ink/[0.06] text-muted',
     green: 'bg-primary-soft text-primary',
     gold: 'bg-gold-soft text-gold',
     danger: 'bg-danger-soft text-danger',
   }
-  return <span className={cx('inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold', tones[tone], className)}>{children}</span>
+  return <span className={cx('inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-0.5 text-[12px] font-semibold', tones[tone], className)}>{children}</span>
 }
 
 export function ProgressBar({ value, className = '', label }: { value: number; className?: string; label?: string }) {
   const v = Math.max(0, Math.min(100, value))
   return (
-    <div className={cx('h-2 w-full overflow-hidden rounded-full bg-surface-2', className)} role="progressbar" aria-valuenow={Math.round(v)} aria-valuemin={0} aria-valuemax={100} aria-label={label}>
-      <div className="h-full rounded-full bg-gradient-to-r from-primary to-gold transition-[width] duration-700 ease-out" style={{ width: `${v}%` }} />
+    <div className={cx('h-1.5 w-full overflow-hidden rounded-full bg-ink/[0.08]', className)} role="progressbar" aria-valuenow={Math.round(v)} aria-valuemin={0} aria-valuemax={100} aria-label={label}>
+      <div className="h-full rounded-full bg-primary transition-[width] duration-700 ease-out" style={{ width: `${v}%` }} />
     </div>
   )
 }
@@ -141,19 +168,8 @@ export function ProgressRing({ value, size = 96, stroke = 8, children }: { value
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="currentColor" strokeWidth={stroke} className="text-white/15" />
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          fill="none"
-          stroke="#d6ad5c"
-          strokeWidth={stroke}
-          strokeLinecap="round"
-          strokeDasharray={c}
-          strokeDashoffset={c - (v / 100) * c}
-          style={{ transition: 'stroke-dashoffset 0.9s cubic-bezier(.2,.7,.2,1)' }}
-        />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="currentColor" strokeWidth={stroke} className="opacity-15" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--gold)" strokeWidth={stroke} strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c - (v / 100) * c} style={{ transition: 'stroke-dashoffset 0.9s cubic-bezier(.2,.7,.2,1)' }} />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">{children}</div>
     </div>
@@ -164,8 +180,8 @@ export function ProgressRing({ value, size = 96, stroke = 8, children }: { value
 export function Loader({ label = 'Chargement…' }: { label?: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-16 text-muted" role="status" aria-live="polite">
-      <svg width="40" height="40" viewBox="0 0 40 40" className="animate-spin [animation-duration:2.4s]">
-        <path d="M20 3l5 12 12 5-12 5-5 12-5-12-12-5 12-5z" fill="none" stroke="currentColor" strokeWidth="1.6" className="text-gold" />
+      <svg width="36" height="36" viewBox="0 0 40 40" className="animate-spin [animation-duration:2.4s]">
+        <path d="M20 3l5 12 12 5-12 5-5 12-5-12-12-5 12-5z" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gold" />
       </svg>
       <span className="text-sm">{label}</span>
     </div>
@@ -174,28 +190,28 @@ export function Loader({ label = 'Chargement…' }: { label?: string }) {
 
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <Card className="flex flex-col items-center gap-3 p-8 text-center">
-      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-danger-soft text-danger">
-        <Icon name="alert" />
+    <div className="flex flex-col items-center gap-3 rounded-[20px] bg-danger-soft/50 px-6 py-8 text-center">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full text-danger ring-1 ring-danger/30">
+        <Icon name="alert" size={19} />
       </span>
-      <p className="max-w-md text-muted">{message}</p>
+      <p className="max-w-md text-ink/80">{message}</p>
       {onRetry && (
         <Button variant="secondary" icon="refresh" onClick={onRetry}>
           Réessayer
         </Button>
       )}
-    </Card>
+    </div>
   )
 }
 
 export function EmptyState({ icon = 'sparkle', title, text, action }: { icon?: string; title: string; text?: string; action?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-line px-5 py-6 text-center sm:px-6 sm:py-10">
-      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gold-soft text-gold">
-        <Icon name={icon} />
+    <div className="flex flex-col items-center gap-2 rounded-[20px] bg-surface-2/50 px-5 py-7 text-center sm:px-8 sm:py-10">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full text-gold ring-1 ring-gold/40">
+        <Icon name={icon} size={19} />
       </span>
-      <p className="font-semibold">{title}</p>
-      {text && <p className="max-w-sm text-sm text-muted">{text}</p>}
+      <p className="mt-1 font-display text-[19px] font-medium">{title}</p>
+      {text && <p className="max-w-sm text-[14.5px] text-muted">{text}</p>}
       {action && <div className="mt-2">{action}</div>}
     </div>
   )
@@ -204,18 +220,18 @@ export function EmptyState({ icon = 'sparkle', title, text, action }: { icon?: s
 /* ---------------- Encadrés ---------------- */
 export function Note({ tone = 'info', title, children }: { tone?: 'info' | 'tip' | 'warning' | 'scholar' | 'gentle'; title?: string; children: ReactNode }) {
   const map = {
-    info: { icon: 'info', cls: 'border-primary/20 bg-primary-soft/60', ic: 'text-primary', t: 'Bon à savoir' },
-    tip: { icon: 'sparkle', cls: 'border-gold/30 bg-gold-soft/60', ic: 'text-gold', t: 'Conseil' },
-    warning: { icon: 'alert', cls: 'border-danger/25 bg-danger-soft/60', ic: 'text-danger', t: 'Attention' },
-    scholar: { icon: 'graduation', cls: 'border-line bg-surface-2', ic: 'text-ink', t: 'Avis des savants' },
-    gentle: { icon: 'heart', cls: 'border-gold/30 bg-gold-soft/40', ic: 'text-gold', t: 'Avec douceur' },
+    info: { icon: 'info', cls: 'bg-primary-soft/55', ic: 'text-primary', t: 'Bon à savoir' },
+    tip: { icon: 'sparkle', cls: 'bg-gold-soft/55', ic: 'text-gold', t: 'Conseil' },
+    warning: { icon: 'alert', cls: 'bg-danger-soft/70', ic: 'text-danger', t: 'Attention' },
+    scholar: { icon: 'graduation', cls: 'bg-surface-2/80', ic: 'text-ink', t: 'Avis des savants' },
+    gentle: { icon: 'heart', cls: 'bg-gold-soft/40', ic: 'text-gold', t: 'Avec douceur' },
   }[tone]
   return (
-    <div className={cx('my-3 flex gap-2.5 rounded-2xl border p-3 sm:my-4 sm:gap-3 sm:p-4', map.cls)}>
-      <Icon name={map.icon} className={cx('mt-0.5', map.ic)} />
-      <div className="min-w-0 text-[14.5px] leading-relaxed sm:text-[15.5px]">
-        <p className="mb-1 font-semibold">{title ?? map.t}</p>
-        <div className="text-ink/90">{children}</div>
+    <div className={cx('my-4 flex gap-3 rounded-[16px] px-4 py-3.5 sm:my-5 sm:px-5 sm:py-4', map.cls)}>
+      <Icon name={map.icon} size={19} className={cx('mt-[3px]', map.ic)} />
+      <div className="min-w-0 text-[15px] leading-relaxed sm:text-[15.5px]">
+        <p className="mb-0.5 font-semibold">{title ?? map.t}</p>
+        <div className="text-ink/85">{children}</div>
       </div>
     </div>
   )
@@ -224,7 +240,7 @@ export function Note({ tone = 'info', title, children }: { tone?: 'info' | 'tip'
 /* ---------------- Texte arabe + translittération + traduction ---------------- */
 export function ArabicBlock({ arabic, translit, translation, source, size = 'text-3xl', className = '' }: { arabic: string; translit?: string; translation?: string; source?: string; size?: string; className?: string }) {
   return (
-    <div className={cx('rounded-2xl border border-line bg-surface-2/60 p-3.5 sm:p-5', className)}>
+    <div className={cx('rounded-[18px] bg-surface-2/60 px-4 py-4 sm:px-6 sm:py-5', className)}>
       <p className={cx('arabic text-right text-ink', size)} lang="ar">
         {arabic}
       </p>
@@ -242,44 +258,46 @@ export function ArabicBlock({ arabic, translit, translation, source, size = 'tex
 /* ---------------- Onglets ---------------- */
 export function Tabs<T extends string>({ tabs, value, onChange, className = '' }: { tabs: { id: T; label: string; icon?: string }[]; value: T; onChange: (v: T) => void; className?: string }) {
   return (
-    <div className={cx('no-scrollbar -mx-1 flex gap-1 overflow-x-auto px-1 pb-1', className)} role="tablist">
-      {tabs.map((t) => (
-        <button
-          key={t.id}
-          role="tab"
-          aria-selected={value === t.id}
-          onClick={() => onChange(t.id)}
-          className={cx(
-            'tap-pop inline-flex h-10 shrink-0 items-center gap-2 rounded-xl px-3.5 text-sm font-semibold transition-colors',
-            value === t.id ? 'bg-primary text-primary-ink shadow-sm' : 'bg-surface text-muted ring-1 ring-line hover:text-ink',
-          )}
-        >
-          {t.icon && <Icon name={t.icon} size={16} />}
-          {t.label}
-        </button>
-      ))}
+    <div className={cx('no-scrollbar -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0', className)}>
+      <div className="inline-flex gap-1 rounded-full bg-ink/[0.055] p-1" role="tablist">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            role="tab"
+            aria-selected={value === t.id}
+            onClick={() => onChange(t.id)}
+            className={cx(
+              'tap-pop inline-flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 text-[14px] transition-colors',
+              value === t.id ? 'bg-surface font-semibold text-ink shadow-[0_1px_2px_rgba(15,40,30,0.14)]' : 'font-medium text-muted hover:text-ink',
+            )}
+          >
+            {t.icon && <Icon name={t.icon} size={16} className={value === t.id ? 'text-primary' : ''} />}
+            {t.label}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
 
 export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
-    <label className="flex cursor-pointer items-center justify-between gap-3 py-2">
+    <label className="flex min-h-12 cursor-pointer items-center justify-between gap-3 py-2">
       <span className="text-[15px]">{label}</span>
       <button
         type="button"
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={cx('relative h-7 w-12 shrink-0 rounded-full transition-colors', checked ? 'bg-primary' : 'bg-line')}
+        className={cx('relative h-7 w-12 shrink-0 rounded-full transition-colors', checked ? 'bg-primary' : 'bg-ink/15')}
       >
-        <span className={cx('absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-transform', checked ? 'translate-x-6' : 'translate-x-1')} />
+        <span className={cx('absolute top-1 h-5 w-5 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.25)] transition-transform', checked ? 'translate-x-6' : 'translate-x-1')} />
       </button>
     </label>
   )
 }
 
-/* ---------------- Modale / feuille ---------------- */
+/* ---------------- Feuille / modale ---------------- */
 export function Sheet({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: ReactNode }) {
   useEffect(() => {
     if (!open) return
@@ -294,12 +312,12 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
   }, [open, onClose])
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="fade-in absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="sheet-in scroll-contain relative max-h-[88dvh] w-full overflow-y-auto rounded-t-3xl border border-line bg-surface p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] shadow-2xl sm:max-w-2xl sm:rounded-3xl sm:p-6">
-        <div className="mx-auto -mt-2 mb-3 h-1.5 w-10 rounded-full bg-line sm:hidden" />
+    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={title}>
+      <div className="fade-in absolute inset-0 bg-[#0b1a14]/45" onClick={onClose} />
+      <div className="sheet-in scroll-contain relative max-h-[88dvh] w-full overflow-y-auto rounded-t-[24px] bg-surface p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] shadow-[0_24px_60px_-20px_rgba(10,30,22,0.45)] sm:max-w-2xl sm:rounded-[24px] sm:p-7">
+        <div className="mx-auto -mt-2 mb-3 h-1 w-10 rounded-full bg-ink/15 sm:hidden" />
         <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 className="font-display text-2xl font-semibold">{title}</h2>
+          <h2 className="font-display text-[26px] font-medium leading-tight">{title}</h2>
           <IconButton icon="x" label="Fermer" onClick={onClose} />
         </div>
         {children}
@@ -323,33 +341,38 @@ export const toast = (text: string) => useToast.getState().push(text)
 export function Toaster() {
   const items = useToast((s) => s.items)
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] z-[60] flex flex-col items-center gap-2 px-4 lg:bottom-6" aria-live="polite">
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(var(--bottom-nav)+1rem)] z-[60] flex flex-col items-center gap-2 px-4 md:bottom-6 md:left-[var(--shell-left)]" aria-live="polite">
       {items.map((t) => (
-        <div key={t.id} className="animate-in pointer-events-auto flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-medium text-bg shadow-lg">
-          <Icon name="checkCircle" size={16} className="text-gold" /> {t.text}
+        <div key={t.id} className="animate-in pointer-events-auto flex items-center gap-2 rounded-full bg-deep px-4 py-2.5 text-[14px] font-medium text-white shadow-[0_12px_30px_-12px_rgba(10,30,22,0.5)]">
+          <Icon name="checkCircle" size={16} className="text-gold-bright" /> {t.text}
         </div>
       ))}
     </div>
   )
 }
 
-/* ---------------- Tuile de navigation ---------------- */
+/* ---------------- Tuile de navigation (ligne horizontale) ---------------- */
 export function Tile({ to, icon, title, text, badge, arabic }: { to: string; icon: string; title: string; text?: string; badge?: ReactNode; arabic?: string }) {
   return (
-    <Link
-      to={to}
-      className="group relative flex h-full flex-col gap-1.5 overflow-hidden rounded-2xl border border-line bg-surface p-3 transition-all sm:gap-2 sm:p-4 hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-[0_12px_30px_-18px_rgba(15,76,58,0.45)]"
-    >
-      <div className="flex items-center justify-between gap-2">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft text-primary transition-colors group-hover:bg-primary group-hover:text-primary-ink">
-          <Icon name={icon} />
+    <Link to={to} className="group flex h-full items-start gap-3.5 rounded-[18px] bg-surface p-4 ring-1 ring-ink/[0.06] transition-shadow hover:ring-gold/45 sm:p-5">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+        <Icon name={icon} size={19} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="flex items-baseline justify-between gap-2">
+          <span className="font-semibold leading-snug">{title}</span>
+          {arabic && <span className="arabic shrink-0 text-[17px] leading-none text-gold">{arabic}</span>}
         </span>
-        {arabic && <span className="arabic text-lg text-gold">{arabic}</span>}
-        {badge}
-      </div>
-      <p className="font-semibold leading-snug">{title}</p>
-      {text && <p className="text-[13px] leading-snug text-muted sm:text-sm">{text}</p>}
-      <Icon name="arrowRight" size={16} className="mt-auto hidden self-end text-muted transition-transform group-hover:translate-x-1 group-hover:text-gold sm:block" />
+        {text && <span className="mt-1 block text-[14px] leading-snug text-muted">{text}</span>}
+        {badge && <span className="mt-2 block">{badge}</span>}
+      </span>
+      <Icon name="chevronRight" size={17} className="mt-0.5 hidden text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-gold sm:block" />
     </Link>
   )
+}
+
+/* ---------------- Listes éditoriales ---------------- */
+/** Liste séparée par des filets, sans boîte. */
+export function List({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return <ul className={cx('divide-y divide-line border-y border-line', className)}>{children}</ul>
 }

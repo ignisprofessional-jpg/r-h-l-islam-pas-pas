@@ -95,8 +95,8 @@ export default function PrayerGuide() {
         </Card>
 
         <div className="min-w-0">
-          <p className="text-xs font-bold uppercase tracking-wider text-gold">Étape {i + 1}</p>
-          <h1 className="font-display text-3xl font-semibold">{step.title}</h1>
+          <p className="text-[13.5px] font-semibold text-gold">Étape {i + 1}</p>
+          <h1 className="font-display text-[28px] font-medium sm:text-3xl">{step.title}</h1>
           <p className="mt-1 text-[17px] text-ink/90">{step.short}</p>
 
           {slow && (
@@ -153,10 +153,10 @@ export default function PrayerGuide() {
           {done.length === GUIDE.length && (
             <Card className="animate-in mt-6 p-5 text-center">
               <Icon name="trophy" size={32} className="mx-auto text-gold" />
-              <p className="mt-2 font-display text-2xl font-semibold">Vous connaissez maintenant toute la prière !</p>
+              <p className="mt-2 font-display text-[22px] font-medium sm:text-2xl">Vous connaissez maintenant toute la prière !</p>
               <p className="text-muted">Pour les prières de 3 ou 4 rak‘ats, consultez la page de chaque prière : vous y verrez où placer le premier tachahhoud.</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
-                <Link to="/priere/dhohr" className="rounded-xl border border-line px-4 py-2 text-sm font-semibold hover:border-gold">
+                <Link to="/priere/dhohr" className="rounded-[14px] ring-1 ring-line px-4 py-2 text-sm font-semibold hover:border-gold">
                   Prière de 4 rak‘ats
                 </Link>
                 <Link to="/quiz/quiz-priere" className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-ink">

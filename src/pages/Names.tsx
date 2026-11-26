@@ -27,7 +27,7 @@ export default function Names() {
     <div className="animate-in">
       <PageHeader title="Les 99 noms d'Allah" arabic="الأسماء الحسنى" icon="star" subtitle="« Les plus beaux noms » : connaître Allah par Ses noms aide à L’aimer, à Le craindre et à L’invoquer. Touchez un nom pour le marquer comme appris." back={{ to: '/bases', label: "Bases de l'islam" }}>
         <div className="flex items-center gap-3">
-          <ProgressBar value={(known.length / ASMA.length) * 100} className="max-w-sm bg-white/20" label="Noms appris" />
+          <ProgressBar value={(known.length / ASMA.length) * 100} className="max-w-sm" label="Noms appris" />
           <span className="text-sm font-semibold">{known.length}/99 appris</span>
         </div>
       </PageHeader>
@@ -40,7 +40,7 @@ export default function Names() {
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <div className="relative min-w-0 flex-1">
           <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un nom ou un sens (ex. pardon, lumière)" className="h-11 w-full rounded-xl border border-line bg-surface pl-10 pr-3 outline-none focus:border-primary" aria-label="Rechercher un nom" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un nom ou un sens (ex. pardon, lumière)" className="h-11 w-full rounded-[14px] bg-surface ring-1 ring-ink/[0.06] pl-10 pr-3 outline-none focus:border-primary" aria-label="Rechercher un nom" />
         </div>
         <LinkButton to="/quiz/quiz-noms" icon="trophy" variant="secondary">
           Quiz
@@ -55,7 +55,7 @@ export default function Names() {
               key={a.n}
               id={`n${a.n}`}
               onClick={() => toggleStep('noms', String(a.n))}
-              className={cx('tap-pop relative flex scroll-mt-24 flex-col items-center rounded-xl border px-1.5 py-2 text-center transition-colors sm:rounded-2xl sm:p-3', k ? 'border-primary bg-primary-soft' : 'border-line bg-surface hover:border-gold/60')}
+              className={cx('tap-pop relative flex scroll-mt-24 flex-col items-center rounded-xl border px-1.5 py-2 text-center transition-colors sm:rounded-2xl sm:p-3', k ? 'border-primary bg-primary-soft' : 'border-line bg-surface hover:ring-gold/45')}
               aria-pressed={k}
             >
               <span className="absolute left-1.5 top-1 text-[10px] font-bold text-muted sm:left-2 sm:top-2 sm:text-[11px]">{a.n}</span>

@@ -28,6 +28,8 @@ const paths: Record<string, string> = {
   prev: 'M20 20 9 12l11-8zM5 5h3v14H5z',
   expand: 'M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3',
   x: 'M18 6 6 18M6 6l12 12',
+  sidebar: 'M3 4.5h18v15H3zM9 4.5v15',
+  grid: 'M4 4h6.5v6.5H4zM13.5 4H20v6.5h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z',
   menu: 'M3 6h18M3 12h18M3 18h18',
   chevronRight: 'M9 18l6-6-6-6',
   chevronLeft: 'M15 18l-6-6 6-6',
@@ -60,7 +62,7 @@ const paths: Record<string, string> = {
 
 export type IconName = keyof typeof paths
 
-export function Icon({ name, size = 20, className = '', strokeWidth = 1.8, title }: { name: IconName | string; size?: number; className?: string; strokeWidth?: number; title?: string }) {
+export function Icon({ name, size = 20, className = '', strokeWidth = 1.75, title }: { name: IconName | string; size?: number; className?: string; strokeWidth?: number; title?: string }) {
   const d = paths[name] ?? paths.info
   const filled = name === 'play' || name === 'pause' || name === 'next' || name === 'prev'
   return (

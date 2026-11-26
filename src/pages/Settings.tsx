@@ -53,7 +53,7 @@ export default function Settings() {
           >
             <label className="block text-sm">
               <span className="mb-1 block font-semibold">Prénom (facultatif)</span>
-              <input value={name} onChange={(e) => setName(e.target.value)} className="h-11 w-full rounded-xl border border-line bg-bg px-3 outline-none focus:border-primary" />
+              <input value={name} onChange={(e) => setName(e.target.value)} className="h-11 w-full field" />
             </label>
             <div>
               <p className="mb-1 text-sm font-semibold">Niveau actuel</p>
@@ -86,7 +86,7 @@ export default function Settings() {
               </button>
             ))}
           </div>
-          <div className="mt-4 divide-y divide-line rounded-xl border border-line px-3">
+          <div className="mt-4 divide-y divide-line rounded-[14px] ring-1 ring-line px-3">
             <Toggle label="Mode lent par défaut dans le guide de prière" checked={s.settings.slowMode} onChange={(v) => s.setSettings({ slowMode: v })} />
             <Toggle label="Afficher la translittération du Coran" checked={s.settings.showTranslit} onChange={(v) => s.setSettings({ showTranslit: v })} />
             <Toggle label="Afficher la traduction du Coran" checked={s.settings.showTranslation} onChange={(v) => s.setSettings({ showTranslation: v })} />
@@ -97,7 +97,7 @@ export default function Settings() {
           <SectionTitle>Lecture du Coran</SectionTitle>
           <label className="mb-3 block text-sm">
             <span className="mb-1 block font-semibold">Traduction</span>
-            <select value={s.settings.translation} onChange={(e) => s.setSettings({ translation: Number(e.target.value) })} className="h-11 w-full rounded-xl border border-line bg-bg px-3">
+            <select value={s.settings.translation} onChange={(e) => s.setSettings({ translation: Number(e.target.value) })} className="h-11 w-full field">
               {TRANSLATIONS.map((t) => (
                 <option key={t.id} value={t.id}>
                   {t.name}
@@ -107,7 +107,7 @@ export default function Settings() {
           </label>
           <label className="block text-sm">
             <span className="mb-1 block font-semibold">Récitateur</span>
-            <select value={s.settings.reciter} onChange={(e) => s.setSettings({ reciter: Number(e.target.value) })} className="h-11 w-full rounded-xl border border-line bg-bg px-3">
+            <select value={s.settings.reciter} onChange={(e) => s.setSettings({ reciter: Number(e.target.value) })} className="h-11 w-full field">
               {RECITERS.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.name} — {r.style}

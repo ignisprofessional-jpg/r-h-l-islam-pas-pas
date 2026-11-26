@@ -55,7 +55,7 @@ export default function Dhikr() {
                   <circle cx="130" cy="130" r={r} fill="none" stroke="var(--gold)" strokeWidth="10" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c - (pct / 100) * c} style={{ transition: 'stroke-dashoffset .3s ease-out' }} />
                 </svg>
                 <span className="flex h-48 w-48 flex-col items-center justify-center rounded-full bg-primary text-primary-ink shadow-[inset_0_-8px_20px_rgba(0,0,0,0.2)] sm:h-56 sm:w-56">
-                  <span className="font-display text-7xl font-semibold tabular-nums">{active.count}</span>
+                  <span className="font-display text-7xl font-medium tabular-nums">{active.count}</span>
                   <span className="text-sm opacity-80">/ {active.target}</span>
                 </span>
               </button>
@@ -135,7 +135,7 @@ export default function Dhikr() {
                 setActiveId(id)
                 setEditing(false)
               }}
-              className="rounded-xl border border-line p-3 text-left hover:border-gold/60"
+              className="rounded-[14px] ring-1 ring-line p-3 text-left hover:ring-gold/45"
             >
               <span className="arabic block text-xl text-primary">{p.arabic}</span>
               <span className="text-sm">{p.label}</span>
@@ -157,11 +157,11 @@ export default function Dhikr() {
           }}
         >
           <p className="text-sm font-semibold">Ou créez la vôtre</p>
-          <input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Nom (ex. Astaghfirullâh)" className="h-11 w-full rounded-xl border border-line bg-bg px-3" aria-label="Nom de la formule" />
-          <input value={arabic} onChange={(e) => setArabic(e.target.value)} placeholder="Texte arabe (facultatif)" dir="rtl" className="arabic h-11 w-full rounded-xl border border-line bg-bg px-3 text-lg" aria-label="Texte arabe" />
+          <input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Nom (ex. Astaghfirullâh)" className="h-11 w-full field" aria-label="Nom de la formule" />
+          <input value={arabic} onChange={(e) => setArabic(e.target.value)} placeholder="Texte arabe (facultatif)" dir="rtl" className="arabic h-11 w-full field text-lg" aria-label="Texte arabe" />
           <label className="flex items-center gap-3 text-sm">
             Objectif :
-            <input type="number" min={1} value={target} onChange={(e) => setTarget(Number(e.target.value))} className="h-11 w-28 rounded-xl border border-line bg-bg px-3" />
+            <input type="number" min={1} value={target} onChange={(e) => setTarget(Number(e.target.value))} className="h-11 w-28 field" />
           </label>
           <Button type="submit" icon="plus">
             Ajouter

@@ -28,7 +28,7 @@ function TextSearch({ q }: { q: string }) {
       <ul className="space-y-2">
         {data.matches.map((m) => (
           <li key={`${m.surah}:${m.verse}`}>
-            <Link to={`/coran/${m.surah}?v=${m.verse}`} className="block rounded-xl border border-line bg-surface p-3 hover:border-gold/60">
+            <Link to={`/coran/${m.surah}?v=${m.verse}`} className="block rounded-[14px] bg-surface ring-1 ring-ink/[0.06] p-3 hover:ring-gold/45">
               <p className="mb-1 text-xs font-semibold text-primary">
                 {surahName(m.surah)} {m.surah}:{m.verse}
               </p>
@@ -89,11 +89,11 @@ export default function QuranIndex() {
                 if (q) setParams({})
               }}
               placeholder="Nom ou numéro de sourate, ou un mot (ex. patience)"
-              className="h-12 w-full rounded-xl border-0 bg-white pl-10 pr-3 text-[15px] text-[#1d2a23] outline-none ring-2 ring-transparent focus:ring-[#d6ad5c]"
+              className="field h-12 w-full pl-10 pr-3 text-[15px]"
               aria-label="Rechercher une sourate ou un mot"
             />
           </div>
-          <button type="submit" className="h-12 shrink-0 rounded-xl bg-[#d6ad5c] px-4 font-semibold text-[#1b1406]">
+          <button type="submit" className="h-12 shrink-0 rounded-full bg-primary px-5 text-[15px] font-semibold text-primary-ink hover:bg-[color-mix(in_srgb,var(--primary)_86%,black)]">
             Chercher un mot
           </button>
         </form>
@@ -104,7 +104,7 @@ export default function QuranIndex() {
           {bookmark && (
             <Card className="flex items-center justify-between gap-3 p-4">
               <div>
-                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-gold">
+                <p className="flex items-center gap-1.5 text-[13.5px] font-semibold text-gold">
                   <Icon name="bookmark" size={14} /> Marque-page
                 </p>
                 <p className="font-semibold">
@@ -119,7 +119,7 @@ export default function QuranIndex() {
           {lastRead && (
             <Card className="flex items-center justify-between gap-3 p-4">
               <div>
-                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted">
+                <p className="flex items-center gap-1.5 text-[13.5px] font-semibold text-muted">
                   <Icon name="clock" size={14} /> Dernière lecture
                 </p>
                 <p className="font-semibold">
@@ -156,7 +156,7 @@ export default function QuranIndex() {
           <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 sm:gap-2 xl:grid-cols-3">
             {list.map((c) => (
               <li key={c.id}>
-                <Link to={`/coran/${c.id}`} className="group flex items-center gap-3 rounded-xl border border-line bg-surface px-3 py-2 transition-all sm:rounded-2xl sm:p-3 hover:border-gold/60 hover:shadow-[0_10px_24px_-18px_rgba(15,76,58,0.5)]">
+                <Link to={`/coran/${c.id}`} className="group flex items-center gap-3 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-3 py-2 transition-all sm:rounded-2xl sm:p-3 hover:ring-gold/45 hover:shadow-[0_10px_24px_-18px_rgba(15,76,58,0.5)]">
                   <span className="relative flex h-9 w-9 shrink-0 items-center justify-center sm:h-11 sm:w-11">
                     <svg viewBox="0 0 44 44" className="absolute inset-0 text-gold/60 transition-transform group-hover:rotate-45">
                       <path d="M22 2l5.6 8.4L37.6 8l-2.4 10L44 22l-8.8 4 2.4 10-10-2.4L22 42l-5.6-8.4L6.4 36l2.4-10L0 22l8.8-4-2.4-10 10 2.4z" fill="none" stroke="currentColor" strokeWidth="1.2" />

@@ -24,7 +24,7 @@ export function DuaCard({ d, defaultOpen = false }: { d: Dua; defaultOpen?: bool
       <button
         id={d.id}
         onClick={() => setOpen(true)}
-        className="flex w-full scroll-mt-24 items-center gap-3 rounded-2xl border border-line bg-surface px-3.5 py-3 text-left active:bg-surface-2"
+        className="flex w-full scroll-mt-24 items-center gap-3 rounded-[16px] bg-surface ring-1 ring-ink/[0.06] px-3.5 py-3 text-left active:bg-surface-2"
         aria-expanded={false}
       >
         <span className={cx('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', memorized ? 'bg-primary text-primary-ink' : 'bg-primary-soft text-primary')}>
@@ -77,7 +77,7 @@ export function DuaCard({ d, defaultOpen = false }: { d: Dua; defaultOpen?: bool
           toggleDua(d.id)
           if (!memorized) toast('Invocation mémorisée, bravo !')
         }}
-        className={cx('mt-3 inline-flex h-9 items-center gap-2 rounded-xl px-3 text-sm font-semibold', memorized ? 'bg-primary text-primary-ink' : 'border border-line hover:border-primary')}
+        className={cx('mt-3 inline-flex h-9 items-center gap-2 rounded-xl px-3 text-sm font-semibold', memorized ? 'bg-primary text-primary-ink' : 'ring-1 ring-line hover:ring-gold/60')}
       >
         <Icon name="checkCircle" size={16} /> {memorized ? 'Je la connais' : 'Je la connais par cœur'}
       </button>
@@ -107,7 +107,7 @@ export default function Duas() {
     <div className="animate-in">
       <PageHeader title="Les invocations (douas)" arabic="الأدعية" icon="hands" subtitle="Une bibliothèque d’invocations authentiques classées par situation, avec le texte arabe, la phonétique, le sens et la référence précise.">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{count} mémorisée{count > 1 ? 's' : ''}</span>
+          <span className="rounded-full bg-ink/[0.06] px-3 py-1 text-[13px] font-medium text-muted">{count} mémorisée{count > 1 ? 's' : ''}</span>
           <LinkButton to="/dhikr" variant="gold" size="sm" icon="beads">
             Compteur de dhikr
           </LinkButton>
@@ -116,7 +116,7 @@ export default function Duas() {
 
       <div className="relative mb-2.5">
         <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher une invocation…" className="h-11 w-full rounded-xl border border-line bg-surface pl-10 pr-3 outline-none focus:border-primary" aria-label="Rechercher une invocation" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher une invocation…" className="h-11 w-full rounded-[14px] bg-surface ring-1 ring-ink/[0.06] pl-10 pr-3 outline-none focus:border-primary" aria-label="Rechercher une invocation" />
       </div>
       <div className="no-scrollbar -mx-4 mb-4 flex gap-1.5 overflow-x-auto px-4 pb-1 sm:-mx-1 sm:mb-5 sm:px-1">
         <button onClick={() => setParams({})} className={cx('h-9 shrink-0 rounded-full px-3 text-sm font-semibold', !cat ? 'bg-primary text-primary-ink' : 'bg-surface text-muted ring-1 ring-line')}>
@@ -136,7 +136,7 @@ export default function Duas() {
         if (!items.length) return null
         return (
           <section key={c.id} className="mb-5 sm:mb-8">
-            <h2 className="mb-2 flex items-center gap-2 font-display text-[20px] font-semibold sm:mb-3 sm:text-2xl">
+            <h2 className="mb-2 flex items-center gap-2 font-display text-[20px] font-medium sm:mb-3 sm:text-2xl">
               <Icon name={c.icon} className="text-gold" /> {c.label}
             </h2>
             <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-3">

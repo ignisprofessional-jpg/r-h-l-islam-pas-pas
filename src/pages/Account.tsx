@@ -16,7 +16,7 @@ export const STATUS_LABEL: Record<SyncStatus, { text: string; tone: string; icon
   error: { text: 'Erreur de synchronisation', tone: 'text-danger', icon: 'alert' },
 }
 
-const inputCls = 'h-12 w-full rounded-xl border border-line bg-bg px-3 text-[16px] outline-none focus:border-primary'
+const inputCls = 'h-12 w-full field text-[16px] outline-none focus:border-primary'
 
 function AuthForms() {
   const [mode, setMode] = useState<'login' | 'signup' | 'magic' | 'reset'>('login')
@@ -105,7 +105,7 @@ function NewPassword() {
   const [err, setErr] = useState('')
   return (
     <Card className="mb-5 p-5">
-      <p className="font-display text-2xl font-semibold">Choisir un nouveau mot de passe</p>
+      <p className="font-display text-[22px] font-medium sm:text-2xl">Choisir un nouveau mot de passe</p>
       <form
         className="mt-3 space-y-3"
         onSubmit={async (e) => {

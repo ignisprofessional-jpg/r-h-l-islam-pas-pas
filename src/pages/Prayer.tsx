@@ -22,16 +22,14 @@ export default function Prayer() {
       <PageHeader title="Apprendre à faire la prière" arabic="الصلاة" icon="prayer" subtitle="Un cours complet pour apprendre la salât depuis zéro : pourquoi prier, quand, comment, avec les gestes, les paroles et leur sens." />
 
       {/* Mode découverte */}
-      <Card className="relative mb-3 overflow-hidden p-4 sm:mb-6 sm:p-6">
-        <div className="pattern-bg pattern-layer" />
+      <Card className="relative mb-4 overflow-hidden p-5 sm:mb-6 sm:p-7">
         <div className="relative grid items-center gap-5 sm:grid-cols-[1fr_200px]">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-gold">Mode « Je découvre la prière »</p>
-            <h2 className="mt-1 font-display text-[21px] font-semibold leading-snug sm:text-3xl">Le guide illustré, étape par étape</h2>
-            <p className="mt-1 hidden text-muted sm:block">Chaque position est illustrée, avec les paroles en arabe, la phonétique et le sens. Le mode lent explique tout tranquillement, sans rien supposer.</p>
+                        <h2 className="mt-1 font-display text-[21px] font-medium leading-snug sm:text-3xl">Je découvre la prière</h2>
+            <p className="mt-1 text-[15px] text-muted sm:text-base"><span className="sm:hidden">Le guide illustré, étape par étape.</span><span className="hidden sm:inline">Chaque position est illustrée, avec les paroles en arabe, la phonétique et le sens. Le mode lent explique tout tranquillement, sans rien supposer.</span></p>
             <div className="mt-3 flex items-center gap-3 sm:mt-4">
               <ProgressBar value={pct} className="max-w-xs" label="Progression du guide" />
-              <span className="text-sm text-muted">
+              <span className="shrink-0 whitespace-nowrap text-sm text-muted">
                 {steps.length}/{GUIDE.length} étapes
               </span>
             </div>
@@ -57,7 +55,7 @@ export default function Prayer() {
       <SectionTitle>Les cinq prières</SectionTitle>
       <div className="grid grid-cols-5 gap-1.5 sm:gap-3">
         {PRAYERS.map((p) => (
-          <Link key={p.id} to={`/priere/${p.id}`} className="group rounded-xl border border-line bg-surface px-1 py-2.5 text-center transition-all hover:-translate-y-0.5 hover:border-gold/60 sm:rounded-2xl sm:p-4">
+          <Link key={p.id} to={`/priere/${p.id}`} className="group rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-1 py-2.5 text-center transition-all hover:ring-gold/45 sm:rounded-2xl sm:p-4">
             <p className="arabic text-lg leading-tight text-gold sm:text-2xl">{p.arabic}</p>
             <p className="truncate text-[12px] font-semibold sm:text-base">{p.name.split(' (')[0]}</p>
             <p className="text-[11px] text-muted sm:text-sm">{p.rakaat} rak‘ats</p>
@@ -100,7 +98,7 @@ export default function Prayer() {
                         if (nextSec) setOpen(nextSec.id)
                       }
                     }}
-                    className={cx('mt-4 inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-semibold', done ? 'bg-primary text-primary-ink' : 'border border-line hover:border-primary')}
+                    className={cx('mt-4 inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-semibold', done ? 'bg-primary text-primary-ink' : 'ring-1 ring-line hover:ring-gold/60')}
                   >
                     <Icon name="checkCircle" size={16} /> {done ? 'Partie lue' : 'J’ai lu cette partie'}
                   </button>

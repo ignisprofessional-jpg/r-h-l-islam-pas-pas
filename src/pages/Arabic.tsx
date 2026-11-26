@@ -50,14 +50,14 @@ function LetterSheet({ letter, onClose }: { letter: Letter | null; onClose: () =
             ['Fin', f.fin],
           ] as const
         ).map(([l, ch]) => (
-          <div key={l} className="rounded-xl border border-line bg-surface-2/50 p-2">
+          <div key={l} className="rounded-[14px] bg-surface ring-1 ring-ink/[0.06]-2/50 p-2">
             <p className="arabic text-4xl leading-tight">{ch}</p>
             <p className="text-xs text-muted">{l}</p>
           </div>
         ))}
       </div>
       <div className="mt-4 rounded-xl bg-gold-soft/50 p-3">
-        <p className="text-xs font-bold uppercase tracking-wider text-gold">Exemple</p>
+        <p className="text-[13.5px] font-semibold text-gold">Exemple</p>
         <p className="arabic text-3xl">{letter.example.word}</p>
         <p className="text-sm">
           <em>{letter.example.tr}</em> — {letter.example.fr}
@@ -85,7 +85,7 @@ export default function Arabic() {
     <div className="animate-in">
       <PageHeader title="Apprendre l'arabe coranique" arabic="العربية" icon="letters" subtitle="L’alphabet, la prononciation, les voyelles et les règles de lecture, pour pouvoir lire le Coran pas à pas. Touchez une lettre pour l’étudier.">
         <div className="flex items-center gap-3">
-          <ProgressBar value={(learned.length / LETTERS.length) * 100} className="max-w-sm bg-white/20" label="Lettres apprises" />
+          <ProgressBar value={(learned.length / LETTERS.length) * 100} className="max-w-sm" label="Lettres apprises" />
           <span className="text-sm font-semibold">
             {learned.length}/{LETTERS.length} lettres
           </span>
@@ -114,7 +114,7 @@ export default function Arabic() {
               <button
                 key={l.ar}
                 onClick={() => setLetter(l)}
-                className={cx('tap-pop group relative flex aspect-square flex-col items-center justify-center rounded-2xl border transition-all hover:-translate-y-0.5', learned.includes(l.ar) ? 'border-primary bg-primary-soft' : 'border-line bg-surface hover:border-gold/60')}
+                className={cx('tap-pop group relative flex aspect-square flex-col items-center justify-center rounded-2xl border transition-all', learned.includes(l.ar) ? 'border-primary bg-primary-soft' : 'border-line bg-surface hover:ring-gold/45')}
                 aria-label={`Lettre ${l.name}`}
               >
                 <span className="arabic text-4xl leading-none text-ink sm:text-5xl">{l.ar}</span>
@@ -134,13 +134,13 @@ export default function Arabic() {
           {VOWEL_LESSONS.map((v) => (
             <Card key={v.id} className="p-5">
               <div className="flex items-start justify-between gap-3">
-                <h3 className="font-display text-2xl font-semibold">{v.title}</h3>
+                <h3 className="font-display text-[22px] font-medium sm:text-2xl">{v.title}</h3>
                 {vowelsRead.includes(v.id) && <Badge tone="green">Compris</Badge>}
               </div>
               <p className="mt-1 text-muted">{v.intro}</p>
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 {v.rows.map((r) => (
-                  <button key={r.ar} onClick={() => !speakArabic(r.ar) && toast('Synthèse vocale arabe indisponible')} className="flex items-center gap-4 rounded-xl border border-line bg-surface-2/40 p-3 text-left hover:border-gold/60">
+                  <button key={r.ar} onClick={() => !speakArabic(r.ar) && toast('Synthèse vocale arabe indisponible')} className="flex items-center gap-4 rounded-[14px] bg-surface ring-1 ring-ink/[0.06]-2/40 p-3 text-left hover:ring-gold/45">
                     <span className="arabic w-24 shrink-0 text-center text-4xl leading-tight text-primary">{r.ar}</span>
                     <span>
                       <span className="block font-semibold">{r.tr}</span>
@@ -167,13 +167,13 @@ export default function Arabic() {
         <div className="space-y-3">
           {READING_RULES.map((r) => (
             <Card key={r.title} className="p-5">
-              <h3 className="font-display text-xl font-semibold">{r.title}</h3>
+              <h3 className="font-display text-xl font-medium">{r.title}</h3>
               <p className="mt-1 text-[15.5px]">
                 <Rich text={r.text} />
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {r.examples.map((e) => (
-                  <div key={e.ar} className="rounded-xl border border-line bg-surface-2/40 px-4 py-2 text-center">
+                  <div key={e.ar} className="rounded-[14px] bg-surface ring-1 ring-ink/[0.06]-2/40 px-4 py-2 text-center">
                     <p className="arabic text-3xl">{e.ar}</p>
                     <p className="text-sm font-semibold text-accent">{e.tr}</p>
                     {e.fr && <p className="text-xs text-muted">{e.fr}</p>}
@@ -200,7 +200,7 @@ export default function Arabic() {
           <SectionTitle>Tous les exercices d’arabe</SectionTitle>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {QUIZZES.filter((q) => q.group === 'Arabe').map((q) => (
-              <Link key={q.id} to={`/quiz/${q.id}`} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-4 hover:border-gold/60">
+              <Link key={q.id} to={`/quiz/${q.id}`} className="flex items-center gap-3 rounded-[16px] bg-surface ring-1 ring-ink/[0.06] p-4 hover:ring-gold/45">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft text-primary">
                   <Icon name={q.icon} />
                 </span>

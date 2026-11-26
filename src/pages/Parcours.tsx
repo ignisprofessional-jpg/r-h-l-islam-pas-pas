@@ -21,13 +21,13 @@ export default function Parcours() {
       <Card className="mb-6 p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="font-display text-2xl font-semibold">
+            <p className="font-display text-[22px] font-medium sm:text-2xl">
               Niveau {LEVELS.find((l) => l.id === tab)!.label} <span className="arabic ml-2 text-lg text-gold">{LEVELS.find((l) => l.id === tab)!.arabic}</span>
             </p>
             <p className="text-sm text-muted">{LEVELS.find((l) => l.id === tab)!.text}</p>
           </div>
           {s.profile.level !== tab && (
-            <button onClick={() => s.setProfile({ level: tab })} className="rounded-xl border border-line px-3 py-2 text-sm font-semibold hover:border-gold">
+            <button onClick={() => s.setProfile({ level: tab })} className="rounded-[14px] ring-1 ring-line px-3 py-2 text-sm font-semibold hover:border-gold">
               Choisir ce niveau comme niveau actuel
             </button>
           )}
@@ -47,7 +47,7 @@ export default function Parcours() {
       <div className="space-y-8">
         {PARCOURS[tab].map((group, gi) => (
           <section key={group.title}>
-            <h2 className="mb-3 flex items-center gap-3 font-display text-2xl font-semibold">
+            <h2 className="mb-3 flex items-center gap-3 font-display text-[22px] font-medium sm:text-2xl">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-soft font-sans text-sm text-gold">{gi + 1}</span>
               {group.title}
             </h2>
@@ -60,7 +60,7 @@ export default function Parcours() {
                     <span className={cx('absolute -left-[31px] top-5 flex h-5 w-5 items-center justify-center rounded-full border-2', done ? 'border-primary bg-primary text-primary-ink' : p > 0 ? 'border-gold bg-surface' : 'border-line bg-surface')}>
                       {done && <Icon name="check" size={11} strokeWidth={3.5} />}
                     </span>
-                    <Link to={m.to} className="group flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition-all hover:border-gold/50 hover:shadow-[0_12px_30px_-18px_rgba(15,76,58,0.45)]">
+                    <Link to={m.to} className="group flex items-center gap-4 rounded-[16px] bg-surface ring-1 ring-ink/[0.06] p-4 transition-all hover:ring-gold/45">
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
                         <Icon name={m.icon} />
                       </span>

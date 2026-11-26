@@ -50,19 +50,19 @@ export default function LessonPage() {
     <div className="animate-in">
       <PageHeader title={lesson.title} subtitle={lesson.summary} arabic={lesson.arabic} icon={lesson.icon} back={{ to: backTo, label: cat.label }}>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{LEVELS.find((l) => l.id === lesson.level)?.label}</span>
-          <span className="rounded-full bg-white/15 px-3 py-1 text-sm">
+          <span className="rounded-full bg-ink/[0.06] px-3 py-1 text-[13px] font-medium text-muted">{LEVELS.find((l) => l.id === lesson.level)?.label}</span>
+          <span className="rounded-full bg-ink/[0.06] px-3 py-1 text-[13px] font-medium text-muted">
             <Icon name="clock" size={13} className="mr-1 inline" />
             {lesson.minutes} min
           </span>
-          {status === 'done' && <span className="rounded-full bg-[#d6ad5c] px-3 py-1 text-sm font-semibold text-[#1b1406]">Terminée</span>}
-          {status === 'review' && <span className="rounded-full bg-white/25 px-3 py-1 text-sm font-semibold">À revoir</span>}
+          {status === 'done' && <span className="rounded-full bg-primary-soft px-3 py-1 text-[13px] font-semibold text-primary">Terminée</span>}
+          {status === 'review' && <span className="rounded-full bg-gold-soft px-3 py-1 text-[13px] font-semibold text-gold">À revoir</span>}
           <button
             onClick={() => {
               toggleFavorite('lessons', lesson.id)
               toast(fav ? 'Retiré des favoris' : 'Ajouté aux favoris')
             }}
-            className={cx('ml-auto flex h-8 w-8 items-center justify-center rounded-full lg:hidden', fav ? 'bg-[#d6ad5c] text-[#1b1406]' : 'bg-white/15')}
+            className={cx('ml-auto flex h-10 w-10 items-center justify-center rounded-full lg:hidden', fav ? 'bg-gold-soft text-gold' : 'text-muted ring-1 ring-line')}
             aria-label={fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
           >
             <Icon name="heart" size={15} />
@@ -75,17 +75,17 @@ export default function LessonPage() {
           {lesson.sections.map((sec, i) =>
             desktop ? (
               <section key={i} id={`s${i}`} className="mb-8 scroll-mt-24">
-                <h2 className="mb-2 flex items-center gap-3 font-display text-2xl font-semibold">
+                <h2 className="mb-2 flex items-center gap-3 font-display text-[22px] font-medium sm:text-2xl">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold/50 font-sans text-sm text-gold">{i + 1}</span>
                   {sec.title}
                 </h2>
                 <Blocks blocks={sec.blocks} />
               </section>
             ) : (
-              <section key={i} id={`s${i}`} className="mb-2 scroll-mt-[calc(4.5rem+env(safe-area-inset-top,0px))] overflow-hidden rounded-2xl border border-line bg-surface">
+              <section key={i} id={`s${i}`} className="mb-2 scroll-mt-[calc(4.5rem+env(safe-area-inset-top,0px))] overflow-hidden rounded-[16px] bg-surface ring-1 ring-ink/[0.06]">
                 <button onClick={() => setOpenSec(openSec === i ? null : i)} className="flex w-full items-center gap-3 px-3.5 py-3 text-left" aria-expanded={openSec === i}>
                   <span className={cx('flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] font-bold', openSec === i ? 'bg-primary text-primary-ink' : 'border border-gold/50 text-gold')}>{i + 1}</span>
-                  <span className="flex-1 font-display text-[18px] font-semibold leading-snug">{sec.title}</span>
+                  <span className="flex-1 font-display text-[18px] font-medium leading-snug">{sec.title}</span>
                   <Icon name="chevronDown" size={18} className={cx('shrink-0 text-muted transition-transform', openSec === i && 'rotate-180')} />
                 </button>
                 {openSec === i && (
@@ -148,7 +148,7 @@ export default function LessonPage() {
           )}
 
           {lesson.sources && (
-            <div className="mb-8 rounded-2xl border border-line p-4 text-sm text-muted">
+            <div className="mb-8 rounded-[16px] p-4 ring-1 ring-line text-sm text-muted">
               <p className="mb-1 flex items-center gap-2 font-semibold text-ink">
                 <Icon name="book" size={16} /> Sources
               </p>
@@ -163,7 +163,7 @@ export default function LessonPage() {
 
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
             {prev ? (
-              <Link to={`/cours/${prev.id}`} className="flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-3 hover:border-gold/60">
+              <Link to={`/cours/${prev.id}`} className="flex items-center gap-2 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-4 py-3 hover:ring-gold/45">
                 <Icon name="arrowLeft" size={16} className="text-gold" />
                 <span className="text-sm">
                   <span className="block text-xs text-muted">Leçon précédente</span>
@@ -174,7 +174,7 @@ export default function LessonPage() {
               <span />
             )}
             {next && (
-              <Link to={`/cours/${next.id}`} className="flex items-center justify-end gap-2 rounded-xl border border-line bg-surface px-4 py-3 text-right hover:border-gold/60">
+              <Link to={`/cours/${next.id}`} className="flex items-center justify-end gap-2 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-4 py-3 text-right hover:ring-gold/45">
                 <span className="text-sm">
                   <span className="block text-xs text-muted">Leçon suivante</span>
                   {next.title}

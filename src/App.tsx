@@ -25,6 +25,7 @@ const QuranIndex = lazy(() => import('./pages/QuranIndex'))
 const SurahReader = lazy(() => import('./pages/SurahReader'))
 const LearnSurahs = lazy(() => import('./pages/LearnSurahs'))
 const LearnSurah = lazy(() => import('./pages/LearnSurah'))
+const Practice = lazy(() => import('./pages/Practice'))
 const Prayer = lazy(() => import('./pages/Prayer'))
 const PrayerGuide = lazy(() => import('./pages/PrayerGuide'))
 const PrayerDetail = lazy(() => import('./pages/PrayerDetail'))
@@ -83,6 +84,7 @@ export default function App() {
               ['/coran/:id', SurahReader],
               ['/sourates', LearnSurahs],
               ['/sourates/:id', LearnSurah],
+              ['/pratique', Practice],
               ['/priere', Prayer],
               ['/priere/guide', PrayerGuide],
               ['/priere/:id', PrayerDetail],

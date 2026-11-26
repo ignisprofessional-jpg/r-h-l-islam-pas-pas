@@ -90,7 +90,7 @@ function SettingsSheet({ open, onClose }: { open: boolean; onClose: () => void }
         </div>
         <label className="block text-sm">
           <span className="mb-1 block font-semibold">Récitateur</span>
-          <select value={st.reciter} onChange={(e) => set({ reciter: Number(e.target.value) })} className="h-11 w-full rounded-xl border border-line bg-bg px-3">
+          <select value={st.reciter} onChange={(e) => set({ reciter: Number(e.target.value) })} className="h-11 w-full field">
             {RECITERS.map((r) => (
               <option key={r.id} value={r.id}>
                 {r.name} — {r.style}
@@ -105,7 +105,7 @@ function SettingsSheet({ open, onClose }: { open: boolean; onClose: () => void }
             اَلْعَرَبِيَّة
           </p>
         </div>
-        <div className="divide-y divide-line rounded-xl border border-line px-3">
+        <div className="divide-y divide-line rounded-[14px] ring-1 ring-line px-3">
           <Toggle label="Afficher la translittération" checked={st.showTranslit} onChange={(v) => set({ showTranslit: v })} />
           <Toggle label="Afficher la traduction" checked={st.showTranslation} onChange={(v) => set({ showTranslation: v })} />
         </div>
@@ -220,11 +220,10 @@ export default function SurahReader() {
           </span>
         </div>
       )}
-      <header className={cx('relative mb-5 overflow-hidden rounded-3xl border border-gold/30 bg-surface p-5 text-center sm:p-8', reading && 'mx-auto max-w-3xl')}>
-        <div className="pattern-bg pattern-layer" />
+      <header className={cx('relative mb-6 overflow-hidden rounded-[24px] bg-surface px-5 py-6 text-center ring-1 ring-ink/[0.06] sm:px-8 sm:py-9', reading && 'mx-auto max-w-3xl')}>
         <div className="relative">
-          <p className="quran text-4xl text-primary sm:text-5xl">سُورَةُ {ch.nameArabic}</p>
-          <h1 className="mt-1 font-display text-3xl font-semibold">
+          <p className="quran text-4xl text-gold sm:text-5xl">سُورَةُ {ch.nameArabic}</p>
+          <h1 className="mt-1 font-display text-[28px] font-medium sm:text-3xl">
             {ch.id}. {ch.nameSimple}
           </h1>
           <p className="text-muted">
@@ -357,14 +356,14 @@ export default function SurahReader() {
           {!reading && (
             <div className="flex flex-col gap-2 pt-4 sm:flex-row sm:justify-between">
               {prev ? (
-                <Link to={`/coran/${prev.id}`} className="flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-3 hover:border-gold/60">
+                <Link to={`/coran/${prev.id}`} className="flex items-center gap-2 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-4 py-3 hover:ring-gold/45">
                   <Icon name="arrowLeft" size={16} className="text-gold" /> {prev.id}. {prev.nameSimple}
                 </Link>
               ) : (
                 <span />
               )}
               {next && (
-                <Link to={`/coran/${next.id}`} className="flex items-center justify-end gap-2 rounded-xl border border-line bg-surface px-4 py-3 hover:border-gold/60">
+                <Link to={`/coran/${next.id}`} className="flex items-center justify-end gap-2 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-4 py-3 hover:ring-gold/45">
                   {next.id}. {next.nameSimple} <Icon name="arrowRight" size={16} className="text-gold" />
                 </Link>
               )}

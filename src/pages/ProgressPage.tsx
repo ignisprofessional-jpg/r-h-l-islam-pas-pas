@@ -17,12 +17,13 @@ import { Icon } from '../components/Icon'
 
 function Stat({ icon, value, label, sub }: { icon: string; value: string | number; label: string; sub?: string }) {
   return (
-    <Card className="p-3 sm:p-4">
-      <Icon name={icon} size={18} className="text-gold" />
-      <p className="mt-1 font-display text-2xl font-semibold tabular-nums sm:mt-2 sm:text-3xl">{value}</p>
-      <p className="text-sm font-semibold">{label}</p>
-      {sub && <p className="text-xs text-muted">{sub}</p>}
-    </Card>
+    <div className="border-t border-line py-3 sm:py-4">
+      <p className="flex items-center gap-1.5 text-[13.5px] font-medium text-muted">
+        <Icon name={icon} size={15} className="text-gold" /> {label}
+      </p>
+      <p className="tabular mt-1 font-display text-[30px] font-medium leading-none sm:text-[36px]">{value}</p>
+      {sub && <p className="mt-1 text-[12.5px] text-muted">{sub}</p>}
+    </div>
   )
 }
 
@@ -44,7 +45,7 @@ export default function ProgressPage() {
     <div className="animate-in">
       <PageHeader title="Ma progression" arabic="تقدمي" icon="chart" subtitle="Vos leçons, sourates, invocations, objectifs et statistiques — enregistrés automatiquement sur cet appareil.">
         <div className="flex items-center gap-3">
-          <ProgressBar value={overall.pct} className="max-w-sm bg-white/20" label="Progression générale" />
+          <ProgressBar value={overall.pct} className="max-w-sm" label="Progression générale" />
           <span className="text-sm font-semibold">{overall.pct}% du parcours complet</span>
         </div>
       </PageHeader>
@@ -53,7 +54,7 @@ export default function ProgressPage() {
         Ces statistiques sont là pour vous encourager, pas pour vous juger. Un jour sans apprentissage n’efface rien : tout ce que vous avez appris reste acquis, et vous reprenez simplement où vous en étiez.
       </Note>
 
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-x-5 border-b border-line sm:gap-x-8 md:grid-cols-4">
         <Stat icon="book" value={done.length} label="Leçons terminées" sub={`sur ${LESSONS.length}`} />
         <Stat icon="sparkle" value={learnedSurahs.length} label="Sourates apprises" sub={`${readSurahs.length} lues`} />
         <Stat icon="hands" value={memorizedDuas.length} label="Invocations mémorisées" sub={`sur ${DUAS.length}`} />
@@ -65,11 +66,11 @@ export default function ProgressPage() {
       </div>
 
       <SectionTitle>Par niveau</SectionTitle>
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid gap-x-8 gap-y-5 md:grid-cols-3">
         {LEVELS.map((l) => {
           const p = levelProgress(l.id, s)
           return (
-            <Card key={l.id} className="p-4">
+            <div key={l.id}>
               <div className="flex items-center justify-between">
                 <p className="font-semibold">{l.label}</p>
                 <span className="arabic text-gold">{l.arabic}</span>
@@ -78,7 +79,7 @@ export default function ProgressPage() {
               <p className="text-sm text-muted">
                 {p.done}/{p.total} modules · {p.pct}%
               </p>
-            </Card>
+            </div>
           )
         })}
       </div>

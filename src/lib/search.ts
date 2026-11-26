@@ -4,7 +4,7 @@ import { DUAS, DUA_CATS } from '../data/duas'
 import { ASMA } from '../data/asma'
 import { LETTERS } from '../data/arabic'
 import chapters from '../data/chapters.json'
-import { NAV } from './nav'
+import { NAV, SECONDARY } from './nav'
 import { PRAYER_COURSE, GUIDE, PRAYERS } from '../data/prayer'
 import { WUDU_SECTIONS } from '../data/wudu'
 import { LEARN_SURAHS } from '../data/learnSurahs'
@@ -25,7 +25,7 @@ let INDEX: SearchItem[] | null = null
 
 const build = (): SearchItem[] => {
   const items: SearchItem[] = []
-  for (const n of NAV) items.push({ kind: 'Rubrique', title: n.label, text: n.desc, to: n.to, icon: n.icon, hay: '' })
+  for (const n of [...NAV, ...SECONDARY]) items.push({ kind: 'Rubrique', title: n.label, text: n.desc, to: n.to, icon: n.icon, hay: '' })
   for (const l of LESSONS)
     items.push({
       kind: 'Cours',

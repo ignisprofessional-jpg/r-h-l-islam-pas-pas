@@ -61,12 +61,12 @@ export default function Calendar() {
     <div className="animate-in">
       <PageHeader title="Calendrier islamique" arabic="التقويم الهجري" icon="calendar" subtitle="Le calendrier hégirien est lunaire : chaque mois commence avec le nouveau croissant, et l’année compte environ 354 jours. Les fêtes avancent donc d’environ 11 jours chaque année par rapport au calendrier grégorien.">
         {h && (
-          <div className="inline-flex flex-wrap items-baseline gap-x-3 rounded-2xl bg-white/10 px-4 py-3">
-            <span className="font-display text-3xl font-semibold">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-display text-[26px] font-medium text-primary sm:text-[30px]">
               {h.day} {HIJRI_MONTHS[h.month - 1]} {h.year}
             </span>
-            <span className="arabic text-xl text-[#e8cf98]">{HIJRI_MONTHS_AR[h.month - 1]}</span>
-            <span className="text-sm text-white/80 first-letter:uppercase">{frDate(today)}</span>
+            <span className="arabic text-xl text-gold">{HIJRI_MONTHS_AR[h.month - 1]}</span>
+            <span className="text-sm text-muted first-letter:uppercase">{frDate(today)}</span>
           </div>
         )}
       </PageHeader>
@@ -78,7 +78,7 @@ export default function Calendar() {
               <Icon name="chevronLeft" />
             </button>
             <div className="text-center">
-              <p className="font-display text-xl font-semibold capitalize">{frDate(monthStart, { month: 'long', year: 'numeric' })}</p>
+              <p className="font-display text-xl font-medium capitalize">{frDate(monthStart, { month: 'long', year: 'numeric' })}</p>
               {hStart && hEnd && (
                 <p className="text-xs text-muted">
                   {HIJRI_MONTHS[hStart.month - 1]}
@@ -144,7 +144,7 @@ export default function Calendar() {
         </Card>
 
         <div>
-          <p className="mb-2 font-display text-xl font-semibold">Prochaines dates</p>
+          <p className="mb-2 font-display text-xl font-medium">Prochaines dates</p>
           <div className="space-y-1.5 sm:space-y-2">
             {upcoming.slice(0, 6).map((o) => {
               const ongoing = o.start <= today
@@ -174,7 +174,7 @@ export default function Calendar() {
       <SectionTitle>Les dates importantes de l’année</SectionTitle>
       <div className="grid gap-1.5 md:grid-cols-2 md:gap-3">
         {EVENTS.map((e) => (
-          <details key={e.id} className="group rounded-2xl border border-line bg-surface px-3.5 py-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
+          <details key={e.id} className="group rounded-[16px] bg-surface ring-1 ring-ink/[0.06] px-3.5 py-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-2">
               <p className="font-semibold">{e.title}</p>
               <Badge tone={KIND[e.kind].tone}>
@@ -195,7 +195,7 @@ export default function Calendar() {
       <SectionTitle>Les jours de jeûne recommandés</SectionTitle>
       <div className="grid gap-1.5 md:grid-cols-2 md:gap-3">
         {RECURRING_FASTS.map((f) => (
-          <details key={f.title} className="group rounded-2xl border border-line bg-surface px-3.5 py-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
+          <details key={f.title} className="group rounded-[16px] bg-surface ring-1 ring-ink/[0.06] px-3.5 py-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-2 font-semibold">
               {f.title} <Icon name="chevronDown" size={16} className="shrink-0 text-muted transition-transform group-open:rotate-180" />
             </summary>

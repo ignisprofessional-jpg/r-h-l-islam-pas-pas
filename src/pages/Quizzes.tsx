@@ -14,7 +14,7 @@ export default function Quizzes() {
   return (
     <div className="animate-in">
       <PageHeader title="Quiz et exercices" arabic="اختبر نفسك" icon="trophy" subtitle="Questions à choix multiples, vrai ou faux, mémorisation, lettres arabes, sourates… Chaque réponse est corrigée avec une explication. Vos meilleurs scores sont enregistrés.">
-        <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{attempted} quiz déjà tentés</span>
+        <span className="rounded-full bg-ink/[0.06] px-3 py-1 text-[13px] font-medium text-muted">{attempted} quiz déjà tentés</span>
       </PageHeader>
       {groups.map((g) => (
         <section key={g}>
@@ -23,7 +23,7 @@ export default function Quizzes() {
             {QUIZZES.filter((q) => q.group === g).map((q) => {
               const r = results[q.id]
               return (
-                <Link key={q.id} to={`/quiz/${q.id}`} className="group flex items-center gap-3 rounded-2xl border border-line bg-surface px-3 py-2.5 transition-all hover:-translate-y-0.5 hover:border-gold/60 sm:p-4">
+                <Link key={q.id} to={`/quiz/${q.id}`} className="group flex items-center gap-3 rounded-[16px] bg-surface ring-1 ring-ink/[0.06] px-3 py-2.5 transition-all hover:ring-gold/45 sm:p-4">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary group-hover:bg-primary group-hover:text-primary-ink sm:h-11 sm:w-11">
                     <Icon name={q.icon} />
                   </span>
@@ -43,9 +43,9 @@ export default function Quizzes() {
         </section>
       ))}
       <details className="group mt-6 sm:mt-8 [&_summary::-webkit-details-marker]:hidden">
-      <summary className="mb-2 flex cursor-pointer list-none items-center justify-between gap-3 rounded-2xl border border-line bg-surface px-3.5 py-3 sm:mb-3">
+      <summary className="mb-2 flex cursor-pointer list-none items-center justify-between gap-3 rounded-[16px] bg-surface ring-1 ring-ink/[0.06] px-3.5 py-3 sm:mb-3">
         <span>
-          <span className="block font-display text-[19px] font-semibold sm:text-2xl">Quiz de fin de leçon</span>
+          <span className="block font-display text-[19px] font-medium sm:text-2xl">Quiz de fin de leçon</span>
           <span className="text-[13px] text-muted">Un quiz à la fin de chaque cours — touchez pour voir la liste</span>
         </span>
         <Icon name="chevronDown" size={18} className="shrink-0 text-muted transition-transform group-open:rotate-180" />
@@ -54,7 +54,7 @@ export default function Quizzes() {
         {LESSONS.filter((l) => l.quiz?.length).map((l) => {
           const r = results[`lecon-${l.id}`]
           return (
-            <Link key={l.id} to={`/cours/${l.id}#quiz`} className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm hover:border-gold/60">
+            <Link key={l.id} to={`/cours/${l.id}#quiz`} className="flex items-center justify-between gap-3 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-3.5 py-2.5 text-sm hover:ring-gold/45">
               <span className="font-medium">{l.title}</span>
               {r ? <Badge tone="green">{r.best}/{r.total}</Badge> : <Badge>{l.quiz!.length} questions</Badge>}
             </Link>

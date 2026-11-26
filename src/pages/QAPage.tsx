@@ -33,7 +33,7 @@ export default function QAPage() {
 
       <div className="relative mb-3">
         <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher une question (ex. prière, famille, Fâtiha…)" className="h-12 w-full rounded-xl border border-line bg-surface pl-10 pr-3 outline-none focus:border-primary" aria-label="Rechercher une question" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher une question (ex. prière, famille, Fâtiha…)" className="h-12 w-full rounded-[14px] bg-surface ring-1 ring-ink/[0.06] pl-10 pr-3 outline-none focus:border-primary" aria-label="Rechercher une question" />
       </div>
       <div className="no-scrollbar -mx-1 mb-5 flex gap-1.5 overflow-x-auto px-1 pb-1">
         <button onClick={() => setTag(null)} className={cx('h-8 shrink-0 rounded-full px-3 text-sm font-semibold', !tag ? 'bg-primary text-primary-ink' : 'bg-surface text-muted ring-1 ring-line')}>

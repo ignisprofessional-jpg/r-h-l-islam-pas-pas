@@ -69,7 +69,7 @@ export function Quiz({ id, questions, title = 'Testez vos connaissances', onDone
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold-soft text-gold">
             <Icon name="trophy" size={26} />
           </span>
-          <p className="font-display text-3xl font-semibold">
+          <p className="font-display text-[28px] font-medium sm:text-3xl">
             {score} / {items.length}
           </p>
           <p className="max-w-md text-muted">{msg}</p>
@@ -77,7 +77,7 @@ export function Quiz({ id, questions, title = 'Testez vos connaissances', onDone
         </div>
         <div className="mt-5 space-y-2">
           {items.map((it, k) => (
-            <details key={k} className="rounded-xl border border-line bg-surface-2/50 p-3">
+            <details key={k} className="rounded-[14px] bg-surface ring-1 ring-ink/[0.06]-2/50 p-3">
               <summary className="flex cursor-pointer items-start gap-2 text-[15px] font-medium">
                 <Icon name={answers[k] ? 'checkCircle' : 'x'} size={18} className={answers[k] ? 'text-primary' : 'text-danger'} />
                 <span>{it.q.q}</span>
@@ -101,8 +101,8 @@ export function Quiz({ id, questions, title = 'Testez vos connaissances', onDone
     <Card className="p-5 sm:p-6">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wider text-gold">{TYPE_LABEL[current.q.type]}</p>
-          <h3 className="font-display text-xl font-semibold">{title}</h3>
+          <p className="text-[13.5px] font-semibold text-gold">{TYPE_LABEL[current.q.type]}</p>
+          <h3 className="font-display text-xl font-medium">{title}</h3>
         </div>
         <span className="shrink-0 text-sm text-muted">
           {i + 1} / {items.length}

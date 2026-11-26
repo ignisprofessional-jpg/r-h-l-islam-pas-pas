@@ -42,15 +42,15 @@ export default function PrayerDetail() {
 
       <div className="mb-3 grid grid-cols-2 gap-2 sm:mb-5 sm:grid-cols-3 sm:gap-3">
         <Card className="col-span-2 p-3.5 sm:col-span-1 sm:p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-gold">Son horaire</p>
+          <p className="text-[13.5px] font-semibold text-gold">Son horaire</p>
           <p className="mt-1 text-[14px] sm:text-[15px]">{p.window}</p>
         </Card>
         <Card className="p-3.5 sm:p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-primary">Obligatoire</p>
-          <p className="mt-1 font-display text-2xl font-semibold sm:text-3xl">{p.rakaat} rak‘ats</p>
+          <p className="text-[13.5px] font-semibold text-primary">Obligatoire</p>
+          <p className="mt-1 font-display text-[22px] font-medium sm:text-2xl sm:text-3xl">{p.rakaat} rak‘ats</p>
         </Card>
         <Card className="p-3.5 sm:p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-muted">Sunna</p>
+          <p className="text-[13.5px] font-semibold text-muted">Sunna</p>
           <p className="mt-1 text-[13px] leading-snug sm:text-[15px]">
             {p.sunnaBefore && (
               <>
@@ -72,9 +72,9 @@ export default function PrayerDetail() {
       <SectionTitle>Le déroulé, rak‘a par rak‘a</SectionTitle>
       <div className="grid gap-2 md:grid-cols-2 md:gap-4">
         {plan.map((rk, ri) => (
-          <details key={rk.title} open={ri === 0} className="group rounded-2xl border border-line bg-surface p-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
+          <details key={rk.title} open={ri === 0} className="group rounded-[16px] bg-surface ring-1 ring-ink/[0.06] p-3 sm:p-4 [&_summary::-webkit-details-marker]:hidden">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-2">
-              <span className="font-display text-[19px] font-semibold sm:text-xl">{rk.title}</span>
+              <span className="font-display text-[19px] font-medium sm:text-xl">{rk.title}</span>
               <Icon name="chevronDown" size={18} className="text-muted transition-transform group-open:rotate-180" />
             </summary>
             <ol className="mt-2 space-y-1">
@@ -112,14 +112,14 @@ export default function PrayerDetail() {
 
       <div className="mt-6 flex justify-between gap-2">
         {idx > 0 ? (
-          <Link to={`/priere/${PRAYERS[idx - 1].id}`} className="flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-3 text-sm hover:border-gold/60">
+          <Link to={`/priere/${PRAYERS[idx - 1].id}`} className="flex items-center gap-2 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-4 py-3 text-sm hover:ring-gold/45">
             <Icon name="arrowLeft" size={16} className="text-gold" /> {PRAYERS[idx - 1].name.split(' (')[0]}
           </Link>
         ) : (
           <span />
         )}
         {idx < PRAYERS.length - 1 && (
-          <Link to={`/priere/${PRAYERS[idx + 1].id}`} className="flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-3 text-sm hover:border-gold/60">
+          <Link to={`/priere/${PRAYERS[idx + 1].id}`} className="flex items-center gap-2 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-4 py-3 text-sm hover:ring-gold/45">
             {PRAYERS[idx + 1].name.split(' (')[0]} <Icon name="arrowRight" size={16} className="text-gold" />
           </Link>
         )}

@@ -17,7 +17,7 @@ export function LessonList({ lessons }: { lessons: Lesson[] }) {
           <Link
             key={l.id}
             to={`/cours/${l.id}`}
-            className="group flex items-center gap-3 rounded-2xl border border-line bg-surface px-3 py-2.5 transition-all sm:items-start sm:p-4 hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-[0_12px_30px_-18px_rgba(15,76,58,0.45)]"
+            className="group flex items-center gap-3 rounded-[16px] bg-surface ring-1 ring-ink/[0.06] px-3 py-2.5 transition-all sm:items-start sm:p-4 hover:ring-gold/45"
           >
             <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl sm:h-11 sm:w-11 ${st === 'done' ? 'bg-primary text-primary-ink' : 'bg-primary-soft text-primary'}`}>
               <Icon name={st === 'done' ? 'check' : (l.icon ?? 'book')} size={20} strokeWidth={st === 'done' ? 3 : 1.8} />

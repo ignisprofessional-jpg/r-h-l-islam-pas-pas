@@ -61,7 +61,7 @@ export function InstallHint() {
   }
 
   return (
-    <div className="relative mb-5 flex items-start gap-3 rounded-2xl border border-gold/40 bg-gold-soft/50 p-4">
+    <div className="relative mb-6 flex items-start gap-3 rounded-[18px] bg-gold-soft/50 p-4 ring-1 ring-gold/25">
       <img src="/apple-touch-icon.png" alt="" width={44} height={44} className="h-11 w-11 shrink-0 rounded-xl" />
       <div className="min-w-0 flex-1 text-[15px]">
         <p className="font-semibold">Installez Rûh sur votre téléphone</p>
@@ -90,7 +90,7 @@ export function InstallHint() {
           </>
         )}
       </div>
-      <button onClick={close} className="-m-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted active:bg-surface-2" aria-label="Masquer ce conseil">
+      <button onClick={close} className="-m-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-muted active:bg-ink/[0.06]" aria-label="Masquer ce conseil">
         <Icon name="x" size={16} />
       </button>
     </div>

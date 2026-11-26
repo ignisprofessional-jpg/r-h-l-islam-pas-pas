@@ -11,8 +11,8 @@ export function AudioBar() {
   const t = queue[index]
   const [s, v] = t.key.split(':')
   return (
-    <div className="fixed inset-x-0 bottom-[calc(66px+env(safe-area-inset-bottom,0px))] z-[65] px-3 lg:bottom-4 lg:left-72 lg:px-6" role="region" aria-label="Lecteur audio">
-      <div className="animate-in mx-auto flex max-w-3xl flex-wrap items-center gap-2 rounded-2xl border border-line bg-surface/95 p-2 pl-3 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.5)] backdrop-blur sm:flex-nowrap">
+    <div className="fixed inset-x-0 bottom-[calc(var(--bottom-nav)+8px)] z-[65] px-3 md:bottom-4 md:left-[var(--shell-left)] md:px-6" role="region" aria-label="Lecteur audio">
+      <div className="animate-in mx-auto flex max-w-3xl flex-wrap items-center gap-2 rounded-[18px] bg-surface p-2 pl-3.5 shadow-[0_16px_36px_-18px_rgba(10,30,22,0.45)] ring-1 ring-ink/[0.07] sm:flex-nowrap">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">{title || surahName(Number(s))}</p>
           <p className="truncate text-xs text-muted">
@@ -23,7 +23,7 @@ export function AudioBar() {
           <button onClick={prev} className="tap-pop flex h-9 w-9 items-center justify-center rounded-lg text-muted hover:bg-surface-2 hover:text-ink" aria-label="Verset précédent">
             <Icon name="prev" size={16} />
           </button>
-          <button onClick={toggle} className="tap-pop flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-ink" aria-label={playing ? 'Pause' : 'Lecture'}>
+          <button onClick={toggle} className="tap-pop flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-ink" aria-label={playing ? 'Pause' : 'Lecture'}>
             {loading ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : <Icon name={playing ? 'pause' : 'play'} size={18} />}
           </button>
           <button onClick={next} className="tap-pop flex h-9 w-9 items-center justify-center rounded-lg text-muted hover:bg-surface-2 hover:text-ink" aria-label="Verset suivant">

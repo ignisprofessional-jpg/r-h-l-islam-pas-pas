@@ -107,7 +107,7 @@ function OrderVerses({ verses, onSuccess }: { verses: Verse[]; onSuccess: () => 
               onClick={() => pick(v.number)}
               className={cx(
                 'tap-pop flex w-full items-center gap-3 rounded-2xl border p-3 text-right transition-colors',
-                pos >= 0 ? 'border-primary bg-primary-soft' : wrong === v.number ? 'border-danger bg-danger-soft' : 'border-line bg-surface hover:border-gold/60',
+                pos >= 0 ? 'border-primary bg-primary-soft' : wrong === v.number ? 'border-danger bg-danger-soft' : 'border-line bg-surface hover:ring-gold/45',
               )}
             >
               <span className={cx('flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold', pos >= 0 ? 'bg-primary text-primary-ink' : 'bg-surface-2 text-muted')}>{pos >= 0 ? pos + 1 : '?'}</span>
@@ -147,7 +147,7 @@ function MissingWord({ verses, onFinish }: { verses: Verse[]; onFinish: (score: 
     return (
       <Card className="p-6 text-center">
         <Icon name="trophy" size={32} className="mx-auto text-gold" />
-        <p className="mt-2 font-display text-3xl font-semibold">
+        <p className="mt-2 font-display text-[28px] font-medium sm:text-3xl">
           {score} / {rounds}
         </p>
         <p className="text-muted">{score === rounds ? 'Parfait, vous connaissez très bien cette sourate !' : 'Continuez à écouter et répéter, vous progressez.'}</p>
@@ -270,7 +270,7 @@ export default function LearnSurah() {
                   setSurah(id, { learned: k === 'maitrisee', learning: k === 'cours' })
                   if (k === 'maitrisee') toast(`${ls.name} maîtrisée, mâ shâ’ Allâh !`)
                 }}
-                className={cx('rounded-full px-3 py-1.5 text-sm font-semibold transition-colors', active ? 'bg-[#d6ad5c] text-[#1b1406]' : 'bg-white/15 hover:bg-white/25')}
+                className={cx('h-10 rounded-full px-4 text-[14px] font-semibold transition-colors', active ? 'bg-primary text-primary-ink' : 'text-muted ring-1 ring-line hover:text-ink hover:ring-ink/25')}
                 aria-pressed={!!active}
               >
                 {label}
@@ -282,12 +282,12 @@ export default function LearnSurah() {
 
       <div className="mb-5 grid gap-3 sm:grid-cols-2">
         <Card className="p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-gold">Pourquoi l’apprendre</p>
+          <p className="text-[13.5px] font-semibold text-gold">Pourquoi l’apprendre</p>
           <p className="mt-1 text-[15px]">{ls.why}</p>
         </Card>
         {ls.virtue && (
           <Card className="p-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-primary">Son mérite</p>
+            <p className="text-[13.5px] font-semibold text-primary">Son mérite</p>
             <p className="mt-1 text-[15px] italic">{ls.virtue.text}</p>
             <p className="mt-1 text-xs text-muted">{ls.virtue.ref}</p>
           </Card>
@@ -335,7 +335,7 @@ export default function LearnSurah() {
               <p className="mt-1 text-[15.5px] text-ink/90">{v.translation}</p>
               {ls.verses[v.number - 1] && (
                 <div className="mt-3 rounded-xl bg-primary-soft/50 p-3 text-[15px]">
-                  <p className="mb-0.5 text-xs font-bold uppercase tracking-wider text-primary">Le sens expliqué simplement</p>
+                  <p className="mb-0.5 text-[13.5px] font-semibold text-primary">Le sens expliqué simplement</p>
                   <Rich text={ls.verses[v.number - 1]} />
                 </div>
               )}
@@ -380,7 +380,7 @@ export default function LearnSurah() {
           </div>
           <div className="mt-5 grid gap-2">
             {verses.map((v) => (
-              <button key={v.key} onClick={() => play(v.number, true, repeat)} className={cx('flex items-center gap-3 rounded-xl border p-3 text-left', audio.queue[audio.index]?.key === v.key ? 'border-gold bg-gold-soft/40' : 'border-line hover:border-gold/50')}>
+              <button key={v.key} onClick={() => play(v.number, true, repeat)} className={cx('flex items-center gap-3 rounded-xl border p-3 text-left', audio.queue[audio.index]?.key === v.key ? 'border-gold bg-gold-soft/40' : 'border-line hover:ring-gold/45')}>
                 <Icon name="play" size={14} className="text-primary" />
                 <span className="flex-1 text-sm italic text-accent">{v.translit}</span>
                 <span className="text-xs text-muted">v. {v.number}</span>
@@ -415,7 +415,7 @@ export default function LearnSurah() {
       </Note>
 
       {nextS && (
-        <Link to={`/sourates/${nextS.id}`} className="mt-2 flex items-center justify-between rounded-2xl border border-line bg-surface p-4 hover:border-gold/60">
+        <Link to={`/sourates/${nextS.id}`} className="mt-2 flex items-center justify-between rounded-[16px] bg-surface ring-1 ring-ink/[0.06] p-4 hover:ring-gold/45">
           <span>
             <span className="block text-xs text-muted">Sourate suivante du parcours</span>
             <span className="font-semibold">

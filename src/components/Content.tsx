@@ -90,7 +90,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
             )
           case 'h':
             return (
-              <h3 key={i} className="mb-1 mt-6 font-display text-xl font-semibold text-ink">
+              <h3 key={i} className="mb-1 mt-6 font-display text-xl font-medium text-ink">
                 {b.text}
               </h3>
             )
@@ -124,7 +124,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
           case 'hadith':
             return (
               <blockquote key={i} className="my-4 rounded-2xl border-l-4 border-primary bg-primary-soft/40 p-3.5 sm:my-5 sm:p-5">
-                <p className="mb-1 text-xs font-bold uppercase tracking-wider text-primary">Hadith — sens rapporté</p>
+                <p className="mb-1 text-[13.5px] font-semibold text-primary">Hadith — sens rapporté</p>
                 <p className="text-[15px] italic text-ink sm:text-[16px]">{b.text}</p>
                 <p className="mt-2 flex items-start gap-1.5 text-xs text-muted">
                   <Icon name="book" size={14} className="mt-0.5" /> {b.ref}
@@ -137,7 +137,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
             return (
               <dl key={i} className="my-4 grid gap-2 sm:grid-cols-2">
                 {b.items.map((t) => (
-                  <div key={t.term} className="rounded-xl border border-line bg-surface p-3">
+                  <div key={t.term} className="rounded-[14px] bg-surface ring-1 ring-ink/[0.06] p-3">
                     <dt className="font-semibold text-primary">{t.term}</dt>
                     <dd className="mt-0.5 text-[15px] text-muted">{t.def}</dd>
                   </div>
@@ -173,7 +173,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
             )
           case 'link':
             return (
-              <Link key={i} to={b.to} className="group my-2 flex items-center justify-between gap-3 rounded-xl border border-line bg-surface px-4 py-3 transition-colors hover:border-gold/60">
+              <Link key={i} to={b.to} className="group my-2 flex items-center justify-between gap-3 rounded-[14px] bg-surface ring-1 ring-ink/[0.06] px-4 py-3 transition-colors hover:ring-gold/45">
                 <span>
                   <span className="font-semibold text-primary">{b.label}</span>
                   {b.text && <span className="block text-sm text-muted">{b.text}</span>}

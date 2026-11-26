@@ -26,7 +26,7 @@ export default function Wudu() {
     <div className="animate-in">
       <PageHeader title="Les ablutions (woudou)" arabic="الوضوء" icon="drop" subtitle="Le guide illustré et interactif pour se purifier avant la prière : chaque étape dans l’ordre, ce qui annule les ablutions, les erreurs fréquentes et le ghusl.">
         <div className="flex items-center gap-3">
-          <ProgressBar value={(done.length / WUDU_STEPS.length) * 100} className="max-w-sm bg-white/20" label="Étapes terminées" />
+          <ProgressBar value={(done.length / WUDU_STEPS.length) * 100} className="max-w-sm" label="Étapes terminées" />
           <span className="text-sm font-semibold">
             {done.length}/{WUDU_STEPS.length} étapes
           </span>
@@ -54,13 +54,13 @@ export default function Wudu() {
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-gold">Étape {i + 1}</span>
+              <span className="text-[13.5px] font-semibold text-gold">Étape {i + 1}</span>
               <Badge tone={step.status === 'obligatoire' ? 'green' : step.status === 'recommandé' ? 'gold' : 'neutral'}>
                 {step.status === 'obligatoire' ? 'Obligatoire' : step.status === 'recommandé' ? 'Recommandé' : 'Avis divergents'}
               </Badge>
               <Badge>{step.times}</Badge>
             </div>
-            <h2 className="mt-1 font-display text-3xl font-semibold">{step.title}</h2>
+            <h2 className="mt-1 font-display text-[28px] font-medium sm:text-3xl">{step.title}</h2>
             <ul className="mt-3 space-y-2">
               {step.how.map((h) => (
                 <li key={h} className="flex gap-3 text-[16px]">
@@ -97,7 +97,7 @@ export default function Wudu() {
 
       {allDone && (
         <Card className="animate-in mt-4 p-5">
-          <p className="flex items-center gap-2 font-display text-2xl font-semibold">
+          <p className="flex items-center gap-2 font-display text-[22px] font-medium sm:text-2xl">
             <Icon name="checkCircle" className="text-primary" /> Vos ablutions sont terminées
           </p>
           <p className="mb-3 text-muted">Il est recommandé de dire ensuite :</p>
@@ -124,7 +124,7 @@ export default function Wudu() {
       <SectionTitle>Tout comprendre sur la purification</SectionTitle>
       <Tabs className="mb-3" value={section} onChange={setSection} tabs={WUDU_SECTIONS.map((s) => ({ id: s.id, label: s.title.replace(' (grandes ablutions)', ''), icon: s.icon }))} />
       <Card className="p-5 sm:p-6">
-        <h3 className="mb-2 font-display text-2xl font-semibold">{sec.title}</h3>
+        <h3 className="mb-2 font-display text-[22px] font-medium sm:text-2xl">{sec.title}</h3>
         <Blocks blocks={sec.blocks} />
       </Card>
 

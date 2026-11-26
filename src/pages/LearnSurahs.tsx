@@ -14,7 +14,7 @@ export default function LearnSurahs() {
     <div className="animate-in">
       <PageHeader title="Les sourates à apprendre" arabic="الحفظ" icon="sparkle" subtitle="Un parcours progressif de dix sourates courtes, idéales pour la prière. Pour chacune : texte arabe, phonétique, traduction, audio, explication verset par verset et exercices de mémorisation.">
         <div className="flex items-center gap-3">
-          <ProgressBar value={(learned / LEARN_SURAHS.length) * 100} className="max-w-sm bg-white/20" label="Sourates maîtrisées" />
+          <ProgressBar value={(learned / LEARN_SURAHS.length) * 100} className="max-w-sm" label="Sourates maîtrisées" />
           <span className="text-sm font-semibold">
             {learned}/{LEARN_SURAHS.length} maîtrisées
           </span>
@@ -31,8 +31,8 @@ export default function LearnSurahs() {
           const st = surahs[s.id]
           return (
             <li key={s.id}>
-              <Link to={`/sourates/${s.id}`} className="group flex h-full gap-4 rounded-2xl border border-line bg-surface p-4 transition-all hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-[0_12px_30px_-18px_rgba(15,76,58,0.45)]">
-                <span className={cx('flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl font-display text-xl font-semibold', st?.learned ? 'bg-primary text-primary-ink' : 'bg-gold-soft text-gold')}>
+              <Link to={`/sourates/${s.id}`} className="group flex h-full gap-4 rounded-[16px] bg-surface ring-1 ring-ink/[0.06] p-4 transition-all hover:ring-gold/45">
+                <span className={cx('flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl font-display text-xl font-medium', st?.learned ? 'bg-primary text-primary-ink' : 'bg-gold-soft text-gold')}>
                   {st?.learned ? <Icon name="check" strokeWidth={3} /> : s.order}
                 </span>
                 <span className="min-w-0 flex-1">
