@@ -7,7 +7,7 @@ import { WUDU_STEPS } from '../data/wudu'
 import { DUAS } from '../data/duas'
 import { PageHeader, SectionTitle } from '../components/ui'
 import { Icon } from '../components/Icon'
-import { PrayerTimesCard } from '../components/Widgets'
+import { PrayerSection } from '../components/PrayerPanel'
 
 /** Rubrique « Pratique » : horaires du jour et accès aux guides d'adoration. */
 export default function Practice() {
@@ -25,13 +25,15 @@ export default function Practice() {
     <div className="animate-in">
       <PageHeader title="Pratique" arabic="العبادة" subtitle="La prière, les ablutions, les invocations et le dhikr : ce qui accompagne chaque journée." />
 
-      <PrayerTimesCard />
+      <div className="max-w-xl">
+        <PrayerSection />
+      </div>
 
       <SectionTitle>Guides et outils</SectionTitle>
-      <ul className="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
+      <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
         {itemsOf('pratique').map((n) => (
-          <li key={n.to} className="border-b border-line first:border-t sm:[&:nth-child(2)]:border-t">
-            <Link to={n.to} className="group flex min-h-[72px] items-center gap-4 py-3 hover:bg-ink/[0.025]">
+          <li key={n.to}>
+            <Link to={n.to} className="card group flex min-h-[76px] items-center gap-4 px-4 py-3 active:scale-[0.99]">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary transition-colors group-hover:bg-primary group-hover:text-primary-ink">
                 <Icon name={n.icon} size={20} />
               </span>
@@ -46,12 +48,12 @@ export default function Practice() {
         ))}
       </ul>
 
-      <Link to="/priere/guide" className="group mt-8 flex items-center justify-between gap-4 rounded-[20px] bg-deep px-5 py-5 text-white sm:px-7">
+      <Link to="/priere/guide" className="group mt-3 flex items-center justify-between gap-4 rounded-[24px] bg-ink px-5 py-5 text-bg sm:px-7">
         <span>
-          <span className="block font-display text-[22px] font-medium leading-tight sm:text-[26px]">Je découvre la prière</span>
-          <span className="mt-1 block text-[14px] text-white/75">Le guide pas à pas, lentement, avec chaque parole et chaque geste.</span>
+          <span className="block text-[20px] font-semibold leading-tight sm:text-[22px]">Je découvre la prière</span>
+          <span className="mt-1 block text-[14px] opacity-70">Le guide pas à pas, lentement, avec chaque parole et chaque geste.</span>
         </span>
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 text-gold-bright group-hover:bg-white/15">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg/15">
           <Icon name="arrowRight" size={18} />
         </span>
       </Link>

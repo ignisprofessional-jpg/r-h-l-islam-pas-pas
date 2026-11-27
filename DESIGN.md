@@ -1,6 +1,6 @@
 # Rûh — direction artistique
 
-**Le monde : un manuscrit calme.** Papier chaud, encre vert forêt, filets dorés. La page est composée comme un beau livre : des titres en serif, du texte qui respire, des filets fins pour séparer plutôt que des boîtes. Un seul aplat vert profond par écran au maximum, réservé à ce qui compte le plus (sur l'accueil : la reprise du Coran).
+**Le monde : une app de prière claire et chaleureuse.** Fond légèrement teinté, cartes blanches nettement délimitées (ombre douce), une grande carte vert profond pour la prochaine prière et son compte à rebours, icônes en arc (ciel de chaque prière), barre d’onglets flottante en pilule sur téléphone et iPad.
 
 ## Couleurs (tokens CSS dans `src/index.css`)
 | Rôle | Clair | Sombre |
@@ -25,13 +25,12 @@ Le doré n'est jamais un fond plein : filets, chiffres, petits ornements, état 
 - Échelle : 13 · 14 · 16 (corps) · 18 · 22 · 28 · 36 · 48. Titres : graisse 500, interlettrage -0,01 em.
 
 ## Composition
-- Pas de carte par défaut : sections éditoriales séparées par des filets (`SectionTitle` = titre + filet + action).
-- `Card` : surface claire, filet presque invisible, aucune ombre. Pas de cartes imbriquées.
+- Chaque bloc est une carte (`.card` : fond blanc, rayon 22 px, ombre douce ; en sombre, filet clair). Les listes sont des cartes groupées avec séparateurs (style iOS).
+- Titres de section en sans-serif semi-gras, action à droite.
 - Rayons : 20 px (surfaces), 14 px (lignes et champs), boutons en pilule.
 - Icônes : jeu unique maison (`Icon.tsx`), trait 1,75, 18–20 px.
 - Mouvement : un fondu court au changement de page, feuilles qui montent du bas sur mobile. Rien d'autre.
 
 ## Navigation
-- **≥ 1280 px** : barre latérale complète (5 groupes : Accueil, Coran, Apprendre, Pratique, Suivi), repliable en rail.
-- **768–1279 px** : rail d'icônes avec libellés ; chaque groupe ouvre un panneau avec ses pages.
-- **< 768 px** : en-tête vert (barre d'état iOS) + barre inférieure à 5 onglets (Accueil, Coran, Apprendre, Pratique, Plus). L'onglet actif suit le groupe de la page.
+- **≥ 1024 px** : barre latérale complète (5 groupes : Accueil, Coran, Apprendre, Pratique, Suivi), repliable en rail.
+- **< 1024 px (iPhone, iPad portrait)** : barre du haut avec boutons ronds (retour, recherche), barre d’onglets flottante (Accueil, Coran, Apprendre, Pratique, Plus) ; accueil sur deux colonnes à partir de 768 px.

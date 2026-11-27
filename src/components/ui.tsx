@@ -20,7 +20,7 @@ export function Rich({ text }: { text: string }) {
 /* ---------------- Surfaces & mise en page ---------------- */
 export function Card({ children, className = '', as: As = 'div', ...rest }: { children: ReactNode; className?: string; as?: 'div' | 'section' | 'article'; id?: string }) {
   return (
-    <As className={cx('rounded-[20px] bg-surface ring-1 ring-ink/[0.06]', className)} {...rest}>
+    <As className={cx('card', className)} {...rest}>
       {children}
     </As>
   )
@@ -46,15 +46,15 @@ export function Ornament({ className = '' }: { className?: string }) {
 
 export function PageHeader({ title, subtitle, arabic, children, back }: { title: string; subtitle?: string; arabic?: string; icon?: string; children?: ReactNode; back?: { to: string; label: string } }) {
   return (
-    <header className="mb-6 sm:mb-10">
+    <header className="mb-5 sm:mb-8">
       {back && (
-        <Link to={back.to} className="-ml-1 mb-2 inline-flex h-9 items-center gap-1.5 rounded-lg px-1 text-[14px] font-medium text-muted hover:text-ink sm:mb-3">
+        <Link to={back.to} className="-ml-1 mb-2 hidden h-9 items-center gap-1.5 rounded-lg px-1 text-[14px] font-medium text-muted hover:text-ink sm:mb-3 lg:inline-flex">
           <Icon name="arrowLeft" size={16} /> {back.label}
         </Link>
       )}
       <div className="flex items-end justify-between gap-4 sm:gap-8">
         <div className="min-w-0 max-w-3xl">
-          <h1 className="font-display text-[30px] font-medium leading-[1.1] tracking-[-0.018em] sm:text-[44px] sm:leading-[1.06]">{title}</h1>
+          <h1 className="font-display text-[32px] font-medium leading-[1.08] tracking-[-0.02em] sm:text-[44px] sm:leading-[1.05]">{title}</h1>
           {subtitle && <p className="mt-2 line-clamp-2 max-w-[62ch] text-[15px] leading-relaxed text-muted sm:mt-3 sm:line-clamp-none sm:text-[17px]">{subtitle}</p>}
         </div>
         {arabic && (
@@ -64,16 +64,14 @@ export function PageHeader({ title, subtitle, arabic, children, back }: { title:
         )}
       </div>
       {children && <div className="mt-4 sm:mt-6">{children}</div>}
-      <Ornament className="mt-5 sm:mt-8" />
     </header>
   )
 }
 
 export function SectionTitle({ children, action, id }: { children: ReactNode; action?: ReactNode; id?: string }) {
   return (
-    <div className="mb-3 mt-9 flex items-center gap-4 first:mt-0 sm:mb-4 sm:mt-12" id={id}>
-      <h2 className="font-display text-[22px] font-medium leading-tight tracking-[-0.01em] text-ink sm:text-[26px]">{children}</h2>
-      <span className="h-px min-w-6 flex-1 bg-line" aria-hidden />
+    <div className="mb-2.5 mt-7 flex items-baseline justify-between gap-4 px-1 sm:mb-3 sm:mt-10" id={id}>
+      <h2 className="text-[19px] font-semibold leading-tight tracking-[-0.01em] text-ink sm:text-[21px]">{children}</h2>
       {action && <div className="shrink-0 text-[14px]">{action}</div>}
     </div>
   )
@@ -206,7 +204,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 
 export function EmptyState({ icon = 'sparkle', title, text, action }: { icon?: string; title: string; text?: string; action?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-[20px] bg-surface-2/50 px-5 py-7 text-center sm:px-8 sm:py-10">
+    <div className="card flex flex-col items-center gap-2 px-5 py-7 text-center sm:px-8 sm:py-10">
       <span className="flex h-11 w-11 items-center justify-center rounded-full text-gold ring-1 ring-gold/40">
         <Icon name={icon} size={19} />
       </span>
@@ -240,7 +238,7 @@ export function Note({ tone = 'info', title, children }: { tone?: 'info' | 'tip'
 /* ---------------- Texte arabe + translittération + traduction ---------------- */
 export function ArabicBlock({ arabic, translit, translation, source, size = 'text-3xl', className = '' }: { arabic: string; translit?: string; translation?: string; source?: string; size?: string; className?: string }) {
   return (
-    <div className={cx('rounded-[18px] bg-surface-2/60 px-4 py-4 sm:px-6 sm:py-5', className)}>
+    <div className={cx('rounded-[18px] bg-surface-2 px-4 py-4 sm:px-6 sm:py-5', className)}>
       <p className={cx('arabic text-right text-ink', size)} lang="ar">
         {arabic}
       </p>
@@ -259,7 +257,7 @@ export function ArabicBlock({ arabic, translit, translation, source, size = 'tex
 export function Tabs<T extends string>({ tabs, value, onChange, className = '' }: { tabs: { id: T; label: string; icon?: string }[]; value: T; onChange: (v: T) => void; className?: string }) {
   return (
     <div className={cx('no-scrollbar -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0', className)}>
-      <div className="inline-flex gap-1 rounded-full bg-ink/[0.055] p-1" role="tablist">
+      <div className="inline-flex gap-1 rounded-full bg-ink/[0.06] p-1" role="tablist">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -267,11 +265,11 @@ export function Tabs<T extends string>({ tabs, value, onChange, className = '' }
             aria-selected={value === t.id}
             onClick={() => onChange(t.id)}
             className={cx(
-              'tap-pop inline-flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 text-[14px] transition-colors',
-              value === t.id ? 'bg-surface font-semibold text-ink shadow-[0_1px_2px_rgba(15,40,30,0.14)]' : 'font-medium text-muted hover:text-ink',
+              'tap-pop inline-flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-4 text-[14px] transition-colors',
+              value === t.id ? 'bg-ink font-semibold text-bg' : 'font-medium text-muted hover:text-ink',
             )}
           >
-            {t.icon && <Icon name={t.icon} size={16} className={value === t.id ? 'text-primary' : ''} />}
+            {t.icon && <Icon name={t.icon} size={16} />}
             {t.label}
           </button>
         ))}
@@ -354,7 +352,7 @@ export function Toaster() {
 /* ---------------- Tuile de navigation (ligne horizontale) ---------------- */
 export function Tile({ to, icon, title, text, badge, arabic }: { to: string; icon: string; title: string; text?: string; badge?: ReactNode; arabic?: string }) {
   return (
-    <Link to={to} className="group flex h-full items-start gap-3.5 rounded-[18px] bg-surface p-4 ring-1 ring-ink/[0.06] transition-shadow hover:ring-gold/45 sm:p-5">
+    <Link to={to} className="card group flex h-full items-start gap-3.5 p-4 transition-transform active:scale-[0.99] sm:p-5">
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
         <Icon name={icon} size={19} />
       </span>
@@ -374,5 +372,5 @@ export function Tile({ to, icon, title, text, badge, arabic }: { to: string; ico
 /* ---------------- Listes éditoriales ---------------- */
 /** Liste séparée par des filets, sans boîte. */
 export function List({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <ul className={cx('divide-y divide-line border-y border-line', className)}>{children}</ul>
+  return <ul className={cx('card divide-y divide-line overflow-hidden', className)}>{children}</ul>
 }

@@ -1,3 +1,4 @@
+import { useUI } from './ui'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 export function useAsync<T>(fn: () => Promise<T>, deps: unknown[]) {
@@ -53,6 +54,7 @@ export const hasArabicVoice = () =>
 
 export function useDocumentTitle(title: string) {
   useEffect(() => {
+    useUI.setState({ title })
     document.title = title ? `${title} · Rûh` : "Rûh — apprendre l'islam pas à pas"
   }, [title])
 }

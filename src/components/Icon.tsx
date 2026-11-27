@@ -32,7 +32,7 @@ const glyphs: Record<string, Glyph> = {
   // Tasbih : grains en cercle et pompon
   beads: g('M12 3.2a1.1 1.1 0 1 0 0 .01M16.9 5.1a1.1 1.1 0 1 0 0 .01M18.8 10a1.1 1.1 0 1 0 0 .01M16.9 14.9a1.1 1.1 0 1 0 0 .01M7.1 14.9a1.1 1.1 0 1 0 0 .01M5.2 10a1.1 1.1 0 1 0 0 .01M7.1 5.1a1.1 1.1 0 1 0 0 .01M12 16.8v2M10.4 21.5l1.6-2.7 1.6 2.7'),
   // Minaret (horaires de prière)
-  clock: g('M9.5 21V10l2.5-3 2.5 3v11M8 21h8M9.5 13.5h5M12 7V4.6M12 3.2a.9.9 0 1 0 0 .01', 'M9.5 21V10l2.5-3 2.5 3v11z'),
+  clock: g('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7.5V12l3 2', 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z'),
   minaret: g('M9.5 21V10l2.5-3 2.5 3v11M8 21h8M9.5 13.5h5M12 7V4.6M12 3.2a.9.9 0 1 0 0 .01', 'M9.5 21V10l2.5-3 2.5 3v11z'),
   // Mosquée : coupole, porte et deux minarets
   mosque: g('M2.5 21h19M6 21v-6.5a6 6 0 0 1 12 0V21M12 5.5V3.5M10 21v-3a2 2 0 0 1 4 0v3M3.5 21v-9l1-1.5 1 1.5M18.5 12l1-1.5 1 1.5v9', 'M6 21v-6.5a6 6 0 0 1 12 0V21z'),

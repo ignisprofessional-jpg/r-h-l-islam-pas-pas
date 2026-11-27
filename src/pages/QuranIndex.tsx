@@ -89,11 +89,12 @@ export default function QuranIndex() {
                 if (q) setParams({})
               }}
               placeholder="Nom ou numéro de sourate, ou un mot (ex. patience)"
+              enterKeyHint="search"
               className="field h-12 w-full pl-10 pr-3 text-[15px]"
               aria-label="Rechercher une sourate ou un mot"
             />
           </div>
-          <button type="submit" className="h-12 shrink-0 rounded-full bg-primary px-5 text-[15px] font-semibold text-primary-ink hover:bg-[color-mix(in_srgb,var(--primary)_86%,black)]">
+          <button type="submit" className="hidden h-12 shrink-0 rounded-full bg-primary px-5 sm:block text-[15px] font-semibold text-primary-ink hover:bg-[color-mix(in_srgb,var(--primary)_86%,black)]">
             Chercher un mot
           </button>
         </form>

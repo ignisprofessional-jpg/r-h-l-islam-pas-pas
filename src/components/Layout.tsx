@@ -9,6 +9,7 @@ import { AudioBar } from './AudioBar'
 import { Toaster, cx } from './ui'
 import { useSync } from '../lib/sync'
 import { STATUS_DOT } from '../lib/syncLabels'
+import { useUI } from '../lib/ui'
 
 /* ---------------- Marque ---------------- */
 function Mark({ size = 36, onDark = false }: { size?: number; onDark?: boolean }) {
@@ -44,13 +45,12 @@ function useIsDark() {
 
 function useApplyTheme() {
   const dark = useIsDark()
-  const mobile = useMediaQuery('(max-width: 767px)')
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark)
-    // Sur téléphone, la barre d'état prend la couleur de l'en-tête vert ; ailleurs, celle du papier.
-    const color = mobile ? (dark ? '#0f2a21' : '#0d3b2e') : dark ? '#0c1613' : '#f5f0e6'
+    // La barre d'état prend la couleur du fond de l'application.
+    const color = dark ? '#090d0b' : '#f1efe9'
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', color)
-  }, [dark, mobile])
+  }, [dark])
 }
 
 function ThemeButton({ className = '', onDark = false, withLabel = false }: { className?: string; onDark?: boolean; withLabel?: boolean }) {
@@ -228,7 +228,7 @@ function SideLink({ to, icon, label }: { to: string; icon: string; label: string
 
 function FullSidebar({ onSearch, onCollapse }: { onSearch: () => void; onCollapse: () => void }) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-[264px] flex-col border-r border-line bg-bg xl:flex" aria-label="Navigation">
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-[264px] flex-col border-r border-line bg-bg lg:flex" aria-label="Navigation">
       <div className="flex items-center justify-between px-4 pb-3 pt-5">
         <Link to="/" className="flex items-center gap-2.5 rounded-xl" aria-label="Rûh — accueil">
           <Mark size={34} />
@@ -331,7 +331,7 @@ function GroupPanel({ group, onClose }: { group: NavGroup; onClose: () => void }
   )
 }
 
-function Rail({ onSearch, onExpand, xlOnly }: { onSearch: () => void; onExpand: () => void; xlOnly: boolean }) {
+function Rail({ onSearch, onExpand }: { onSearch: () => void; onExpand: () => void }) {
   const location = useLocation()
   const navigate = useNavigate()
   const current = groupOf(location.pathname)
@@ -341,7 +341,7 @@ function Rail({ onSearch, onExpand, xlOnly }: { onSearch: () => void; onExpand: 
 
   return (
     <>
-      <aside className={cx('fixed inset-y-0 left-0 z-50 hidden w-[84px] flex-col items-center border-r border-line bg-bg py-4', xlOnly ? 'xl:flex' : 'md:flex xl:hidden')} aria-label="Navigation">
+      <aside className="fixed inset-y-0 left-0 z-50 hidden w-[84px] flex-col items-center border-r border-line bg-bg py-4 lg:flex" aria-label="Navigation">
         <Link to="/" className="mb-3 rounded-xl" aria-label="Rûh — accueil">
           <Mark size={40} />
         </Link>
@@ -374,7 +374,7 @@ function Rail({ onSearch, onExpand, xlOnly }: { onSearch: () => void; onExpand: 
             <Icon name="settings" size={19} />
           </NavLink>
           <ThemeButton className="h-11 w-11" />
-          {xlOnly && (
+          {(
             <button onClick={onExpand} className="flex h-11 w-11 items-center justify-center rounded-xl text-muted hover:bg-ink/[0.05] hover:text-ink" aria-label="Agrandir la barre latérale" title="Agrandir la barre latérale">
               <Icon name="sidebar" size={19} />
             </button>
@@ -386,20 +386,47 @@ function Rail({ onSearch, onExpand, xlOnly }: { onSearch: () => void; onExpand: 
   )
 }
 
-/* ---------------- Téléphone : en-tête, barre inférieure, menu « Plus » ---------------- */
-function MobileHeader({ onSearch }: { onSearch: () => void }) {
+/* ---------------- Téléphone et tablette : barre du haut, onglets flottants, menu « Plus » ---------------- */
+const TAB_ROOTS = ['/', '/coran', '/parcours', '/pratique', '/progression']
+
+export function RoundButton({ icon, label, onClick, className = '' }: { icon: string; label: string; onClick: () => void; className?: string }) {
   return (
-    <header className="fixed inset-x-0 top-0 z-40 bg-deep text-white md:hidden" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
-      <div className="flex h-14 items-center justify-between gap-2 pl-4 pr-2">
-        <Link to="/" className="flex items-center gap-2.5" aria-label="Rûh — accueil">
-          <Mark size={32} onDark />
-          <Wordmark onDark />
-        </Link>
-        <div className="flex items-center">
-          <button onClick={onSearch} className="flex h-11 w-11 items-center justify-center rounded-xl text-white/85 active:bg-white/10" aria-label="Rechercher">
-            <Icon name="search" size={21} />
-          </button>
-          <ThemeButton onDark className="h-11 w-11" />
+    <button onClick={onClick} aria-label={label} title={label} className={cx('card flex h-11 w-11 shrink-0 items-center justify-center !rounded-full text-ink active:scale-95', className)}>
+      <Icon name={icon} size={20} />
+    </button>
+  )
+}
+
+/** Barre du haut des pages intérieures : retour, titre qui apparaît au défilement, recherche. */
+function MobileTopBar() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const title = useUI((s) => s.title)
+  const setSearchOpen = useUI((s) => s.setSearchOpen)
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 56)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [location.pathname])
+  if (location.pathname === '/') return null
+  const isRoot = TAB_ROOTS.includes(location.pathname)
+  const goBack = () => {
+    const idx = (window.history.state as { idx?: number } | null)?.idx ?? 0
+    if (idx > 0) navigate(-1)
+    else navigate(GROUPS.find((g) => g.id === groupOf(location.pathname))?.to ?? '/')
+  }
+  return (
+    <header
+      className={cx('fixed inset-x-0 top-0 z-40 transition-colors duration-200 lg:hidden', scrolled ? 'bg-bg/85 shadow-[0_1px_0_var(--line)] backdrop-blur-xl' : 'bg-transparent')}
+      style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+    >
+      <div className="mx-auto grid h-16 max-w-3xl grid-cols-[48px_1fr_48px] items-center px-4 sm:px-6">
+        <div>{!isRoot && <RoundButton icon="back" label="Retour" onClick={goBack} />}</div>
+        <p className={cx('truncate text-center text-[16px] font-semibold transition-opacity duration-200', scrolled ? 'opacity-100' : 'opacity-0')}>{title}</p>
+        <div className="flex justify-end">
+          <RoundButton icon="search" label="Rechercher" onClick={() => setSearchOpen(true)} />
         </div>
       </div>
     </header>
@@ -411,34 +438,32 @@ const TABS: { id: GroupId | 'plus'; label: string; icon: string; to?: string }[]
   { id: 'coran', label: 'Coran', icon: 'book', to: '/coran' },
   { id: 'apprendre', label: 'Apprendre', icon: 'graduation', to: '/parcours' },
   { id: 'pratique', label: 'Pratique', icon: 'prayer', to: '/pratique' },
-  { id: 'plus', label: 'Plus', icon: 'grid' },
+  { id: 'plus', label: 'Plus', icon: 'more' },
 ]
 
-function BottomNav({ onMore, moreOpen }: { onMore: () => void; moreOpen: boolean }) {
+/** Barre d'onglets flottante, en pilule. */
+function TabBar({ onMore, moreOpen }: { onMore: () => void; moreOpen: boolean }) {
   const location = useLocation()
   const current = groupOf(location.pathname)
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }} aria-label="Navigation principale">
-      <ul className="grid grid-cols-5">
+    <nav className="fixed inset-x-0 z-50 px-3 lg:hidden" style={{ bottom: 'max(env(safe-area-inset-bottom, 0px), 10px)' }} aria-label="Navigation principale">
+      <ul className="mx-auto grid h-[64px] max-w-[460px] grid-cols-5 items-center rounded-full bg-deep px-1.5 shadow-[0_16px_36px_-14px_rgba(6,26,19,0.55)] ring-1 ring-white/[0.06] dark:bg-[#1b2622]">
         {TABS.map((t) => {
           const active = t.id === 'plus' ? moreOpen || (current === 'suivi' && !moreOpen) : current === t.id && !moreOpen
           const inner = (
-            <>
-              <span className={cx('flex h-8 w-14 items-center justify-center rounded-full transition-colors duration-200', active ? 'bg-primary-soft text-primary' : 'text-muted')}>
-                <Icon name={t.icon} size={21} strokeWidth={active ? 2 : 1.75} />
-              </span>
-              <span className={cx('text-[11px] leading-none', active ? 'font-semibold text-primary' : 'font-medium text-muted')}>{t.label}</span>
-            </>
+            <span className={cx('flex h-[52px] w-full flex-col items-center justify-center gap-[3px] rounded-full transition-colors duration-200', active ? 'bg-white/[0.12] text-gold-bright' : 'text-white/60')}>
+              <Icon name={t.icon} size={22} filled={active} strokeWidth={active ? 1.8 : 1.6} />
+              <span className={cx('text-[10.5px] leading-none', active ? 'font-semibold' : 'font-medium')}>{t.label}</span>
+            </span>
           )
-          const cls = 'flex h-16 w-full flex-col items-center justify-center gap-1'
           return (
-            <li key={t.id}>
+            <li key={t.id} className="px-0.5">
               {t.to ? (
-                <Link to={t.to} className={cls} aria-current={active ? 'page' : undefined}>
+                <Link to={t.to} className="block" aria-current={active ? 'page' : undefined}>
                   {inner}
                 </Link>
               ) : (
-                <button onClick={onMore} className={cls} aria-expanded={moreOpen} aria-label="Plus de rubriques">
+                <button onClick={onMore} className="block w-full" aria-expanded={moreOpen} aria-label="Plus de rubriques">
                   {inner}
                 </button>
               )}
@@ -462,56 +487,49 @@ function MoreSheet({ onClose }: { onClose: () => void }) {
     }
   }, [onClose])
   return (
-    <div className="fixed inset-x-0 top-0 z-30 md:hidden" style={{ bottom: 'var(--bottom-nav)' }} role="dialog" aria-modal="true" aria-label="Toutes les rubriques">
-      <div className="fade-in absolute inset-0 bg-[#0b1a14]/40" onClick={onClose} />
-      <div className="sheet-in scroll-contain absolute inset-x-0 bottom-0 max-h-[82dvh] overflow-y-auto rounded-t-[24px] bg-bg px-4 pb-4 pt-2.5">
+    <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true" aria-label="Toutes les rubriques">
+      <div className="fade-in absolute inset-0 bg-[#06120d]/45" onClick={onClose} />
+      <div className="sheet-in scroll-contain absolute inset-x-0 bottom-0 mx-auto max-h-[86dvh] max-w-2xl overflow-y-auto rounded-t-[28px] bg-bg px-4 pt-2.5" style={{ paddingBottom: 'calc(var(--bottom-nav) + 12px)' }}>
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-ink/15" />
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-display text-[26px] font-medium">Toutes les rubriques</h2>
-          <button onClick={onClose} className="-mr-1.5 flex h-11 w-11 items-center justify-center rounded-xl text-muted active:bg-ink/[0.06]" aria-label="Fermer">
-            <Icon name="x" size={20} />
-          </button>
+        <div className="mb-3 flex items-center justify-between px-1">
+          <h2 className="text-[22px] font-semibold">Toutes les rubriques</h2>
+          <RoundButton icon="x" label="Fermer" onClick={onClose} />
         </div>
         {GROUPS.filter((g) => g.id !== 'accueil').map((g) => (
           <section key={g.id} className="mb-4">
-            <p className="mb-1.5 flex items-baseline gap-2 font-display text-[16px] italic text-muted">
+            <p className="mb-1.5 flex items-baseline gap-2 px-1 text-[13.5px] font-semibold text-muted">
               {g.label}
-              <span className="arabic text-[13px] not-italic text-gold/80">{g.arabic}</span>
+              <span className="arabic text-[13px] font-normal text-gold">{g.arabic}</span>
             </p>
-            <ul className="grid grid-cols-2 gap-1.5">
+            <ul className="card divide-y divide-line overflow-hidden">
               {itemsOf(g.id).map((n) => (
                 <li key={n.to}>
-                  <NavLink to={n.to} onClick={onClose} className={({ isActive }) => cx('flex min-h-[52px] items-center gap-2.5 rounded-[14px] px-3 py-2 text-[14px] font-medium leading-tight', isActive ? 'bg-primary text-primary-ink' : 'bg-surface text-ink active:bg-surface-2')}>
-                    {({ isActive }) => (
-                      <>
-                        <Icon name={n.icon} size={19} className={isActive ? '' : 'text-primary'} />
-                        <span className="min-w-0">{n.label}</span>
-                      </>
-                    )}
+                  <NavLink to={n.to} onClick={onClose} className={({ isActive }) => cx('flex min-h-[54px] items-center gap-3 px-4 text-[15px] font-medium active:bg-surface-2', isActive && 'text-primary')}>
+                    <Icon name={n.icon} size={21} className="text-primary" />
+                    <span className="min-w-0 flex-1">{n.label}</span>
+                    <Icon name="chevronRight" size={16} className="text-muted" />
                   </NavLink>
                 </li>
               ))}
             </ul>
           </section>
         ))}
-        <div className="mt-2 overflow-hidden rounded-[16px] bg-surface">
-          <div className="border-b border-line px-1 py-1" onClick={onClose}>
+        <ul className="card mb-2 divide-y divide-line overflow-hidden">
+          <li className="px-2 py-1.5" onClick={onClose}>
             <AccountRow />
-          </div>
-          <ul className="divide-y divide-line">
-            {SECONDARY.filter((s) => s.to !== '/compte').map((s) => (
-              <li key={s.to}>
-                <Link to={s.to} onClick={onClose} className="flex h-12 items-center gap-3 px-3.5 text-[14.5px] font-medium active:bg-surface-2">
-                  <Icon name={s.icon} size={19} className="text-muted" /> {s.label}
-                  <Icon name="chevronRight" size={16} className="ml-auto text-muted" />
-                </Link>
-              </li>
-            ))}
-            <li>
-              <ThemeButton withLabel className="h-12 w-full !justify-start px-3.5 text-ink" />
+          </li>
+          {SECONDARY.filter((s) => s.to !== '/compte').map((s) => (
+            <li key={s.to}>
+              <Link to={s.to} onClick={onClose} className="flex min-h-[54px] items-center gap-3 px-4 text-[15px] font-medium active:bg-surface-2">
+                <Icon name={s.icon} size={21} className="text-muted" /> {s.label}
+                <Icon name="chevronRight" size={16} className="ml-auto text-muted" />
+              </Link>
             </li>
-          </ul>
-        </div>
+          ))}
+          <li>
+            <ThemeButton withLabel className="min-h-[54px] w-full !justify-start !rounded-none px-4 text-ink" />
+          </li>
+        </ul>
       </div>
     </div>
   )
@@ -523,7 +541,8 @@ const RAIL_KEY = 'ruh-rail'
 export function Layout() {
   useApplyTheme()
   const [moreOpen, setMoreOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
+  const searchOpen = useUI((s) => s.searchOpen)
+  const setSearchOpen = useUI((s) => s.setSearchOpen)
   const [rail, setRail] = useState(() => {
     try {
       return localStorage.getItem(RAIL_KEY) === '1'
@@ -556,7 +575,9 @@ export function Layout() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [setSearchOpen])
+
+  const isHome = location.pathname === '/'
 
   return (
     <div className={cx('shell min-h-dvh', rail && 'is-rail')}>
@@ -564,22 +585,23 @@ export function Layout() {
         Aller au contenu
       </a>
 
-      {!rail && <FullSidebar onSearch={() => setSearchOpen(true)} onCollapse={() => setRailPref(true)} />}
-      <Rail onSearch={() => setSearchOpen(true)} onExpand={() => setRailPref(false)} xlOnly={false} />
-      {rail && <Rail onSearch={() => setSearchOpen(true)} onExpand={() => setRailPref(false)} xlOnly />}
+      {rail ? <Rail onSearch={() => setSearchOpen(true)} onExpand={() => setRailPref(false)} /> : <FullSidebar onSearch={() => setSearchOpen(true)} onCollapse={() => setRailPref(true)} />}
 
-      <MobileHeader onSearch={() => setSearchOpen(true)} />
+      <MobileTopBar />
 
       <main
         id="contenu"
-        className="relative px-4 pb-[calc(var(--bottom-nav)+2rem)] pt-[calc(3.5rem+env(safe-area-inset-top,0px)+1.25rem)] sm:px-6 md:pb-20 md:pl-[calc(var(--shell-left)+2.25rem)] md:pr-9 md:pt-9 xl:pl-[calc(var(--shell-left)+3.5rem)] xl:pr-14 xl:pt-11"
+        className={cx(
+          'relative px-4 pb-[calc(var(--bottom-nav)+1.5rem)] sm:px-6 lg:pb-20 lg:pl-[calc(var(--shell-left)+2.5rem)] lg:pr-10 lg:pt-10 xl:pl-[calc(var(--shell-left)+3.5rem)] xl:pr-14',
+          isHome ? 'pt-[calc(env(safe-area-inset-top,0px)+1rem)]' : 'pt-[calc(env(safe-area-inset-top,0px)+4.5rem)]',
+        )}
       >
-        <div key={location.pathname} className="page-in mx-auto max-w-[1080px]">
+        <div key={location.pathname} className="page-in mx-auto max-w-[1080px] max-lg:max-w-3xl">
           <Outlet />
         </div>
       </main>
 
-      <BottomNav onMore={() => setMoreOpen((o) => !o)} moreOpen={moreOpen} />
+      <TabBar onMore={() => setMoreOpen((o) => !o)} moreOpen={moreOpen} />
       {moreOpen && <MoreSheet onClose={() => setMoreOpen(false)} />}
 
       <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
@@ -588,4 +610,3 @@ export function Layout() {
     </div>
   )
 }
-
