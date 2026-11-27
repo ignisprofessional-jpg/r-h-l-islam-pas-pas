@@ -5,10 +5,10 @@
 ## Couleurs (tokens CSS dans `src/index.css`)
 | Rôle | Clair | Sombre |
 |---|---|---|
-| `bg` papier | `#f5f0e6` | `#0c1613` |
-| `surface` | `#fcfaf5` | `#121f1a` |
-| `surface-2` | `#efe8da` | `#18291f` |
-| `ink` encre | `#17241d` | `#ebe4d4` |
+| `bg` fond | `#f1efe9` | `#090d0b` |
+| `surface` (cartes) | `#ffffff` | `#141a17` |
+| `surface-2` | `#f5f3ee` | `#1b2320` |
+| `ink` | `#16201b` | `#eef0ec` |
 | `muted` | `#5b6860` | `#a3b0a8` |
 | `line` filet | `#e2d9c6` | `#22362d` |
 | `primary` vert forêt | `#0f4c3a` | `#5bb592` |
@@ -28,7 +28,7 @@ Le doré n'est jamais un fond plein : filets, chiffres, petits ornements, état 
 - Chaque bloc est une carte (`.card` : fond blanc, rayon 22 px, ombre douce ; en sombre, filet clair). Les listes sont des cartes groupées avec séparateurs (style iOS).
 - Titres de section en sans-serif semi-gras, action à droite.
 - Rayons : 20 px (surfaces), 14 px (lignes et champs), boutons en pilule.
-- Icônes : jeu unique maison (`Icon.tsx`), trait 1,75, 18–20 px.
+- Icônes : jeu unique maison (`Icon.tsx`), trait 1,6, version pleine pour l’état actif ; icônes de prière en arc (`PrayerArt.tsx`).
 - Mouvement : un fondu court au changement de page, feuilles qui montent du bas sur mobile. Rien d'autre.
 
 ## Navigation
